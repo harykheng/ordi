@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import Hero from "./components/Hero";
 import TimeSection from "./components/TimeSection";
 import Comparison from "./components/Comparison";
-import OwnershipCertificate from "./components/OwnershipCertificate";
+// import OwnershipCertificate from "./components/OwnershipCertificate";
 import FinalCTA from "./components/FinalCTA";
 import { TIMELINE } from "./data/content";
 
@@ -21,7 +21,8 @@ export default function App() {
           />
         ))}
         <Comparison />
-        <OwnershipCertificate />
+        {/* Disembunyikan sementara sampai ada nama toko klien asli buat CONTOH_NAMA_TOKO */}
+        {/* <OwnershipCertificate /> */}
       </main>
       <FinalCTA />
     </div>
