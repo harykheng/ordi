@@ -43,7 +43,7 @@ export default function QRISMockup() {
 
       <div className="mt-3 text-center">
         <p className="text-xs text-ink/50">Total Pembayaran</p>
-        <p className="font-mono-label text-xl text-ember font-semibold">
+        <p className="font-mono-label text-xl text-ember-deep font-semibold">
           Rp73.000
         </p>
       </div>

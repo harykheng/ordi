@@ -5,7 +5,7 @@ import { Sparkle } from "./Doodles";
 
 export default function Comparison() {
   return (
-    <section className="relative px-5 py-16 sm:py-24 border-t-2 border-ink/10 bg-lilac/15">
+    <section className="relative px-5 py-16 sm:py-24 border-t-2 border-ink/10 bg-teal/8">
       <Sparkle className="absolute top-10 right-[10%] hidden sm:block" />
       <div className="mx-auto max-w-6xl">
         <Reveal>

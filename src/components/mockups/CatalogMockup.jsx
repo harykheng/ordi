@@ -12,7 +12,7 @@ export default function CatalogMockup() {
         <span className="font-display font-bold text-ink text-sm">
           Katalog · Kopi Senja
         </span>
-        <span className="font-mono-label text-[10px] text-mint-ok">
+        <span className="font-mono-label text-[10px] text-teal">
           ● live 24 jam
         </span>
       </div>
@@ -32,7 +32,7 @@ export default function CatalogMockup() {
               </p>
               <p
                 className={`font-mono-label text-[10px] ${
-                  item.stock ? "text-mint-ok" : "text-rust"
+                  item.stock ? "text-teal" : "text-ember-deep"
                 }`}
               >
                 {item.stock ? "tersedia" : "habis"}

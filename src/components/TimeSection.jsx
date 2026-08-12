@@ -11,7 +11,7 @@ const MOCKUPS = {
   SS_ADMIN_DASHBOARD: AdminDashboardMockup,
 };
 
-const BADGE_COLORS = ["bg-mint", "bg-lilac", "bg-yellow", "bg-coral"];
+const BADGE_COLORS = ["bg-yellow", "bg-teal/15", "bg-ember/20"];
 
 export default function TimeSection({ item, index, reverse }) {
   const Mockup = MOCKUPS[item.mockupSlot];

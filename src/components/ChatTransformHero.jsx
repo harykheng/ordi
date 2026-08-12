@@ -75,7 +75,7 @@ export default function ChatTransformHero() {
                 <span className="font-display font-bold text-ink text-sm">
                   Pesanan Masuk
                 </span>
-                <span className="font-mono-label text-[10px] text-mint-ok">
+                <span className="font-mono-label text-[10px] text-teal">
                   ● live
                 </span>
               </div>
@@ -94,7 +94,7 @@ export default function ChatTransformHero() {
                 </div>
                 <div className="border-t-2 border-ink/10 pt-2 flex justify-between font-semibold text-ink">
                   <span>Total</span>
-                  <span className="font-mono-label text-ember">Rp73.000</span>
+                  <span className="font-mono-label text-ember-deep">Rp73.000</span>
                 </div>
               </div>
             </div>

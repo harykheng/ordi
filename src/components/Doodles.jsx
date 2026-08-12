@@ -10,7 +10,7 @@ export function Star({ className = "", color = "text-ember" }) {
   );
 }
 
-export function Sparkle({ className = "", color = "text-blue" }) {
+export function Sparkle({ className = "", color = "text-teal" }) {
   return (
     <svg
       viewBox="0 0 24 24"
@@ -59,7 +59,7 @@ export function Spiral({ className = "", color = "text-ink/50" }) {
   );
 }
 
-export function CircleUnderline({ className = "", color = "text-coral" }) {
+export function CircleUnderline({ className = "", color = "text-ember" }) {
   return (
     <svg
       viewBox="0 0 120 20"
