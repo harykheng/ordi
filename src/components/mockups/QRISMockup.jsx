@@ -1,16 +1,16 @@
 export default function QRISMockup() {
   return (
-    <div className="rounded-2xl bg-char border border-paper/10 p-4 shadow-xl max-w-sm w-full">
+    <div className="rounded-2xl bg-paper-2 border-2 border-ink p-4 shadow-[6px_6px_0_0_var(--color-ink)] max-w-sm w-full">
       <div className="flex items-center justify-between mb-3">
-        <span className="font-display font-bold text-paper text-sm">
+        <span className="font-display font-bold text-ink text-sm">
           Bayar QRIS
         </span>
-        <span className="font-mono-label text-[10px] text-paper/40">
+        <span className="font-mono-label text-[10px] text-ink/40">
           exp 09:58
         </span>
       </div>
 
-      <div className="rounded-xl bg-paper p-4 flex items-center justify-center">
+      <div className="rounded-xl bg-paper border-2 border-ink/10 p-4 flex items-center justify-center">
         <svg viewBox="0 0 100 100" className="w-36 h-36" aria-hidden="true">
           <rect width="100" height="100" fill="#F7F2EA" />
           {Array.from({ length: 10 }).map((_, row) =>
@@ -42,12 +42,12 @@ export default function QRISMockup() {
       </div>
 
       <div className="mt-3 text-center">
-        <p className="text-xs text-paper/50">Total Pembayaran</p>
+        <p className="text-xs text-ink/50">Total Pembayaran</p>
         <p className="font-mono-label text-xl text-ember font-semibold">
           Rp73.000
         </p>
       </div>
-      <p className="font-mono-label text-[10px] text-paper/40 mt-3 text-center leading-relaxed">
+      <p className="font-mono-label text-[10px] text-ink/40 mt-3 text-center leading-relaxed">
         Nominal ke-generate otomatis sesuai pesanan.
         <br />
         Verifikasi pembayaran tetap manual by admin.

@@ -7,9 +7,9 @@ const ITEMS = [
 
 export default function CatalogMockup() {
   return (
-    <div className="rounded-2xl bg-char border border-paper/10 p-4 shadow-xl max-w-sm w-full">
+    <div className="rounded-2xl bg-paper-2 border-2 border-ink p-4 shadow-[6px_6px_0_0_var(--color-ink)] max-w-sm w-full">
       <div className="flex items-center justify-between mb-3">
-        <span className="font-display font-bold text-paper text-sm">
+        <span className="font-display font-bold text-ink text-sm">
           Katalog · Kopi Senja
         </span>
         <span className="font-mono-label text-[10px] text-mint-ok">
@@ -20,14 +20,14 @@ export default function CatalogMockup() {
         {ITEMS.map((item) => (
           <div
             key={item.name}
-            className="flex items-center justify-between rounded-lg bg-ink/40 px-3 py-2"
+            className="flex items-center justify-between rounded-lg bg-paper px-3 py-2 border border-ink/10"
           >
             <div>
-              <p className="text-sm text-paper/90 leading-tight">{item.name}</p>
-              <p className="text-[11px] text-paper/40">{item.variant}</p>
+              <p className="text-sm text-ink/90 leading-tight">{item.name}</p>
+              <p className="text-[11px] text-ink/40">{item.variant}</p>
             </div>
             <div className="text-right">
-              <p className="font-mono-label text-xs text-paper/80">
+              <p className="font-mono-label text-xs text-ink/80">
                 Rp{item.price.toLocaleString("id-ID")}
               </p>
               <p
@@ -41,7 +41,7 @@ export default function CatalogMockup() {
           </div>
         ))}
       </div>
-      <button className="mt-3 w-full rounded-full bg-ember/90 text-ink text-sm font-semibold py-2">
+      <button className="mt-3 w-full rounded-full bg-ink text-paper text-sm font-semibold py-2">
         Lihat Keranjang (2)
       </button>
     </div>

@@ -38,7 +38,7 @@ export default function ChatTransformHero() {
             {MESSY_BUBBLES.map((b, i) => (
               <motion.div
                 key={i}
-                className="absolute left-1/2 top-1/2 max-w-[190px] rounded-2xl rounded-bl-sm bg-char px-3 py-2 text-[13px] text-paper/90 shadow-lg border border-paper/5"
+                className="absolute left-1/2 top-1/2 max-w-[190px] rounded-2xl rounded-bl-sm bg-paper-2 px-3 py-2 text-[13px] text-ink/90 shadow-lg border-2 border-ink"
                 initial={{ opacity: 0, scale: 0.6, x: b.x, y: b.y, rotate: 0 }}
                 animate={
                   isInView
@@ -51,7 +51,7 @@ export default function ChatTransformHero() {
               </motion.div>
             ))}
             <motion.div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono-label text-[11px] text-paper/30"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono-label text-[11px] text-ink/40"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ delay: 1.6, duration: 0.4 }}
@@ -70,9 +70,9 @@ export default function ChatTransformHero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="w-full max-w-[300px] rounded-2xl bg-char border border-paper/10 shadow-2xl p-4">
-              <div className="flex items-center justify-between border-b border-paper/10 pb-2 mb-3">
-                <span className="font-display font-bold text-paper text-sm">
+            <div className="w-full max-w-[300px] rounded-2xl bg-paper-2 border-2 border-ink shadow-[6px_6px_0_0_var(--color-ink)] p-4">
+              <div className="flex items-center justify-between border-b-2 border-ink/10 pb-2 mb-3">
+                <span className="font-display font-bold text-ink text-sm">
                   Pesanan Masuk
                 </span>
                 <span className="font-mono-label text-[10px] text-mint-ok">
@@ -80,19 +80,19 @@ export default function ChatTransformHero() {
                 </span>
               </div>
               <div className="space-y-2 text-sm">
-                <div className="flex justify-between text-paper/80">
+                <div className="flex justify-between text-ink/80">
                   <span>Kopi Susu Gula Aren x2</span>
                   <span className="font-mono-label">Rp36.000</span>
                 </div>
-                <div className="flex justify-between text-paper/80">
+                <div className="flex justify-between text-ink/80">
                   <span>Nasi Ayam Geprek x1</span>
                   <span className="font-mono-label">Rp28.000</span>
                 </div>
-                <div className="flex justify-between text-paper/50 text-xs">
+                <div className="flex justify-between text-ink/50 text-xs">
                   <span>Ongkir · Kemang Raya</span>
                   <span className="font-mono-label">Rp9.000</span>
                 </div>
-                <div className="border-t border-paper/10 pt-2 flex justify-between font-semibold text-paper">
+                <div className="border-t-2 border-ink/10 pt-2 flex justify-between font-semibold text-ink">
                   <span>Total</span>
                   <span className="font-mono-label text-ember">Rp73.000</span>
                 </div>

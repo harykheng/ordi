@@ -8,12 +8,17 @@ import { TIMELINE } from "./data/content";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-ink text-paper">
+    <div className="min-h-screen bg-paper text-ink">
       <Header />
       <main>
         <Hero />
         {TIMELINE.map((item, i) => (
-          <TimeSection key={item.time} item={item} reverse={i % 2 === 1} />
+          <TimeSection
+            key={item.time}
+            item={item}
+            index={i}
+            reverse={i % 2 === 1}
+          />
         ))}
         <Comparison />
         <OwnershipCertificate />

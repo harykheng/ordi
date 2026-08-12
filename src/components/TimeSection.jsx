@@ -11,11 +11,14 @@ const MOCKUPS = {
   SS_ADMIN_DASHBOARD: AdminDashboardMockup,
 };
 
-export default function TimeSection({ item, reverse }) {
+const BADGE_COLORS = ["bg-mint", "bg-lilac", "bg-yellow", "bg-coral"];
+
+export default function TimeSection({ item, index, reverse }) {
   const Mockup = MOCKUPS[item.mockupSlot];
+  const badgeColor = BADGE_COLORS[index % BADGE_COLORS.length];
 
   return (
-    <section className="px-5 py-16 sm:py-24 border-t border-char/60">
+    <section className="px-5 py-16 sm:py-24 border-t-2 border-ink/10">
       <div className="mx-auto max-w-6xl">
         <div
           className={`grid md:grid-cols-2 gap-10 items-center ${
@@ -23,15 +26,20 @@ export default function TimeSection({ item, reverse }) {
           }`}
         >
           <Reveal className={reverse ? "md:[direction:ltr]" : ""}>
-            <p className="font-mono-label text-xs text-ember mb-3">
+            <span
+              className={`inline-flex items-center gap-1.5 rounded-full ${badgeColor} border-2 border-ink px-3 py-1 mb-4 text-xs font-semibold font-mono-label text-ink`}
+            >
               {item.time} — {item.label}
-            </p>
-            <h2 className="font-display font-bold text-2xl sm:text-3xl text-paper mb-4 leading-snug">
+            </span>
+            <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink mb-4 leading-snug">
               {item.pain}
             </h2>
-            <p className="text-paper/70 leading-relaxed">{item.solution}</p>
+            <p className="text-ink/70 leading-relaxed">{item.solution}</p>
           </Reveal>
-          <Reveal delay={0.15} className={`flex justify-center ${reverse ? "md:[direction:ltr]" : ""}`}>
+          <Reveal
+            delay={0.15}
+            className={`flex justify-center ${reverse ? "md:[direction:ltr]" : ""}`}
+          >
             {Mockup && <Mockup />}
           </Reveal>
         </div>
