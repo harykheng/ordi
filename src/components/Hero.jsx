@@ -20,17 +20,18 @@ export default function Hero() {
             09:00 — notif WA udah menumpuk
           </span>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] text-ink mb-5">
-            Chat WA bolak-balik itu,{" "}
+            8 chat bolak-balik,{" "}
             <span className="relative inline-block text-ember-deep">
               sekarang
               <CircleUnderline className="absolute left-0 -bottom-2 w-full" />
             </span>{" "}
-            jadi satu sistem.
+            cukup 1 sistem.
           </h1>
           <p className="text-ink/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-            Ordi ngambil alih hal-hal yang bikin kamu re-type manual tiap
-            hari — katalog, ongkir, QRIS, rekap. Dibangun khusus buat
-            bisnis kamu oleh Studio Harel, bukan disewakan dari template.
+            Ordi ngambil alih hal-hal yang bikin kamu ketik ulang manual
+            tiap hari — katalog, ongkir, QRIS, rekap. Dibangun khusus buat
+            bisnis kamu oleh Studio Harel — bukan template yang disewain
+            ke banyak toko.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
