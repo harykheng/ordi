@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #141110;
+  --color-paper: #f7f2ea;
+  --color-ember: #ff6b1a;
+  --color-char: #2a2521;
+  --color-rust: #b8481f;
+  --color-mint-ok: #8fbf9f;
+
+  --font-display: "Fraunces", serif;
+  --font-body: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background-color: var(--color-ember);
+  color: var(--color-ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+}
+
+.font-mono-label {
+  font-family: var(--font-mono);
+  letter-spacing: 0.02em;
+}
+
+/* subtle warm grain so ink doesn't feel like flat null-black */
+.grain-bg {
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 107, 26, 0.06), transparent 45%),
+    radial-gradient(circle at 80% 60%, rgba(184, 72, 31, 0.05), transparent 50%);
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  scrollbar-width: none;
+}
