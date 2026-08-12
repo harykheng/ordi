@@ -55,10 +55,10 @@ export default function ChatTransformHero() {
               </div>
             ))}
             <motion.div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono-label text-[11px] text-ink/40 whitespace-nowrap"
-              initial={{ opacity: 0 }}
-              animate={isInView ? { opacity: 1 } : {}}
-              transition={{ delay: 1.6, duration: 0.4 }}
+              className="absolute left-1/2 bottom-2 -translate-x-1/2 rounded-full bg-paper-2 border-2 border-ink px-3 py-1 font-mono-label text-[11px] text-ink whitespace-nowrap shadow-[3px_3px_0_0_var(--color-ink)]"
+              initial={{ opacity: 0, y: 8 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 1.8, duration: 0.4 }}
             >
               09:00 — 8 chat, masih belum ke-follow up
             </motion.div>
