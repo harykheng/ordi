@@ -21,7 +21,7 @@ export default function App() {
           />
         ))}
         <Comparison />
-        {/* Disembunyikan sementara sampai ada nama toko klien asli buat CONTOH_NAMA_TOKO */}
+        {/* Disembunyikan sementara — copy sudah forward-looking/generik, tunggu keputusan buat nampilin lagi */}
         {/* <OwnershipCertificate /> */}
       </main>
       <FinalCTA />
