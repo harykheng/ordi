@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { CONTOH_TOKO } from "../data/content";
+import { TOKO_KAMU_VARIANTS } from "../data/content";
 import { Star, Sparkle } from "./Doodles";
 
 export default function OwnershipCertificate() {
@@ -11,7 +11,7 @@ export default function OwnershipCertificate() {
   useEffect(() => {
     if (!isInView) return;
     const interval = setInterval(() => {
-      setIdx((i) => (i + 1) % CONTOH_TOKO.length);
+      setIdx((i) => (i + 1) % TOKO_KAMU_VARIANTS.length);
     }, 2400);
     return () => clearInterval(interval);
   }, [isInView]);
@@ -50,7 +50,7 @@ export default function OwnershipCertificate() {
               Tanda Terima Kepemilikan
             </p>
             <p className="text-sm text-ink/60 mb-1">Sistem pesan-antar</p>
-            <div className="min-h-[2.5rem] relative mb-4">
+            <div className="min-h-[4.5rem] relative mb-4">
               <motion.p
                 key={idx}
                 initial={{ opacity: 0, y: 12 }}
@@ -58,23 +58,15 @@ export default function OwnershipCertificate() {
                 transition={{ duration: 0.45 }}
                 className="font-display font-extrabold text-xl sm:text-2xl leading-tight break-words"
               >
-                {CONTOH_TOKO[idx]}
+                Ordi ini akan{" "}
+                <span className="text-ember-deep">100% jadi milik</span>{" "}
+                {TOKO_KAMU_VARIANTS[idx]}
               </motion.p>
             </div>
             <p className="text-sm text-ink/70 leading-relaxed border-t-2 border-ink/10 pt-4">
-              Ordi ini{" "}
-              <span className="font-semibold text-ember-deep">100% milik</span>{" "}
-              <motion.span
-                key={`name-${idx}`}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                className="font-semibold"
-              >
-                {CONTOH_TOKO[idx]}
-              </motion.span>
-              . Dibayar sekali, dipakai selamanya — bukan disewa bulan ke
-              bulan.
+              Bukan disewain, bukan numpang platform orang lain — begitu
+              lanjut, semua akun (hosting, database, domain) atas nama
+              bisnis kamu sendiri.
             </p>
           </div>
         </motion.div>

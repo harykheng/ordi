@@ -1,11 +1,13 @@
 export const DEMO_URL = "{{DEMO_URL}}";
 export const WHATSAPP_CTA_LINK = "{{WHATSAPP_CTA_LINK}}";
 
-export const CONTOH_TOKO = [
-  "{{CONTOH_NAMA_TOKO_1}}",
-  "{{CONTOH_NAMA_TOKO_2}}",
-  "{{CONTOH_NAMA_TOKO_3}}",
-  "{{CONTOH_NAMA_TOKO_4}}",
+// Placeholder ilustratif — bukan nama klien/toko asli. Section ini murni
+// menggambarkan konsep kepemilikan, jadi copy-nya forward-looking dan
+// variannya harus tetap generik (lihat OwnershipCertificate.jsx).
+export const TOKO_KAMU_VARIANTS = [
+  "[Nama Toko Kamu]",
+  "[Nama Bisnis Kamu]",
+  "[Nama Kafe Kamu]",
 ];
 
 export const TIMELINE = [
