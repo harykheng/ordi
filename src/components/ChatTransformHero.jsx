@@ -19,7 +19,7 @@ export default function ChatTransformHero() {
 
   useEffect(() => {
     if (isInView) {
-      const t = setTimeout(() => setResolved(true), 2200);
+      const t = setTimeout(() => setResolved(true), 3800);
       return () => clearTimeout(t);
     }
   }, [isInView]);
@@ -27,13 +27,13 @@ export default function ChatTransformHero() {
   return (
     <div
       ref={ref}
-      className="relative h-[380px] sm:h-[420px] w-full max-w-md mx-auto select-none"
+      className="relative h-[380px] sm:h-[420px] w-full max-w-md mx-auto select-none overflow-hidden"
     >
       <AnimatePresence>
         {!resolved && (
           <motion.div
-            className="absolute inset-0"
-            exit={{ opacity: 0, transition: { duration: 0.5 } }}
+            className="absolute inset-0 scale-[0.62] sm:scale-100"
+            exit={{ opacity: 0, transition: { duration: 0.6 } }}
           >
             {MESSY_BUBBLES.map((b, i) => (
               <motion.div
@@ -51,7 +51,7 @@ export default function ChatTransformHero() {
               </motion.div>
             ))}
             <motion.div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono-label text-[11px] text-ink/40"
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-mono-label text-[11px] text-ink/40 whitespace-nowrap"
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ delay: 1.6, duration: 0.4 }}
@@ -68,7 +68,7 @@ export default function ChatTransformHero() {
             className="absolute inset-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-[300px] rounded-2xl bg-paper-2 border-2 border-ink shadow-[6px_6px_0_0_var(--color-ink)] p-4">
               <div className="flex items-center justify-between border-b-2 border-ink/10 pb-2 mb-3">
