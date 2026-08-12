@@ -1,14 +1,25 @@
 @import "tailwindcss";
 
 @theme {
-  --color-ink: #141110;
+  /* base surfaces */
   --color-paper: #f7f2ea;
-  --color-ember: #ff6b1a;
-  --color-char: #2a2521;
-  --color-rust: #b8481f;
-  --color-mint-ok: #8fbf9f;
+  --color-paper-2: #ffffff;
+  --color-ink: #141110;
 
-  --font-display: "Fraunces", serif;
+  /* brand + playful accents */
+  --color-ember: #ff6b1a;
+  --color-rust: #b8481f;
+  --color-blue: #3355ff;
+  --color-mint: #bfe6c6;
+  --color-mint-ok: #8fbf9f;
+  --color-lilac: #d9d4f7;
+  --color-yellow: #fce388;
+  --color-coral: #ffb199;
+
+  /* legacy dark surfaces, kept for a few small dark chips */
+  --color-char: #2a2521;
+
+  --font-display: "Sora", "Inter", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 }
@@ -18,21 +29,21 @@ html {
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-paper);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
-  background-color: var(--color-ember);
-  color: var(--color-ink);
+  background-color: var(--color-blue);
+  color: var(--color-paper);
 }
 
 .font-display {
   font-family: var(--font-display);
-  font-optical-sizing: auto;
+  letter-spacing: -0.02em;
 }
 
 .font-mono-label {
@@ -40,11 +51,14 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* subtle warm grain so ink doesn't feel like flat null-black */
+/* faint dot-grid texture instead of flat cream */
 .grain-bg {
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(255, 107, 26, 0.06), transparent 45%),
-    radial-gradient(circle at 80% 60%, rgba(184, 72, 31, 0.05), transparent 50%);
+  background-image: radial-gradient(
+    circle,
+    rgba(20, 17, 16, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
 }
 
 .scrollbar-none::-webkit-scrollbar {
@@ -52,4 +66,13 @@ body {
 }
 .scrollbar-none {
   scrollbar-width: none;
+}
+
+/* hand-drawn doodle strokes */
+.doodle {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
