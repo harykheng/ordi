@@ -5,7 +5,7 @@ import { Star } from "./Doodles";
 export default function FinalCTA() {
   return (
     <footer className="relative px-5 py-20 sm:py-28 border-t-2 border-ink/10 text-center overflow-hidden">
-      <Star className="absolute top-10 left-[8%] hidden sm:block text-lilac" />
+      <Star className="absolute top-10 left-[8%] hidden sm:block text-teal" />
       <div className="mx-auto max-w-xl">
         <Reveal>
           <h2 className="font-display font-extrabold text-3xl sm:text-4xl text-ink mb-4">

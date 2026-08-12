@@ -22,7 +22,7 @@ export default function OwnershipCertificate() {
       className="relative px-5 py-24 sm:py-32 border-t-2 border-ink bg-ink overflow-hidden"
     >
       <Star className="absolute top-16 left-[10%] text-ember" />
-      <Sparkle className="absolute bottom-16 right-[12%] text-mint" />
+      <Sparkle className="absolute bottom-16 right-[12%] text-yellow" />
       <div className="relative mx-auto max-w-3xl text-center">
         <p className="font-mono-label text-xs text-ember mb-4">
           Bukan sewa. Bukan pinjam.
@@ -43,10 +43,10 @@ export default function OwnershipCertificate() {
           style={{ perspective: 1000 }}
         >
           <div className="relative rounded-2xl bg-paper-2 text-ink p-8 shadow-[8px_8px_0_0_var(--color-ember)] border-2 border-ink">
-            <div className="absolute top-4 right-4 font-mono-label text-[10px] text-rust/70">
+            <div className="absolute top-4 right-4 font-mono-label text-[10px] text-ember-deep/70">
               No. 001 / MILIK-SENDIRI
             </div>
-            <p className="font-mono-label text-[11px] text-rust uppercase tracking-wide mb-6">
+            <p className="font-mono-label text-[11px] text-ember-deep uppercase tracking-wide mb-6">
               Tanda Terima Kepemilikan
             </p>
             <p className="text-sm text-ink/60 mb-1">Sistem pesan-antar</p>
@@ -63,7 +63,7 @@ export default function OwnershipCertificate() {
             </div>
             <p className="text-sm text-ink/70 leading-relaxed border-t-2 border-ink/10 pt-4">
               Ordi ini{" "}
-              <span className="font-semibold text-rust">100% milik</span>{" "}
+              <span className="font-semibold text-ember-deep">100% milik</span>{" "}
               <motion.span
                 key={`name-${idx}`}
                 initial={{ opacity: 0 }}

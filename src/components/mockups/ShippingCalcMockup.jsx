@@ -45,7 +45,7 @@ export default function ShippingCalcMockup() {
               <div
                 key={s}
                 className={`px-3 py-2 text-xs text-ink/70 ${
-                  i === 0 ? "bg-blue/10 text-ink font-medium" : ""
+                  i === 0 ? "bg-teal/10 text-ink font-medium" : ""
                 }`}
               >
                 {s}
@@ -55,10 +55,10 @@ export default function ShippingCalcMockup() {
         )}
       </div>
 
-      <div className="mt-4 flex items-center justify-between rounded-lg bg-mint/40 border border-ink/10 px-3 py-2.5">
+      <div className="mt-4 flex items-center justify-between rounded-lg bg-yellow/25 border border-ink/10 px-3 py-2.5">
         <span className="text-sm text-ink/70">Ongkir ke lokasi kamu</span>
         {step >= 3 ? (
-          <span className="font-mono-label text-sm text-rust font-semibold">
+          <span className="font-mono-label text-sm text-ember-deep font-semibold">
             Rp9.000
           </span>
         ) : (

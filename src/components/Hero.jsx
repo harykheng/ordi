@@ -6,8 +6,8 @@ import { DEMO_URL, WHATSAPP_CTA_LINK } from "../data/content";
 export default function Hero() {
   return (
     <section className="grain-bg relative pt-32 pb-20 px-5 overflow-hidden">
-      <Star className="absolute top-24 right-[8%] text-mint-ok" />
-      <Sparkle className="absolute top-40 left-[6%] text-blue" />
+      <Star className="absolute top-24 right-[8%] text-teal" />
+      <Sparkle className="absolute top-40 left-[6%] text-ember" />
       <Spiral className="absolute bottom-10 left-[4%] hidden sm:block" />
 
       <div className="mx-auto max-w-6xl grid md:grid-cols-2 gap-12 items-center">
@@ -21,7 +21,7 @@ export default function Hero() {
           </span>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] text-ink mb-5">
             Chat WA bolak-balik itu,{" "}
-            <span className="relative inline-block text-blue">
+            <span className="relative inline-block text-ember-deep">
               sekarang
               <CircleUnderline className="absolute left-0 -bottom-2 w-full" />
             </span>{" "}
@@ -58,7 +58,7 @@ export default function Hero() {
         </motion.div>
 
         <div className="relative">
-          <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-lilac rotate-2 hidden sm:block" />
+          <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-teal/10 rotate-2 hidden sm:block" />
           <ChatTransformHero />
         </div>
       </div>

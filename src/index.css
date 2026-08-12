@@ -2,26 +2,19 @@
 
 @theme {
   /* base surfaces */
-  --color-paper: #f7f2ea;
+  --color-paper: #fff9f2;
   --color-paper-2: #ffffff;
-  --color-ink: #141110;
+  --color-ink: #1a1a1a;
 
-  /* brand + playful accents */
-  --color-ember: #ff6b1a;
-  --color-rust: #b8481f;
-  --color-blue: #3355ff;
-  --color-mint: #bfe6c6;
-  --color-mint-ok: #8fbf9f;
-  --color-lilac: #d9d4f7;
-  --color-yellow: #fce388;
-  --color-coral: #ffb199;
+  /* brand accents */
+  --color-ember: #ff8a3d; /* primary accent — CTA, price, fills */
+  --color-ember-deep: #b8541a; /* contrast-safe orange for text on light bg */
+  --color-teal: #0f4c4c; /* secondary accent — live/badge/status */
+  --color-yellow: #ffd23f; /* highlight — promo/discount badges */
 
-  /* legacy dark surfaces, kept for a few small dark chips */
-  --color-char: #2a2521;
-
-  --font-display: "Sora", "Inter", system-ui, sans-serif;
-  --font-body: "Inter", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
+  --font-body: "Public Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
 }
 
 html {
@@ -37,8 +30,8 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-blue);
-  color: var(--color-paper);
+  background-color: var(--color-ember);
+  color: var(--color-ink);
 }
 
 .font-display {
@@ -48,14 +41,14 @@ body {
 
 .font-mono-label {
   font-family: var(--font-mono);
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 /* faint dot-grid texture instead of flat cream */
 .grain-bg {
   background-image: radial-gradient(
     circle,
-    rgba(20, 17, 16, 0.08) 1px,
+    rgba(26, 26, 26, 0.08) 1px,
     transparent 1px
   );
   background-size: 22px 22px;
