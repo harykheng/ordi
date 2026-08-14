@@ -41,6 +41,51 @@ export const TIMELINE = [
   },
 ];
 
+export const PRICING_TIERS = [
+  {
+    name: "Ordi Dasar",
+    tagline: "Berhenti nyatet manual di WA",
+    price: "{{PRICE_TIER_1}}",
+    priceNote: "sekali bayar",
+    features: [
+      "Katalog produk online",
+      "Terima & kelola pesanan otomatis",
+      "Dashboard admin — rekap harian tanpa hitung manual",
+      "Notifikasi WhatsApp tiap ada pesanan masuk",
+    ],
+    retainer: "{{RETAINER_TIER_1}}/bulan — opsional, hosting & maintenance",
+    highlight: false,
+  },
+  {
+    name: "Ordi + Antar",
+    tagline: "Buat yang udah jalanin delivery",
+    price: "{{PRICE_TIER_2}}",
+    priceNote: "sekali bayar",
+    features: [
+      "Semua di Ordi Dasar",
+      "Alamat pelanggan diketik sendiri, bukan didikte manual",
+      "Ongkir dihitung otomatis dari lokasi",
+      "Nggak ada lagi nebak-nebak jarak & tarif",
+    ],
+    retainer: "{{RETAINER_TIER_2}}/bulan — opsional, hosting & maintenance",
+    highlight: true,
+  },
+  {
+    name: "Ordi + Bayar",
+    tagline: "Buat volume order yang udah tinggi",
+    price: "{{PRICE_TIER_3}}",
+    priceNote: "sekali bayar",
+    features: [
+      "Semua di Ordi + Antar",
+      "QR pembayaran custom nominal — generate otomatis per pesanan",
+      "Pelanggan tinggal scan, nggak nanya nominal lagi",
+      "Verifikasi bukti transfer tetap manual by kamu (kami jujur soal ini)",
+    ],
+    retainer: "{{RETAINER_TIER_3}}/bulan — opsional, hosting & maintenance",
+    highlight: false,
+  },
+];
+
 export const COMPARISON = {
   headers: ["Cara Manual (WA)", "Sewa Platform", "Sistem Sendiri (Ordi)"],
   rows: [
