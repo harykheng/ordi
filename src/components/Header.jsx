@@ -6,7 +6,7 @@ export default function Header() {
     <header className="fixed top-0 inset-x-0 z-50 border-b-2 border-ink bg-paper/90 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-5 py-3 flex items-center justify-between">
         <div className="leading-tight">
-          <img src={ordiLogo} alt="Ordi" className="h-8 w-auto" />
+          <img src={ordiLogo} alt="Ordi" className="h-8 w-auto" style="margin-bottom: 7px;"/>
           <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/45 mt-0.5">
             Order Disini — dari Studio Harel
           </p>
