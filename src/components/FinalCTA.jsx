@@ -1,6 +1,7 @@
 import Reveal from "./Reveal";
 import { DEMO_URL, WHATSAPP_CTA_LINK } from "../data/content";
 import { Star } from "./Doodles";
+import ordiLogo from "../assets/ordi-logo.png";
 
 export default function FinalCTA() {
   return (
@@ -40,7 +41,7 @@ export default function FinalCTA() {
         </Reveal>
 
         <div className="mt-20 pt-8 border-t-2 border-ink/10">
-          <p className="font-display font-bold text-lg text-ink">Ordi</p>
+          <img src={ordiLogo} alt="Ordi" className="h-7 w-auto mx-auto" />
           <p className="font-mono-label text-[11px] text-ink/40 mt-1">
             Order Disini — sistem pesan-antar dari Studio Harel
           </p>
