@@ -4,6 +4,7 @@ import TimeSection from "./components/TimeSection";
 import Comparison from "./components/Comparison";
 // import OwnershipCertificate from "./components/OwnershipCertificate";
 import PricingTiers from "./components/PricingTiers";
+import FAQSection from "./components/FAQSection";
 import FinalCTA from "./components/FinalCTA";
 import { TIMELINE } from "./data/content";
 
@@ -23,6 +24,7 @@ export default function App() {
         ))}
         <Comparison />
         <PricingTiers />
+        <FAQSection />
         {/* Disembunyikan sementara — copy sudah forward-looking/generik, tunggu keputusan buat nampilin lagi */}
         {/* <OwnershipCertificate /> */}
       </main>
