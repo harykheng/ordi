@@ -1,16 +1,12 @@
 import { DEMO_URL } from "../data/content";
+import ordiLogo from "../assets/ordi-logo.png";
 
 export default function Header() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b-2 border-ink bg-paper/90 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-5 py-3 flex items-center justify-between">
         <div className="leading-tight">
-          <div className="flex items-start gap-1.5">
-            <span className="font-display font-extrabold text-2xl tracking-tight text-ink">
-              Ordi
-            </span>
-            <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-ember" />
-          </div>
+          <img src={ordiLogo} alt="Ordi" className="h-8 w-auto" />
           <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/45 mt-0.5">
             Order Disini — dari Studio Harel
           </p>
