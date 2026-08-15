@@ -11,8 +11,8 @@ export default function Header() {
             </span>
             <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-ember" />
           </div>
-          <p className="hidden sm:block text-[11px] font-mono-label text-ink/45 mt-0.5">
-            Order Disini — sistem pesan-antar dari Studio Harel
+          <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/45 mt-0.5">
+            Order Disini — dari Studio Harel
           </p>
         </div>
         <a

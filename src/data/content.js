@@ -1,5 +1,5 @@
-export const DEMO_URL = "{{DEMO_URL}}";
-export const WHATSAPP_CTA_LINK = "{{WHATSAPP_CTA_LINK}}";
+export const DEMO_URL = "https://ordistore.studioharel.id/";
+export const WHATSAPP_CTA_LINK = "https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20tanya%20soal%20Ordi%20buat%20bisnis%20saya";
 
 // Placeholder ilustratif — bukan nama klien/toko asli. Section ini murni
 // menggambarkan konsep kepemilikan, jadi copy-nya forward-looking dan
