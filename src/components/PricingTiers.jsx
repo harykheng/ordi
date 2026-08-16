@@ -24,19 +24,17 @@ export default function PricingTiers() {
           {PRICING_TIERS.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 0.08} className="min-w-0">
               <div
-                className={`h-full rounded-2xl border-2 border-ink p-6 flex flex-col ${
+                className={`relative h-full rounded-2xl border-2 border-ink p-6 flex flex-col ${
                   tier.highlight
                     ? "bg-ember/[0.08] shadow-[4px_4px_0_0_var(--color-ink)]"
                     : "bg-paper-2"
                 }`}
               >
-                <div className="h-9 mb-4">
-                  {tier.highlight && (
-                    <span className="inline-flex items-center self-start rounded-full bg-ember border-2 border-ink px-3 py-1 font-mono-label text-[11px] text-ink">
-                      Paling banyak dipilih
-                    </span>
-                  )}
-                </div>
+                {tier.highlight && (
+                  <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ember border-2 border-ink px-4 py-1.5 font-mono-label text-[11px] text-ink">
+                    Paling banyak dipilih
+                  </span>
+                )}
                 <h3 className="font-display font-extrabold text-xl text-ink mb-1">
                   {tier.name}
                 </h3>
