@@ -69,6 +69,9 @@ export default function PricingTiers() {
                   href={WHATSAPP_CTA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    window.umami?.track("klik-tier", { tier: tier.name })
+                  }
                   className={`text-center rounded-full px-5 py-3 font-semibold text-sm transition-colors ${
                     tier.highlight
                       ? "bg-ink text-paper hover:bg-ink/85"
