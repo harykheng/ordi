@@ -1,13 +1,15 @@
 export const DEMO_URL = "https://ordistore.studioharel.id/";
 export const WHATSAPP_CTA_LINK = "https://wa.me/6281292567788?text=Halo%20Studio%20Harel%2C%20saya%20mau%20tanya%20soal%20Ordi%20buat%20bisnis%20saya";
 
-// Placeholder ilustratif — bukan nama klien/toko asli. Section ini murni
-// menggambarkan konsep kepemilikan, jadi copy-nya forward-looking dan
-// variannya harus tetap generik (lihat OwnershipCertificate.jsx).
+// Contoh nama toko ilustratif — bukan klien asli. Copy di
+// OwnershipCertificate.jsx tetap forward-looking ("akan memiliki"),
+// jadi nama konkret di sini menggambarkan skenario, bukan testimoni.
 export const TOKO_KAMU_VARIANTS = [
-  "[Nama Toko Kamu]",
-  "[Nama Bisnis Kamu]",
-  "[Nama Kafe Kamu]",
+  "Yuni Bakery",
+  "Palmer Cafe",
+  "Warung Bu Tuti",
+  "Kedai Kopi Senja",
+  "Nasi Geprek Mas Broto",
 ];
 
 export const TIMELINE = [

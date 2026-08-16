@@ -46,15 +46,14 @@ export default function OwnershipCertificate({ className = "" }) {
             transition={{ duration: 0.45 }}
             className="font-display font-extrabold text-xl sm:text-2xl leading-tight break-words"
           >
-            Ordi ini akan{" "}
-            <span className="text-ember-deep">100% jadi milik</span>{" "}
-            {TOKO_KAMU_VARIANTS[idx]}
+            {TOKO_KAMU_VARIANTS[idx]}{" "}
+            akan <span className="text-ember-deep">100% memiliki</span> sistem
+            ini.
           </motion.p>
         </div>
         <p className="text-sm text-ink/70 leading-relaxed border-t-2 border-ink/10 pt-4">
-          Bukan disewain, bukan numpang platform orang lain — begitu
-          lanjut, semua akun (hosting, database, domain) atas nama
-          bisnis kamu sendiri.
+          Semua bagian sistem ini — hosting, database, domain — atas
+          nama bisnis kamu sendiri.
         </p>
       </div>
     </motion.div>
