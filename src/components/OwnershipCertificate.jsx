@@ -31,9 +31,6 @@ export default function OwnershipCertificate({ className = "" }) {
       style={{ perspective: 1000 }}
     >
       <div className="relative rounded-2xl bg-paper-2 text-ink p-8 shadow-[8px_8px_0_0_var(--color-ember)] border-2 border-ink">
-        <div className="absolute top-4 right-4 font-mono-label text-[10px] text-ember-deep/70">
-          No. 001 / MILIK-SENDIRI
-        </div>
         <p className="font-mono-label text-[11px] text-ember-deep uppercase tracking-wide mb-6">
           Tanda Terima Kepemilikan
         </p>
