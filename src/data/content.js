@@ -47,7 +47,7 @@ export const PRICING_TIERS = [
   {
     name: "Ordi Dasar",
     tagline: "Berhenti nyatet manual di WA",
-    price: "{{PRICE_TIER_1}}",
+    price: "Rp2.500.000",
     priceNote: "sekali bayar",
     features: [
       "Katalog produk online",
@@ -55,13 +55,13 @@ export const PRICING_TIERS = [
       "Dashboard admin — rekap harian tanpa hitung manual",
       "Notifikasi WhatsApp tiap ada pesanan masuk",
     ],
-    retainer: "{{RETAINER_TIER_1}}/bulan — opsional, hosting & maintenance",
+    retainer: "Rp100.000/bulan — opsional, hosting & maintenance",
     highlight: false,
   },
   {
     name: "Ordi + Antar",
     tagline: "Buat yang udah jalanin delivery",
-    price: "{{PRICE_TIER_2}}",
+    price: "Rp4.000.000",
     priceNote: "sekali bayar",
     features: [
       "Semua di Ordi Dasar",
@@ -69,13 +69,13 @@ export const PRICING_TIERS = [
       "Ongkir dihitung otomatis dari lokasi",
       "Nggak ada lagi nebak-nebak jarak & tarif",
     ],
-    retainer: "{{RETAINER_TIER_2}}/bulan — opsional, hosting & maintenance",
+    retainer: "Rp125.000/bulan — opsional, hosting & maintenance",
     highlight: true,
   },
   {
     name: "Ordi + Bayar",
     tagline: "Buat volume order yang udah tinggi",
-    price: "{{PRICE_TIER_3}}",
+    price: "Rp5.000.000",
     priceNote: "sekali bayar",
     features: [
       "Semua di Ordi + Antar",
@@ -83,7 +83,7 @@ export const PRICING_TIERS = [
       "Pelanggan tinggal scan, nggak nanya nominal lagi",
       "Verifikasi bukti transfer tetap manual by kamu (kami jujur soal ini)",
     ],
-    retainer: "{{RETAINER_TIER_3}}/bulan — opsional, hosting & maintenance",
+    retainer: "Rp125.000/bulan — opsional, hosting & maintenance",
     highlight: false,
   },
 ];

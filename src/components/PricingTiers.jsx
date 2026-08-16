@@ -82,11 +82,27 @@ export default function PricingTiers() {
           ))}
         </div>
 
-        <Reveal delay={0.2}>
+        <Reveal delay={0.15}>
+          <div className="mt-10 rounded-2xl border-2 border-ink bg-yellow/15 px-6 py-5 max-w-2xl mx-auto text-center">
+            <p className="font-mono-label text-[11px] text-ink/50 mb-2">
+              Bandingin sama sewa platform
+            </p>
+            <p className="text-ink/80 text-sm leading-relaxed">
+              Sewa platform lain: <strong>Rp300.000/bulan</strong> —{" "}
+              <strong>Rp3.600.000/tahun</strong>, terus-menerus, nggak pernah
+              berhenti selama masih pakai.
+              <br />
+              Ordi: sekali bayar, <strong>permanen</strong>. Tier Dasar balik
+              modal dibanding sewa cuma dalam ±8 bulan — setelah itu, sewa
+              terus jalan sementara Ordi udah lunas dari awal.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.25}>
           <p className="text-center text-ink/40 text-xs mt-8 max-w-lg mx-auto">
-            Harga di atas harga khusus klien awal Ordi — bakal disesuaikan
-            seiring makin banyak yang pakai. Ngobrol dulu di WhatsApp buat
-            tau paket mana yang paling cocok sama bisnis kamu.
+            Ngobrol dulu di WhatsApp buat tau paket mana yang paling cocok
+            sama bisnis kamu.
           </p>
         </Reveal>
       </div>
