@@ -1,8 +1,8 @@
 import Header from "./components/Header";
 import Hero from "./components/Hero";
+import TimelineIntro from "./components/TimelineIntro";
 import TimeSection from "./components/TimeSection";
 import Comparison from "./components/Comparison";
-// import OwnershipCertificate from "./components/OwnershipCertificate";
 import PricingTiers from "./components/PricingTiers";
 import FAQSection from "./components/FAQSection";
 import FinalCTA from "./components/FinalCTA";
@@ -14,6 +14,7 @@ export default function App() {
       <Header />
       <main>
         <Hero />
+        <TimelineIntro />
         {TIMELINE.map((item, i) => (
           <TimeSection
             key={item.time}
@@ -25,8 +26,6 @@ export default function App() {
         <Comparison />
         <PricingTiers />
         <FAQSection />
-        {/* Disembunyikan sementara — copy sudah forward-looking/generik, tunggu keputusan buat nampilin lagi */}
-        {/* <OwnershipCertificate /> */}
       </main>
       <FinalCTA />
     </div>

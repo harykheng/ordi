@@ -1,11 +1,10 @@
 import Reveal from "./Reveal";
-import CatalogMockup from "./mockups/CatalogMockup";
+import ChatTransformHero from "./ChatTransformHero";
 import ShippingCalcMockup from "./mockups/ShippingCalcMockup";
 import QRISMockup from "./mockups/QRISMockup";
 import AdminDashboardMockup from "./mockups/AdminDashboardMockup";
 
 const MOCKUPS = {
-  SS_CATALOG: CatalogMockup,
   SS_SHIPPING_CALC: ShippingCalcMockup,
   SS_QRIS: QRISMockup,
   SS_ADMIN_DASHBOARD: AdminDashboardMockup,
@@ -14,7 +13,9 @@ const MOCKUPS = {
 const BADGE_COLORS = ["bg-yellow", "bg-teal/15", "bg-ember/20"];
 
 export default function TimeSection({ item, index, reverse }) {
-  const Mockup = MOCKUPS[item.mockupSlot];
+  // 07:00 (first item) gets the chat-chaos illustration as a supporting
+  // detail for that specific pain point, not the page's main visual.
+  const Mockup = index === 0 ? ChatTransformHero : MOCKUPS[item.mockupSlot];
   const badgeColor = BADGE_COLORS[index % BADGE_COLORS.length];
 
   return (

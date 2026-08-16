@@ -60,7 +60,7 @@ export default function ChatTransformHero() {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 1.8, duration: 0.4 }}
             >
-              09:00 — 8 chat, masih belum ke-follow up
+              Chat WA pagi ini masih numpuk
             </motion.div>
           </motion.div>
         )}
