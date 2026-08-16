@@ -30,11 +30,13 @@ export default function PricingTiers() {
                     : "bg-paper-2"
                 }`}
               >
-                {tier.highlight && (
-                  <span className="self-start rounded-full bg-ember border-2 border-ink px-3 py-1 mb-4 font-mono-label text-[11px] text-ink">
-                    Paling banyak dipilih
-                  </span>
-                )}
+                <div className="h-9 mb-4">
+                  {tier.highlight && (
+                    <span className="inline-flex items-center self-start rounded-full bg-ember border-2 border-ink px-3 py-1 font-mono-label text-[11px] text-ink">
+                      Paling banyak dipilih
+                    </span>
+                  )}
+                </div>
                 <h3 className="font-display font-extrabold text-xl text-ink mb-1">
                   {tier.name}
                 </h3>
