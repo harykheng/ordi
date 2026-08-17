@@ -19,7 +19,7 @@ export default function ChatTransformHero() {
 
   useEffect(() => {
     if (isInView) {
-      const t = setTimeout(() => setResolved(true), 3800);
+      const t = setTimeout(() => setResolved(true), 2200);
       return () => clearTimeout(t);
     }
   }, [isInView]);
@@ -33,7 +33,7 @@ export default function ChatTransformHero() {
         {!resolved && (
           <motion.div
             className="absolute inset-0"
-            exit={{ opacity: 0, transition: { duration: 0.6 } }}
+            exit={{ opacity: 0, transition: { duration: 0.4 } }}
           >
             {MESSY_BUBBLES.map((b, i) => (
               <div
@@ -48,7 +48,7 @@ export default function ChatTransformHero() {
                       ? { opacity: 1, scale: 1, x: b.x, y: b.y, rotate: b.rot }
                       : {}
                   }
-                  transition={{ duration: 0.45, delay: i * 0.14 }}
+                  transition={{ duration: 0.32, delay: i * 0.08 }}
                 >
                   {b.text}
                 </motion.div>
@@ -58,7 +58,7 @@ export default function ChatTransformHero() {
               className="absolute left-1/2 bottom-2 -translate-x-1/2 rounded-full bg-paper-2 border-2 border-ink px-3 py-1 font-mono-label text-[11px] text-ink whitespace-nowrap shadow-[3px_3px_0_0_var(--color-ink)]"
               initial={{ opacity: 0, y: 8 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 1.8, duration: 0.4 }}
+              transition={{ delay: 1.0, duration: 0.3 }}
             >
               Chat WA pagi ini masih numpuk
             </motion.div>
@@ -72,7 +72,7 @@ export default function ChatTransformHero() {
             className="absolute inset-0 flex items-center justify-center"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="w-full max-w-[300px] rounded-2xl bg-paper-2 border-2 border-ink shadow-[6px_6px_0_0_var(--color-ink)] p-4">
               <div className="flex items-center justify-between border-b-2 border-ink/10 pb-2 mb-3">
