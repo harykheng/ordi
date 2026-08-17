@@ -38,7 +38,7 @@ export const TIMELINE = [
     time: "21:00",
     label: "Tutup, Rekap",
     pain: "Rekap manual di buku, atau mulai lupa dicatat.",
-    solution: "Semua pesanan hari ini udah tercatat otomatis dari jam 07:00 tadi. Buka dashboard, langsung keliatan total penjualan, produk terlaris, dan pesanan yang masih pending — tanpa hitung ulang dari nota.",
+    solution: "Semua pesanan hari ini udah tercatat otomatis dari jam 07:00 tadi. Buka dashboard, langsung keliatan total penjualan, produk terlaris, dan pesanan yang masih pending, tanpa hitung ulang dari nota.",
     mockupSlot: "SS_ADMIN_DASHBOARD",
   },
 ];
