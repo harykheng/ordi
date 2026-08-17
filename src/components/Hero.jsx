@@ -20,9 +20,9 @@ export default function Hero() {
             Bukan disewain ke ribuan toko
           </span>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] text-ink mb-5">
-            Bukan toko yang disewain ke ribuan orang.{" "}
+            Bukan toko yang disewain ke ribuan orang. Ini punya{" "}
             <span className="relative inline-block text-ember-deep">
-              Ini punya kamu sendiri.
+              kamu sendiri.
               <CircleUnderline className="absolute left-0 -bottom-2 w-full" />
             </span>
           </h1>

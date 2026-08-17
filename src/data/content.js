@@ -31,7 +31,7 @@ export const TIMELINE = [
     time: "15:00",
     label: "Resi & Pembayaran",
     pain: "Nunggu bukti transfer, sambil layanin chat lain.",
-    solution: "QR pembayaran generate otomatis sesuai nominal pesanan, pelanggan tinggal scan. Verifikasi bukti transfer tetap manual by kamu (kami jujur soal ini), tapi nggak ada lagi bolak-balik nanya \"nominalnya berapa ya kak\".",
+    solution: "QR pembayaran generate otomatis sesuai nominal pesanan, pelanggan tinggal scan. Verifikasi bukti transfer tetap manual by kamu, tapi nggak ada lagi bolak-balik nanya \"nominalnya berapa ya kak\".",
     mockupSlot: "SS_QRIS",
   },
   {
@@ -81,7 +81,7 @@ export const PRICING_TIERS = [
       "Semua di Ordi + Antar",
       "QR pembayaran custom nominal, generate otomatis per pesanan",
       "Pelanggan tinggal scan, nggak nanya nominal lagi",
-      "Verifikasi bukti transfer tetap manual by kamu (kami jujur soal ini)",
+      "Verifikasi bukti transfer tetap manual by kamu",
     ],
     retainer: "Rp125.000/bulan, opsional, hosting & maintenance",
     highlight: false,

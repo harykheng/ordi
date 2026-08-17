@@ -8,7 +8,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "QRIS-nya beneran otomatis kecatat lunas?",
-    a: "Nominal QR-nya otomatis sesuai total pesanan, jadi pelanggan tinggal scan tanpa nanya-nanya nominal. Tapi verifikasi bukti transfernya tetap manual by kamu, kami jujur soal ini, karena verifikasi otomatis penuh butuh payment gateway berbayar yang bikin harga naik jauh lebih mahal.",
+    a: "Nominal QR-nya otomatis sesuai total pesanan, jadi pelanggan tinggal scan tanpa nanya-nanya nominal. Tapi verifikasi bukti transfernya tetap manual by kamu, karena verifikasi otomatis penuh butuh payment gateway berbayar yang bikin harga naik jauh lebih mahal.",
   },
   {
     q: "Kalau bisnis saya berkembang, bisa upgrade paket?",
