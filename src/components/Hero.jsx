@@ -37,7 +37,6 @@ export default function Hero() {
               href={WHATSAPP_CTA_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => window.umami?.track("klik-wa", { lokasi: "hero" })}
               className="rounded-full bg-ink px-6 py-3.5 font-semibold text-paper hover:bg-ink/85 transition-colors"
             >
               Cerita Bisnis Kamu ke Saya
@@ -47,7 +46,6 @@ export default function Hero() {
                 href={DEMO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => window.umami?.track("klik-demo", { lokasi: "hero" })}
                 className="rounded-full border-2 border-ink px-6 py-3.5 font-semibold text-ink hover:bg-ink hover:text-paper transition-colors inline-block"
               >
                 Coba Ordi Langsung
