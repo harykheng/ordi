@@ -6,6 +6,7 @@ import Comparison from "./components/Comparison";
 import PricingTiers from "./components/PricingTiers";
 import FAQSection from "./components/FAQSection";
 import FinalCTA from "./components/FinalCTA";
+import ConsentBanner from "./components/ConsentBanner";
 import { TIMELINE } from "./data/content";
 
 export default function App() {
@@ -28,6 +29,7 @@ export default function App() {
         <FAQSection />
       </main>
       <FinalCTA />
+      <ConsentBanner />
     </div>
   );
 }
