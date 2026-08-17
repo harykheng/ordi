@@ -1,3 +1,4 @@
-# Short links for WhatsApp blasts — clean URL in chat, full UTM tracking
-# behind the scenes. Add one line per campaign/group as needed.
-/wa   https://ordi.studioharel.id/?utm_source=whatsapp&utm_medium=social&utm_campaign=blast-agustus   302
+# Short links for social blasts — clean URL in the post/chat, full UTM
+# tracking behind the scenes. Add one line per campaign/platform as needed.
+/wa       https://ordi.studioharel.id/?utm_source=whatsapp&utm_medium=social&utm_campaign=blast-agustus   302
+/threads  https://ordi.studioharel.id/?utm_source=threads&utm_medium=social&utm_campaign=blast-agustus    302
