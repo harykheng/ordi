@@ -27,7 +27,7 @@ export default function Hero() {
             </span>
           </h1>
           <p className="text-ink/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-            Ordi dibangun ngikutin cara bisnis kamu jalan — bukan template
+            Ordi dibangun ngikutin cara bisnis kamu jalan, bukan template
             siap-pakai yang tampilannya mirip semua toko lain. Sekali
             bayar, langsung jadi milik kamu selamanya, bukan numpang di
             subdomain siapa pun.
@@ -53,7 +53,7 @@ export default function Hero() {
                 Coba Ordi Langsung
               </a>
               <p className="font-mono-label text-[11px] text-ink/40 mt-2">
-                Demo interaktif — data contoh, bukan toko asli
+                Demo interaktif, data contoh, bukan toko asli
               </p>
             </div>
           </div>

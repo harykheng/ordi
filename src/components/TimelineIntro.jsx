@@ -12,7 +12,7 @@ export default function TimelineIntro() {
             Ini yang berubah kalau bisnis kamu pakai sistem sendiri.
           </h2>
           <p className="text-ink/60 max-w-xl mx-auto">
-            Bukan cuma soal siapa yang punya — ini yang kerasa beda dari
+            Bukan cuma soal siapa yang punya, ini yang kerasa beda dari
             jam buka sampai tutup toko.
           </p>
         </Reveal>

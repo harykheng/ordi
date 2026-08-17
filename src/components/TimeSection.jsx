@@ -61,7 +61,7 @@ export default function TimeSection({ item, index, reverse }) {
             <span
               className={`inline-flex items-center gap-1.5 rounded-full ${badgeColor} border-2 border-ink px-3 py-1 mb-4 text-xs font-semibold font-mono-label text-ink`}
             >
-              {item.time} — {item.label}
+              {item.time}, {item.label}
             </span>
             <h2 className="font-display font-bold text-2xl sm:text-3xl text-ink mb-4 leading-snug">
               {item.pain}

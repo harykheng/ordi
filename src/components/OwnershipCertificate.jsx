@@ -49,7 +49,7 @@ export default function OwnershipCertificate({ className = "" }) {
           </motion.p>
         </div>
         <p className="text-sm text-ink/70 leading-relaxed border-t-2 border-ink/10 pt-4">
-          Semua bagian sistem ini — hosting, database, domain — atas
+          Semua bagian sistem ini, hosting, database, domain, atas
           nama bisnis kamu sendiri.
         </p>
       </div>

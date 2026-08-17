@@ -4,11 +4,11 @@ import { Sparkle } from "./Doodles";
 const FAQ_ITEMS = [
   {
     q: "Kok masih ada biaya bulanan, padahal katanya beli putus?",
-    a: "Sistemnya 100% milik kamu setelah bayar — bukan sewa. Biaya bulanan itu opsional, buat yang mau saya bantu jagain: pastikan server jalan, ada yang benerin kalau ada bug, dan reminder sebelum domain/hosting habis masa aktif. Mirip beli motor — motornya punya kamu, servis rutin itu pilihan terpisah, bukan cicilan.",
+    a: "Sistemnya 100% milik kamu setelah bayar, bukan sewa. Biaya bulanan itu opsional, buat yang mau saya bantu jagain: pastikan server jalan, ada yang benerin kalau ada bug, dan reminder sebelum domain/hosting habis masa aktif. Mirip beli motor, motornya punya kamu, servis rutin itu pilihan terpisah, bukan cicilan.",
   },
   {
     q: "QRIS-nya beneran otomatis kecatat lunas?",
-    a: "Nominal QR-nya otomatis sesuai total pesanan, jadi pelanggan tinggal scan tanpa nanya-nanya nominal. Tapi verifikasi bukti transfernya tetap manual by kamu — kami jujur soal ini, karena verifikasi otomatis penuh butuh payment gateway berbayar yang bikin harga naik jauh lebih mahal.",
+    a: "Nominal QR-nya otomatis sesuai total pesanan, jadi pelanggan tinggal scan tanpa nanya-nanya nominal. Tapi verifikasi bukti transfernya tetap manual by kamu, kami jujur soal ini, karena verifikasi otomatis penuh butuh payment gateway berbayar yang bikin harga naik jauh lebih mahal.",
   },
   {
     q: "Kalau bisnis saya berkembang, bisa upgrade paket?",
@@ -16,11 +16,11 @@ const FAQ_ITEMS = [
   },
   {
     q: "Kenapa nggak pakai platform yang udah ada aja, kan lebih murah per bulan?",
-    a: "Platform sewaan itu murah di depan, tapi kalau berhenti bayar, sistem & data kamu ilang — dan tampilannya generik, mirip semua toko lain yang pakai platform sama. Ordi dibangun ngikutin cara bisnis kamu jalan, dan begitu lunas, itu aset kamu selamanya, bukan langganan yang bisa diputus sepihak.",
+    a: "Platform sewaan itu murah di depan, tapi kalau berhenti bayar, sistem & data kamu ilang, dan tampilannya generik, mirip semua toko lain yang pakai platform sama. Ordi dibangun ngikutin cara bisnis kamu jalan, dan begitu lunas, itu aset kamu selamanya, bukan langganan yang bisa diputus sepihak.",
   },
   {
     q: "Prosesnya berapa lama sampai bisa dipakai?",
-    a: "Nggak instan, karena saya perlu ngobrol dulu soal bisnis kamu sebelum mulai bangun — bukan asal pasang template. Chat dulu di WhatsApp buat cerita kebutuhan kamu, dari situ saya kasih estimasi waktu yang realistis.",
+    a: "Nggak instan, karena saya perlu ngobrol dulu soal bisnis kamu sebelum mulai bangun, bukan asal pasang template. Chat dulu di WhatsApp buat cerita kebutuhan kamu, dari situ saya kasih estimasi waktu yang realistis.",
   },
 ];
 

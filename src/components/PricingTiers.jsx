@@ -16,7 +16,7 @@ export default function PricingTiers() {
           </h2>
           <p className="text-ink/60 max-w-xl mb-10">
             Pilih yang paling kepake sekarang. Upgrade belakangan kalau
-            emang butuh — bayar selisihnya aja, bukan beli ulang dari nol.
+            emang butuh, bayar selisihnya aja, bukan beli ulang dari nol.
           </p>
         </Reveal>
 
@@ -91,12 +91,12 @@ export default function PricingTiers() {
               Bandingin sama sewa platform
             </p>
             <p className="text-ink/80 text-sm leading-relaxed">
-              Sewa platform lain: <strong>Rp300.000/bulan</strong> —{" "}
+              Sewa platform lain: <strong>Rp300.000/bulan</strong>,{" "}
               <strong>Rp3.600.000/tahun</strong>, terus-menerus, nggak pernah
               berhenti selama masih pakai.
               <br />
               Ordi: sekali bayar, <strong>permanen</strong>. Tier Dasar balik
-              modal dibanding sewa cuma dalam ±8 bulan — setelah itu, sewa
+              modal dibanding sewa cuma dalam ±8 bulan, setelah itu, sewa
               terus jalan sementara Ordi udah lunas dari awal.
             </p>
           </div>

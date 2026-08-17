@@ -17,7 +17,7 @@ export default function Comparison() {
           </h2>
           <p className="text-ink/60 max-w-xl mb-10">
             Nggak ada yang sempurna. Ini biar kamu tahu apa yang kamu tukar
-            di masing-masing pilihan — termasuk punya kita.
+            di masing-masing pilihan, termasuk punya kita.
           </p>
         </Reveal>
 

@@ -14,7 +14,7 @@ export default function FinalCTA() {
           </h2>
           <p className="text-ink/60 mb-9 leading-relaxed">
             Nggak ada form pendaftaran di sini. Ceritain dulu gimana
-            bisnismu jalan sehari-hari — kita bahas sistem yang cocok,
+            bisnismu jalan sehari-hari, kita bahas sistem yang cocok,
             bukan yang generik.
           </p>
           <a
@@ -37,7 +37,7 @@ export default function FinalCTA() {
               atau coba Ordi langsung dulu
             </a>
             <p className="font-mono-label text-[11px] text-ink/35 mt-1">
-              Demo interaktif — data contoh, bukan toko asli
+              Demo interaktif, data contoh, bukan toko asli
             </p>
           </div>
         </Reveal>
@@ -45,7 +45,7 @@ export default function FinalCTA() {
         <div className="mt-20 pt-8 border-t-2 border-ink/10">
           <img src={ordiLogo} alt="Ordi" className="h-7 w-auto mx-auto" />
           <p className="font-mono-label text-[11px] text-ink/40 mt-1">
-            Order Disini — sistem pesan-antar dari Studio Harel
+            Order Disini, sistem pesan-antar dari Studio Harel
           </p>
           <p className="text-xs text-ink/30 mt-4">
             © {new Date().getFullYear()} Studio Harel. Dibangun untuk UMKM

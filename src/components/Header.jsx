@@ -13,7 +13,7 @@ export default function Header() {
             style={{ marginBottom: "7px" }}
           />
           <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/45 mt-0.5">
-            Order Disini — dari Studio Harel
+            Order Disini, dari Studio Harel
           </p>
         </div>
         <a
