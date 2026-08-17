@@ -11,11 +11,15 @@ export default function ConsentBanner() {
   const handleAccept = () => {
     localStorage.setItem("ordi-cookie-consent", "granted");
     window.gtag?.("consent", "update", { analytics_storage: "granted" });
+    window.gtag?.("event", "consent_choice", { choice: "granted" });
     setVisible(false);
   };
 
   const handleDecline = () => {
     localStorage.setItem("ordi-cookie-consent", "denied");
+    // storage stays denied, so Consent Mode drops this hit client-side —
+    // decline count isn't observable in GA4, only accept volume is
+    window.gtag?.("event", "consent_choice", { choice: "denied" });
     setVisible(false);
   };
 
