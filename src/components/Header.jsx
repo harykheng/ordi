@@ -20,7 +20,7 @@ export default function Header() {
           href={DEMO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold text-ink hover:bg-ink hover:text-paper transition-colors"
+          className="animated-border-btn shrink-0 rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold text-ink hover:bg-ink hover:text-paper transition-colors"
         >
           Coba Ordi Langsung
         </a>
