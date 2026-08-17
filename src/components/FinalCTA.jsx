@@ -21,6 +21,7 @@ export default function FinalCTA() {
             href={WHATSAPP_CTA_LINK}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={() => window.gtag?.("event", "klik_wa", { lokasi: "final-cta" })}
             className="inline-block rounded-full bg-ember px-8 py-4 font-semibold text-ink border-2 border-ink shadow-[4px_4px_0_0_var(--color-ink)] hover:shadow-none hover:translate-x-1 hover:translate-y-1 transition-all"
           >
             Chat, Kita Bahas Sistem Kamu
@@ -30,6 +31,7 @@ export default function FinalCTA() {
               href={DEMO_URL}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => window.gtag?.("event", "klik_demo", { lokasi: "final-cta" })}
               className="text-sm text-ink/50 underline underline-offset-4 hover:text-ink/80"
             >
               atau coba Ordi langsung dulu
