@@ -17,20 +17,18 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow border-2 border-ink px-3 py-1 mb-5 text-xs font-semibold font-mono-label text-ink">
-            Bukan disewain ke ribuan toko
+            1 sistem, 1 toko, punya kamu
           </span>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] text-ink mb-5">
-            Bukan toko yang disewain ke ribuan orang. Ini punya{" "}
+            Bisnis kamu, sistem juga{" "}
             <span className="relative inline-block text-ember-deep">
-              kamu sendiri.
+              milik kamu.
               <CircleUnderline className="absolute left-0 -bottom-2 w-full" />
             </span>
           </h1>
           <p className="text-ink/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-            Ordi dibangun ngikutin cara bisnis kamu jalan, bukan template
-            siap-pakai yang tampilannya mirip semua toko lain. Sekali
-            bayar, langsung jadi milik kamu selamanya, bukan numpang di
-            subdomain siapa pun.
+            Ordi dibangun ngikutin cara bisnismu jalan, dari menu, alur
+            pesanan, sampai pembayaran, semua diatur sesuai kebutuhanmu.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
