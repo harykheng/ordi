@@ -12,15 +12,15 @@ export default function Header() {
             className="h-8 w-auto"
             style={{ marginBottom: "7px" }}
           />
-          <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/45 mt-0.5">
-            Order Disini — dari Studio Harel
+          <p className="text-[9px] sm:text-[11px] font-mono-label text-ink/60 mt-0.5">
+            Order Disini, dari Studio Harel
           </p>
         </div>
         <a
           href={DEMO_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="shrink-0 rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold text-ink hover:bg-ink hover:text-paper transition-colors"
+          className="animated-border-btn shrink-0 rounded-full border-2 border-ink px-4 py-2 text-sm font-semibold text-ink hover:bg-ink hover:text-paper transition-colors"
         >
           Coba Ordi Langsung
         </a>

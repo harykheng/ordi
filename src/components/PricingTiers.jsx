@@ -16,7 +16,7 @@ export default function PricingTiers() {
           </h2>
           <p className="text-ink/60 max-w-xl mb-10">
             Pilih yang paling kepake sekarang. Upgrade belakangan kalau
-            emang butuh — bayar selisihnya aja, bukan beli ulang dari nol.
+            emang butuh, tinggal bayar selisih harganya.
           </p>
         </Reveal>
 
@@ -24,27 +24,27 @@ export default function PricingTiers() {
           {PRICING_TIERS.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 0.08} className="min-w-0">
               <div
-                className={`h-full rounded-2xl border-2 border-ink p-6 flex flex-col ${
+                className={`relative h-full rounded-2xl border-2 border-ink p-6 flex flex-col ${
                   tier.highlight
                     ? "bg-ember/[0.08] shadow-[4px_4px_0_0_var(--color-ink)]"
                     : "bg-paper-2"
                 }`}
               >
                 {tier.highlight && (
-                  <span className="self-start rounded-full bg-ember border-2 border-ink px-3 py-1 mb-4 font-mono-label text-[11px] text-ink">
+                  <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-ember border-2 border-ink px-4 py-1.5 font-mono-label text-[11px] text-ink">
                     Paling banyak dipilih
                   </span>
                 )}
                 <h3 className="font-display font-extrabold text-xl text-ink mb-1">
                   {tier.name}
                 </h3>
-                <p className="text-ink/50 text-sm mb-5">{tier.tagline}</p>
+                <p className="text-ink/60 text-sm mb-5">{tier.tagline}</p>
 
                 <div className="mb-6">
                   <span className="font-display font-extrabold text-3xl text-ember-deep break-words">
                     {tier.price}
                   </span>
-                  <span className="text-ink/40 text-sm ml-1">
+                  <span className="text-ink/60 text-sm ml-1">
                     {tier.priceNote}
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export default function PricingTiers() {
                   ))}
                 </ul>
 
-                <p className="font-mono-label text-[11px] text-ink/40 mb-5">
+                <p className="font-mono-label text-[11px] text-ink/60 mb-5">
                   {tier.retainer}
                 </p>
 
@@ -69,6 +69,9 @@ export default function PricingTiers() {
                   href={WHATSAPP_CTA_LINK}
                   target="_blank"
                   rel="noopener noreferrer"
+                  onClick={() =>
+                    window.gtag?.("event", "klik_tier", { tier: tier.name })
+                  }
                   className={`text-center rounded-full px-5 py-3 font-semibold text-sm transition-colors ${
                     tier.highlight
                       ? "bg-ink text-paper hover:bg-ink/85"
@@ -82,11 +85,27 @@ export default function PricingTiers() {
           ))}
         </div>
 
-        <Reveal delay={0.2}>
-          <p className="text-center text-ink/40 text-xs mt-8 max-w-lg mx-auto">
-            Harga di atas harga khusus klien awal Ordi — bakal disesuaikan
-            seiring makin banyak yang pakai. Ngobrol dulu di WhatsApp buat
-            tau paket mana yang paling cocok sama bisnis kamu.
+        <Reveal delay={0.15}>
+          <div className="mt-10 rounded-2xl border-2 border-ink bg-yellow/15 px-6 py-5 max-w-2xl mx-auto text-center">
+            <p className="font-mono-label text-[11px] text-ink/60 mb-2">
+              Bandingin sama sewa platform
+            </p>
+            <p className="text-ink/80 text-sm leading-relaxed">
+              Sewa platform lain: <strong>Rp300.000/bulan</strong>,{" "}
+              <strong>Rp3.600.000/tahun</strong>, terus-menerus, nggak pernah
+              berhenti selama masih pakai.
+              <br />
+              Ordi: sekali bayar, <strong>permanen</strong>. Tier Dasar balik
+              modal dibanding sewa cuma dalam ±8 bulan, setelah itu, sewa
+              terus jalan sementara Ordi udah lunas dari awal.
+            </p>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.25}>
+          <p className="text-center text-ink/60 text-xs mt-8 max-w-lg mx-auto">
+            Ngobrol dulu di WhatsApp buat tau paket mana yang paling cocok
+            sama bisnis kamu.
           </p>
         </Reveal>
       </div>

@@ -11,18 +11,18 @@ export default function AdminDashboardMockup() {
         <span className="font-display font-bold text-ink text-sm">
           Dashboard · Hari Ini
         </span>
-        <span className="font-mono-label text-[10px] text-ink/40">
+        <span className="font-mono-label text-[10px] text-ink/60">
           21:00
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-2 mb-3">
         <div className="rounded-lg bg-teal/10 border border-ink/10 px-3 py-2">
-          <p className="text-[11px] text-ink/50">Pesanan</p>
+          <p className="text-[11px] text-ink/60">Pesanan</p>
           <p className="font-mono-label text-lg text-ink">24</p>
         </div>
         <div className="rounded-lg bg-yellow/50 border border-ink/10 px-3 py-2">
-          <p className="text-[11px] text-ink/50">Omzet</p>
+          <p className="text-[11px] text-ink/60">Omzet</p>
           <p className="font-mono-label text-lg text-ember-deep">Rp1.8jt</p>
         </div>
       </div>
@@ -37,7 +37,7 @@ export default function AdminDashboardMockup() {
               <p className="text-xs text-ink/80">
                 {o.id} · {o.name}
               </p>
-              <p className="font-mono-label text-[10px] text-ink/40">
+              <p className="font-mono-label text-[10px] text-ink/60">
                 Rp{o.total.toLocaleString("id-ID")}
               </p>
             </div>

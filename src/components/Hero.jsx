@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import ChatTransformHero from "./ChatTransformHero";
+import OwnershipCertificate from "./OwnershipCertificate";
 import { Star, Sparkle, CircleUnderline, Spiral } from "./Doodles";
 import { DEMO_URL, WHATSAPP_CTA_LINK } from "../data/content";
 
@@ -17,27 +17,25 @@ export default function Hero() {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         >
           <span className="inline-flex items-center gap-1.5 rounded-full bg-yellow border-2 border-ink px-3 py-1 mb-5 text-xs font-semibold font-mono-label text-ink">
-            09:00 — notif WA udah menumpuk
+            1 sistem, 1 toko, punya kamu
           </span>
           <h1 className="font-display font-extrabold text-4xl sm:text-5xl leading-[1.05] text-ink mb-5">
-            8 chat bolak-balik,{" "}
+            Bisnis kamu, sistem juga{" "}
             <span className="relative inline-block text-ember-deep">
-              sekarang
+              milik kamu.
               <CircleUnderline className="absolute left-0 -bottom-2 w-full" />
-            </span>{" "}
-            cukup 1 sistem.
+            </span>
           </h1>
           <p className="text-ink/70 text-base sm:text-lg leading-relaxed mb-8 max-w-lg">
-            Ordi ngambil alih hal-hal yang bikin kamu ketik ulang manual
-            tiap hari — katalog, ongkir, QRIS, rekap. Dibangun khusus buat
-            bisnis kamu oleh Studio Harel — bukan template yang disewain
-            ke banyak toko.
+            Ordi dibangun ngikutin cara bisnismu jalan, dari menu, alur
+            pesanan, sampai pembayaran, semua diatur sesuai kebutuhanmu.
           </p>
           <div className="flex flex-wrap items-center gap-4">
             <a
               href={WHATSAPP_CTA_LINK}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => window.gtag?.("event", "klik_wa", { lokasi: "hero" })}
               className="rounded-full bg-ink px-6 py-3.5 font-semibold text-paper hover:bg-ink/85 transition-colors"
             >
               Cerita Bisnis Kamu ke Saya
@@ -47,12 +45,13 @@ export default function Hero() {
                 href={DEMO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => window.gtag?.("event", "klik_demo", { lokasi: "hero" })}
                 className="rounded-full border-2 border-ink px-6 py-3.5 font-semibold text-ink hover:bg-ink hover:text-paper transition-colors inline-block"
               >
                 Coba Ordi Langsung
               </a>
-              <p className="font-mono-label text-[11px] text-ink/40 mt-2">
-                Demo interaktif — data contoh, bukan toko asli
+              <p className="font-mono-label text-[11px] text-ink/60 mt-2">
+                Demo interaktif, data contoh, bukan toko asli
               </p>
             </div>
           </div>
@@ -60,7 +59,7 @@ export default function Hero() {
 
         <div className="relative">
           <div className="absolute -inset-6 -z-10 rounded-[2rem] bg-teal/10 rotate-2 hidden sm:block" />
-          <ChatTransformHero />
+          <OwnershipCertificate />
         </div>
       </div>
     </section>
