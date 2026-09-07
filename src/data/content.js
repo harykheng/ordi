@@ -107,7 +107,7 @@ export const COMPARISON = {
       label: "Kustomisasi",
       manual: "Sebebas-bebasnya, tapi manual semua.",
       sewa: "Template generik, semua tenant tampilannya mirip.",
-      ordi: "Dibangun ngikutin cara bisnis kamu jalan, bukan sebaliknya.",
+      ordi: "Dibangun ngikutin cara bisnis kamu jalan.",
     },
     {
       label: "Waktu mulai",

@@ -13,9 +13,9 @@ export default function FinalCTA() {
             Bisnis kamu, sistem kamu.
           </h2>
           <p className="text-ink/60 mb-9 leading-relaxed">
-            Nggak ada form pendaftaran di sini. Ceritain dulu gimana
-            bisnismu jalan sehari-hari, kita bahas sistem yang cocok,
-            bukan yang generik.
+            Mulai dari chat WhatsApp: ceritain gimana bisnismu jalan
+            sehari-hari, kita bahas sistem yang pas buat kamu secara
+            spesifik.
           </p>
           <a
             href={WHATSAPP_CTA_LINK}

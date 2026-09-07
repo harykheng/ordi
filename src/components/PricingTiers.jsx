@@ -16,7 +16,7 @@ export default function PricingTiers() {
           </h2>
           <p className="text-ink/60 max-w-xl mb-10">
             Pilih yang paling kepake sekarang. Upgrade belakangan kalau
-            emang butuh, bayar selisihnya aja, bukan beli ulang dari nol.
+            emang butuh, tinggal bayar selisih harganya.
           </p>
         </Reveal>
 
