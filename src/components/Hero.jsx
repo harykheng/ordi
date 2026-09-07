@@ -50,7 +50,7 @@ export default function Hero() {
               >
                 Coba Ordi Langsung
               </a>
-              <p className="font-mono-label text-[11px] text-ink/40 mt-2">
+              <p className="font-mono-label text-[11px] text-ink/60 mt-2">
                 Demo interaktif, data contoh, bukan toko asli
               </p>
             </div>

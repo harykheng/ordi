@@ -38,13 +38,13 @@ export default function PricingTiers() {
                 <h3 className="font-display font-extrabold text-xl text-ink mb-1">
                   {tier.name}
                 </h3>
-                <p className="text-ink/50 text-sm mb-5">{tier.tagline}</p>
+                <p className="text-ink/60 text-sm mb-5">{tier.tagline}</p>
 
                 <div className="mb-6">
                   <span className="font-display font-extrabold text-3xl text-ember-deep break-words">
                     {tier.price}
                   </span>
-                  <span className="text-ink/40 text-sm ml-1">
+                  <span className="text-ink/60 text-sm ml-1">
                     {tier.priceNote}
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export default function PricingTiers() {
                   ))}
                 </ul>
 
-                <p className="font-mono-label text-[11px] text-ink/40 mb-5">
+                <p className="font-mono-label text-[11px] text-ink/60 mb-5">
                   {tier.retainer}
                 </p>
 
@@ -87,7 +87,7 @@ export default function PricingTiers() {
 
         <Reveal delay={0.15}>
           <div className="mt-10 rounded-2xl border-2 border-ink bg-yellow/15 px-6 py-5 max-w-2xl mx-auto text-center">
-            <p className="font-mono-label text-[11px] text-ink/50 mb-2">
+            <p className="font-mono-label text-[11px] text-ink/60 mb-2">
               Bandingin sama sewa platform
             </p>
             <p className="text-ink/80 text-sm leading-relaxed">
@@ -103,7 +103,7 @@ export default function PricingTiers() {
         </Reveal>
 
         <Reveal delay={0.25}>
-          <p className="text-center text-ink/40 text-xs mt-8 max-w-lg mx-auto">
+          <p className="text-center text-ink/60 text-xs mt-8 max-w-lg mx-auto">
             Ngobrol dulu di WhatsApp buat tau paket mana yang paling cocok
             sama bisnis kamu.
           </p>

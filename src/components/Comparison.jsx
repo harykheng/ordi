@@ -52,7 +52,7 @@ export default function Comparison() {
                           rIdx > 0 ? "border-t border-ink/10 pt-3" : ""
                         }
                       >
-                        <dt className="font-mono-label text-[11px] text-ink/40 mb-1">
+                        <dt className="font-mono-label text-[11px] text-ink/60 mb-1">
                           {row.label}
                         </dt>
                         <dd className="text-sm text-ink/80 leading-relaxed">
@@ -85,7 +85,7 @@ export default function Comparison() {
 
             {COMPARISON.rows.map((row, rIdx) => (
               <Fragment key={row.label}>
-                <div className="flex items-center px-2 text-xs font-mono-label text-ink/40">
+                <div className="flex items-center px-2 text-xs font-mono-label text-ink/60">
                   {row.label}
                 </div>
                 {[row.manual, row.sewa, row.ordi].map((val, cIdx) => (

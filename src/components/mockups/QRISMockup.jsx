@@ -5,7 +5,7 @@ export default function QRISMockup() {
         <span className="font-display font-bold text-ink text-sm">
           Bayar QRIS
         </span>
-        <span className="font-mono-label text-[10px] text-ink/40">
+        <span className="font-mono-label text-[10px] text-ink/60">
           exp 09:58
         </span>
       </div>
@@ -42,12 +42,12 @@ export default function QRISMockup() {
       </div>
 
       <div className="mt-3 text-center">
-        <p className="text-xs text-ink/50">Total Pembayaran</p>
+        <p className="text-xs text-ink/60">Total Pembayaran</p>
         <p className="font-mono-label text-xl text-ember-deep font-semibold">
           Rp73.000
         </p>
       </div>
-      <p className="font-mono-label text-[10px] text-ink/40 mt-3 text-center leading-relaxed">
+      <p className="font-mono-label text-[10px] text-ink/60 mt-3 text-center leading-relaxed">
         Nominal ke-generate otomatis sesuai pesanan.
         <br />
         Verifikasi pembayaran tetap manual by admin.

@@ -62,12 +62,12 @@ export default function ShippingCalcMockup() {
             Rp9.000
           </span>
         ) : (
-          <span className="font-mono-label text-xs text-ink/30">
+          <span className="font-mono-label text-xs text-ink/60">
             menghitung…
           </span>
         )}
       </div>
-      <p className="font-mono-label text-[10px] text-ink/40 mt-2">
+      <p className="font-mono-label text-[10px] text-ink/60 mt-2">
         3.2 km dari Kopi Senja · estimasi 18 menit
       </p>
     </div>

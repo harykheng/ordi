@@ -92,7 +92,7 @@ export default function ChatTransformHero() {
                   <span>Nasi Ayam Geprek x1</span>
                   <span className="font-mono-label">Rp28.000</span>
                 </div>
-                <div className="flex justify-between text-ink/50 text-xs">
+                <div className="flex justify-between text-ink/60 text-xs">
                   <span>Ongkir · Kemang Raya</span>
                   <span className="font-mono-label">Rp9.000</span>
                 </div>

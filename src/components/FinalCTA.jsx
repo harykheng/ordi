@@ -32,11 +32,11 @@ export default function FinalCTA() {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => window.gtag?.("event", "klik_demo", { lokasi: "final-cta" })}
-              className="text-sm text-ink/50 underline underline-offset-4 hover:text-ink/80"
+              className="text-sm text-ink/60 underline underline-offset-4 hover:text-ink/80"
             >
               atau coba Ordi langsung dulu
             </a>
-            <p className="font-mono-label text-[11px] text-ink/35 mt-1">
+            <p className="font-mono-label text-[11px] text-ink/60 mt-1">
               Demo interaktif, data contoh, bukan toko asli
             </p>
           </div>
@@ -44,10 +44,10 @@ export default function FinalCTA() {
 
         <div className="mt-20 pt-8 border-t-2 border-ink/10">
           <img src={ordiLogo} alt="Ordi" className="h-7 w-auto mx-auto" />
-          <p className="font-mono-label text-[11px] text-ink/40 mt-1">
+          <p className="font-mono-label text-[11px] text-ink/60 mt-1">
             Order Disini, sistem pesan-antar dari Studio Harel
           </p>
-          <p className="text-xs text-ink/30 mt-4">
+          <p className="text-xs text-ink/60 mt-4">
             © {new Date().getFullYear()} Studio Harel. Dibangun untuk UMKM
             F&B Indonesia.
           </p>
