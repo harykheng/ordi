@@ -21,10 +21,30 @@ framing, not narrow it.
 - `landing-first` — frozen snapshot of `main` right before the rebuild.
   **Don't touch this branch.** It exists purely so the two positioning
   approaches can be compared side by side.
-- `landing-second` — the active rebuild (ownership/custom-build framing).
-  All current work happens here. Not yet merged to `main` — that's a
-  separate decision after review, not something to do as part of a task
-  unless explicitly asked.
+- `landing-second` — the ownership/custom-build rebuild. Doodle/cream
+  design system. Not merged to `main`.
+- `landing-alternatif` — **this branch.** A third, product-led version
+  branched off `landing-second`, built to be A/B compared against it: same
+  business facts and prices, different positioning, structure, palette, and
+  type. Work on this branch stays on this branch; never merge to `main` or
+  touch `landing-first`/`landing-second` unless explicitly asked.
+
+### Which design system applies where
+
+Everything under "Design system" and "Section structure" below describes
+**`landing-second`**. On `landing-alternatif` the rendered page is the
+`src/components/alt/*` tree (see "Versi alternatif" below), and the
+`landing-second` components in `src/components/*.jsx` are still on disk but
+unrendered, kept deliberately so the two versions can be diffed. Their
+design tokens are also still in `src/index.css`, marked legacy.
+
+The *strategic* rules in "Hard rules" still bind both versions (no "X chat"
+figures above the fold, no before/after WhatsApp chat panels as the hero
+visual, no "instant"/"gratis" claims, comparison stays a table, no fake
+popularity/testimonial claims). The *stylistic* ones (doodles, offset-shadow
+cards, no solid-color bands) describe `landing-second` only — the alternative
+version was explicitly commissioned with a dark espresso hero and a different
+card style.
 
 ## Hard rules (learned from real collisions with Tokokit's page, don't reintroduce these)
 
@@ -154,6 +174,12 @@ that's fine, they're not rendered.
   requires `^20.19.0 || >=22.12.0`, which isn't guaranteed by Cloudflare's
   default). Cloudflare Pages ignores `package.json` `engines` for this —
   only `.nvmrc`/`.node-version` actually works.
+- `index.html` on `landing-alternatif` loads **only** Fraunces + Plus Jakarta
+  Sans, the two families that branch renders. The `landing-second` components
+  still sitting in `src/components/*.jsx` reference Bricolage Grotesque /
+  Public Sans / IBM Plex Mono, so if `App.jsx` is ever swapped back on this
+  branch, restore that font link too (or just compare against the
+  `landing-second` branch itself, which is the intended way).
 - Google Analytics (gtag.js, not Umami — Umami was tried and rolled back)
   is wired in `index.html` plus `onClick` handlers using
   `window.gtag?.("event", ...)` on WA/demo/per-tier CTA clicks. `Header.jsx`
@@ -173,8 +199,107 @@ that's fine, they're not rendered.
   errors. This has caught real bugs (CSS Grid blowout from unbreakable
   placeholder text, a stray string `style` prop that crashed the whole page
   in production, an em-dash-driven line-wrap issue).
-- Work happens on `landing-second`; never merge to `main` or touch
-  `landing-first` unless explicitly asked.
+- Work happens on whichever version branch the task names (currently
+  `landing-alternatif`); never merge to `main` or touch `landing-first` /
+  `landing-second` unless explicitly asked.
 - `playwright` gets installed/uninstalled per-session for verification
   screenshots — it's not a real dependency of this project, don't leave it
   in `package.json`.
+
+## Versi alternatif (`landing-alternatif`, this branch)
+
+Brief in one line: **"Website pesan online untuk UMKM F&B yang ingin berhenti
+mengandalkan chat sebagai kasir."** Product-led, not ownership-led: the page
+has to answer *what is Ordi / what do I get / what does it cost* fast, then
+carry the ownership argument as the differentiator rather than the opener.
+Flow is MASALAH → SOLUSI → BUKTI VISUAL → HARGA → CTA.
+
+### Design tokens (`@theme` in `src/index.css`)
+
+Warm "espresso" palette, editorial, max two font families. All pairs below
+were contrast-computed, not eyeballed:
+
+- `--color-cream` `#fdf8f4` — page background
+- `--color-sand` `#f3e7db` — alternating section band (the brief's "paper")
+- `--color-card` `#ffffff` — card surfaces
+- `--color-bean` `#2d1a0e` — hero + closing CTA card (cream on it = 15.7:1)
+- `--color-espresso` `#553125` — body text (10.7:1 on cream)
+- `--color-latte` `#c4956a` — warm accent, step numbers, chips
+- `--color-coral` `#c0392b` — CTA fill only (cream on coral = 5.2:1)
+- `--color-coral-deep` `#a32d1f` — the text variant; plain `coral` as text on
+  `sand` is 4.47:1 and fails AA, `coral-deep` is 5.9:1
+- `--color-mint` `#d9fdd3` / `--color-mint-deep` `#256d3f` — success/status only
+- Text opacity floor is `/75` on light backgrounds (4.75:1 on sand). Don't go
+  below it for real copy; `/85` is the default for secondary text.
+
+Fonts: `Fraunces` for statements via `.font-statement` (has `SOFT`/`WONK`
+variable-axis settings baked in), `Plus Jakarta Sans` for everything else via
+the default `font-sans`. `.eyebrow` is the small uppercase label style.
+
+Card pattern here is **hairline border + soft shadow**
+(`border border-espresso/12` + `shadow-[0_Npx_Npx_-Npx_rgba(45,26,14,...)]`),
+not the offset hard shadow of `landing-second`. No doodles on this branch.
+
+### Section structure (`App.jsx`)
+
+```
+AltHeader          — sticky, transparan di atas hero gelap, cream setelah scroll
+AltHero            — bean/dark, headline + CatalogScreen mockup + dua CTA
+TrustStrip         — sand band, 3 poin, no fake logos
+ProblemSection     — 3 kartu masalah
+HowItWorks         — 4 langkah, tiap langkah punya mini-mockup
+FeatureSection     — 5 fitur urut manfaat; QRIS & notif WA dapat visual
+BeforeAfter        — dua kolom, panah di seam (desktop)
+OwnershipSection   — diferensiasi + disclosure biaya hosting
+AltPricing         — 3 tier, harga & retainer sama persis dengan landing-second
+AltComparison      — tabel 4 kolom (md+), kartu per opsi (mobile)
+AltFAQ             — 7 pertanyaan, native <details>
+AltFinalCTA        — kartu bean + footer
+StickyMobileCTA    — mobile only, muncul setelah hero, ngumpet di footer
+AltConsentBanner   — GA4 Consent Mode v2
+```
+
+Hero DOM order is judul → mockup → CTA because mobile needs the product
+visual between them; desktop re-groups the left column with
+`display: contents` on the wrapper (`contents md:block`). Don't "simplify"
+that to `row-span-2` — a spanning grid item distributes its height across
+both rows and reopens a dead gap between subheadline and CTA.
+
+### Mockups
+
+`src/components/alt/ProductMockups.jsx` — all HTML/CSS, dummy data, no
+screenshot assets exist in this repo (the brief listed `assets/catalog-full.png`
+etc.; they were never added, so the fallback path is the real path). Illustrative
+store is "Kopi Senja". If real screenshots ever land, they replace these
+component-by-component, not the whole section.
+
+### Honesty constraints that are load-bearing here
+
+- QRIS: nominal auto, **verification stays manual** — said in the feature card,
+  the mockup caption, the pricing feature list, and the FAQ. Don't soften it.
+- Hosting/maintenance cost is disclosed as opsional but explicitly **not zero**
+  (OwnershipSection's "Jujurnya" note + FAQ #3).
+- Setup takes time, deliberately: Comparison "waktu mulai" + FAQ #5 both say
+  Ordi is the wrong pick if you need something online today.
+- The highlighted tier says **"Rekomendasi kami"**, not "paling banyak dipilih"
+  — there's no client base yet to make a popularity claim provable.
+- The competitor's monthly price is deliberately *not* quoted as a number on
+  this branch (`landing-second` quotes Rp300rb/bulan); the comparison says
+  recurring-vs-one-time without an unverifiable figure.
+
+### Mobile rules verified at build time
+
+Zero horizontal overflow at 320/375/390/768/1024/1920. Grid items that contain
+mockups carry `min-w-0` — without it a `truncate` (white-space: nowrap) child
+raises the item's min-content width and blows the single-column grid out at
+320px. Tap targets are ≥44px except the header logo link (40px). Sticky CTA
+waits for the cookie banner (`hidden={consentOpen}` from `App.jsx`) and hides
+itself once `#kontak` is on screen.
+
+### GA4 events
+
+Same names as `landing-second` so the two versions stay comparable:
+`klik_wa` (`lokasi`: header/hero/final-cta/sticky-mobile), `klik_demo`
+(`lokasi`: hero/final-cta), `klik_tier` (`tier`), `consent_choice`.
+Every WhatsApp CTA prefills a different message via `waLink()` in
+`src/data/altContent.js`, so an incoming chat says which section it came from.

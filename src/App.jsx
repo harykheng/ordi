@@ -1,35 +1,46 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import TimelineIntro from "./components/TimelineIntro";
-import TimeSection from "./components/TimeSection";
-import Comparison from "./components/Comparison";
-import PricingTiers from "./components/PricingTiers";
-import FAQSection from "./components/FAQSection";
-import FinalCTA from "./components/FinalCTA";
-import ConsentBanner from "./components/ConsentBanner";
-import { TIMELINE } from "./data/content";
+import { useCallback, useState } from "react";
+import AltHeader from "./components/alt/AltHeader";
+import AltHero from "./components/alt/AltHero";
+import TrustStrip from "./components/alt/TrustStrip";
+import ProblemSection from "./components/alt/ProblemSection";
+import HowItWorks from "./components/alt/HowItWorks";
+import FeatureSection from "./components/alt/FeatureSection";
+import BeforeAfter from "./components/alt/BeforeAfter";
+import OwnershipSection from "./components/alt/OwnershipSection";
+import AltPricing from "./components/alt/AltPricing";
+import AltComparison from "./components/alt/AltComparison";
+import AltFAQ from "./components/alt/AltFAQ";
+import AltFinalCTA from "./components/alt/AltFinalCTA";
+import StickyMobileCTA from "./components/alt/StickyMobileCTA";
+import AltConsentBanner from "./components/alt/AltConsentBanner";
 
+// Versi alternatif landing page Ordi (branch landing-alternatif).
+// Alur: MASALAH → SOLUSI → BUKTI VISUAL → HARGA → CTA.
+// Komponen versi landing-second masih ada di src/components/*.jsx dan
+// sengaja nggak dihapus supaya dua pendekatan bisa dibandingin.
 export default function App() {
+  const [consentOpen, setConsentOpen] = useState(true);
+  const closeConsent = useCallback(() => setConsentOpen(false), []);
+
   return (
-    <div className="min-h-screen bg-paper text-ink">
-      <Header />
+    <div className="min-h-screen bg-cream text-espresso">
+      <AltHeader />
       <main>
-        <Hero />
-        <TimelineIntro />
-        {TIMELINE.map((item, i) => (
-          <TimeSection
-            key={item.time}
-            item={item}
-            index={i}
-            reverse={i % 2 === 1}
-          />
-        ))}
-        <Comparison />
-        <PricingTiers />
-        <FAQSection />
+        <AltHero />
+        <TrustStrip />
+        <ProblemSection />
+        <HowItWorks />
+        <FeatureSection />
+        <BeforeAfter />
+        <OwnershipSection />
+        <AltPricing />
+        <AltComparison />
+        <AltFAQ />
       </main>
-      <FinalCTA />
-      <ConsentBanner />
+      <AltFinalCTA />
+      {/* sticky CTA nunggu cookie notice kelar dulu, biar nggak numpuk */}
+      <StickyMobileCTA hidden={consentOpen} />
+      <AltConsentBanner onResolve={closeConsent} />
     </div>
   );
 }

@@ -23,8 +23,21 @@ project.
   tanpa instruksi eksplisit.
 - `landing-first` — snapshot beku versi lama (framing "chat chaos"). Jangan
   diubah lagi, cuma buat pembanding.
-- `landing-second` — branch aktif tempat rebuild & semua kerjaan terbaru
-  berjalan. Belum di-merge ke `main` sampai ada instruksi eksplisit.
+- `landing-second` — rebuild dengan framing kepemilikan, design system
+  doodle/cream. Belum di-merge ke `main`.
+- `landing-alternatif` — versi alternatif yang product-led, dicabang dari
+  `landing-second` buat dibandingin head-to-head. Harga, link, dan semua fakta
+  bisnisnya sama; yang beda struktur, urutan, copy, palet (espresso/cream/
+  coral), dan tipografi (Fraunces + Plus Jakarta Sans).
+
+### Versi alternatif
+
+Halaman yang dirender di branch ini ada di `src/components/alt/*`, datanya di
+`src/data/altContent.js`. Komponen `landing-second` sengaja **nggak dihapus**
+(masih di `src/components/*.jsx`, nggak dirender) supaya dua pendekatan gampang
+dibandingin. Alur halamannya: masalah → solusi → bukti visual → harga → CTA,
+dengan CTA WhatsApp di header, hero, tiap kartu paket, CTA penutup, plus sticky
+button khusus mobile.
 
 Detail konvensi desain, struktur section, dan aturan positioning ada di
 `CLAUDE.md`.
