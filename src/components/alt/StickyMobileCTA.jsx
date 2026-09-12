@@ -35,7 +35,7 @@ export default function StickyMobileCTA({ hidden = false }) {
 
   return (
     <div
-      className={`fixed inset-x-0 bottom-0 z-40 border-t border-espresso/10 bg-cream/95 px-4 pt-3 backdrop-blur-md transition-transform duration-300 md:hidden ${
+      className={`fixed inset-x-0 bottom-0 z-40 border-t border-espresso/25 bg-cream/97 px-4 pt-3 backdrop-blur-[2px] transition-transform duration-300 md:hidden ${
         show ? "translate-y-0" : "pointer-events-none translate-y-full"
       }`}
       style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
@@ -49,7 +49,7 @@ export default function StickyMobileCTA({ hidden = false }) {
         onClick={() =>
           window.gtag?.("event", "klik_wa", { lokasi: "sticky-mobile" })
         }
-        className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral px-4 py-3 text-sm font-bold text-cream min-[380px]:text-[15px]"
+        className="press flex min-h-12 items-center justify-center gap-2 rounded-[3px] bg-coral px-4 py-3 text-sm font-bold text-cream min-[380px]:text-[15px]"
       >
         <IconWhatsApp className="h-5 w-5" />
         Ceritakan Bisnismu di WhatsApp

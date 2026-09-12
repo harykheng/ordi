@@ -2,34 +2,25 @@
 
 @theme {
   /* ─────────────────────────────────────────────────────────────
-     VERSI ALTERNATIF (branch landing-alternatif) — palet "espresso"
-     Warm, editorial, product-led. Kontras semua pasangan warna di
-     bawah sudah dihitung (bukan dikira-kira) terhadap WCAG AA.
+     VERSI ALTERNATIF (landing-alternatif) — "cetakan Studio Harel"
+     Editorial, kertas, tinta. Semua pasangan warna sudah dihitung
+     kontrasnya terhadap WCAG AA, bukan dikira-kira.
      ───────────────────────────────────────────────────────────── */
-
-  /* surfaces */
-  --color-cream: #fdf8f4; /* background halaman */
-  --color-sand: #f3e7db; /* band/section sekunder (spec: "paper") */
-  --color-card: #ffffff; /* permukaan kartu produk */
-  --color-bean: #2d1a0e; /* dark brown — hero & footer card */
-  --color-espresso: #553125; /* teks utama (10.7:1 di cream) */
-
-  /* accents */
-  --color-latte: #c4956a; /* aksen hangat, garis, nomor step */
-  --color-coral: #c0392b; /* CTA & penekanan (5.2:1 di cream) */
-  --color-coral-deep: #a32d1f; /* varian teks di atas sand (5.9:1) */
+  --color-cream: #fdf8f4; /* kertas utama */
+  --color-sand: #f3e7db; /* kertas kedua, band/section */
+  --color-card: #ffffff; /* kertas paling terang, permukaan struk */
+  --color-bean: #2d1a0e; /* tinta pekat, blok cetak */
+  --color-espresso: #553125; /* tinta teks (10.7:1 di cream) */
+  --color-latte: #c4956a; /* aksen hangat, garis, nomor */
+  --color-coral: #c0392b; /* tinta merah: stempel & CTA */
+  --color-coral-deep: #a32d1f; /* varian teks merah (5.9:1 di sand) */
   --color-mint: #d9fdd3; /* status berhasil (fill) */
-  --color-mint-deep: #256d3f; /* status berhasil (teks, 6.0:1) */
+  --color-mint-deep: #256d3f; /* status berhasil (teks) */
 
-  /* type: maksimal dua keluarga font */
   --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   --font-serif: "Fraunces", "Georgia", serif;
 
-  /* ─────────────────────────────────────────────────────────────
-     TOKEN LEGACY (versi landing-second) — dipertahankan supaya
-     komponen lama di src/components/*.jsx tetap bisa dirender
-     kalau App.jsx ditukar balik buat perbandingan.
-     ───────────────────────────────────────────────────────────── */
+  /* ── token legacy (landing-second), biar komponen lama tetap build ── */
   --color-paper: #fff9f2;
   --color-paper-2: #ffffff;
   --color-ink: #1a1a1a;
@@ -51,8 +42,12 @@ body {
   color: var(--color-espresso);
   font-family: var(--font-sans);
   font-size: 16px;
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+}
+
+[id] {
+  scroll-margin-top: 80px;
 }
 
 ::selection {
@@ -60,54 +55,131 @@ body {
   color: var(--color-bean);
 }
 
-/* anchor target tidak ketutup navbar sticky */
-[id] {
-  scroll-margin-top: 84px;
+/* Fokus keyboard harus kelihatan di mana pun, termasuk di atas tinta pekat. */
+:focus-visible {
+  outline: 2px solid var(--color-coral);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.on-ink :focus-visible {
+  outline-color: var(--color-latte);
 }
 
-/* Fraunces punya optical-size axis; setel sekali di sini biar headline
-   besar tetap terasa "editorial" dan nggak kurus di mobile. */
-.font-statement {
+/* ── TIPOGRAFI EDITORIAL ─────────────────────────────────────── */
+
+.display {
   font-family: var(--font-serif);
   font-optical-sizing: auto;
-  font-variation-settings: "SOFT" 20, "WONK" 1;
+  font-variation-settings: "SOFT" 30, "WONK" 1;
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.08;
+  letter-spacing: -0.018em;
+  line-height: 1.02;
+  text-wrap: balance;
 }
 
-.eyebrow {
-  font-size: 11px;
+.standfirst {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  font-variation-settings: "SOFT" 20;
+  font-weight: 400;
+  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.35rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+
+/* label kecil huruf besar, dipakai buat kicker & nomor halaman */
+.kicker {
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  line-height: 1.3;
 }
 
-/* tekstur halus di permukaan gelap — bukan gradient neon, cuma dot grid
-   tipis biar hero nggak terasa flat */
-.grain-dark {
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    rgba(253, 248, 244, 0.07) 1px,
-    transparent 0
+/* huruf kapital pembuka paragraf, khas cetakan */
+.dropcap::first-letter {
+  float: left;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 3.1em;
+  line-height: 0.78;
+  padding: 0.06em 0.1em 0 0;
+  color: var(--color-coral-deep);
+}
+
+/* salah register tinta, 1 kata aja, biar terasa hasil cetak manual */
+.misprint {
+  text-shadow: 1.5px 1.5px 0 rgba(192, 57, 43, 0.22);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── KERTAS & TINTA ──────────────────────────────────────────── */
+
+/* serat kertas: noise halus, satu lapis fixed di atas halaman */
+.paper-fiber {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23f)' opacity='0.22'/%3E%3C/svg%3E");
+}
+
+/* garis buku tulis buat panel dashboard */
+.ruled {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 33px,
+    rgba(85, 49, 37, 0.1) 33px 34px
   );
-  background-size: 24px 24px;
 }
 
-.grain-light {
-  background-image: radial-gradient(
-    circle at 1px 1px,
-    rgba(85, 49, 37, 0.07) 1px,
-    transparent 0
-  );
-  background-size: 24px 24px;
+/* stempel tinta: kotak miring, tepinya sengaja nggak rata */
+.stamp {
+  display: inline-block;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  padding: 0.18em 0.5em;
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.88;
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 -1.6 1.32'/%3E%3C/filter%3E%3Crect width='60' height='40' filter='url(%23s)'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='40'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.55' numOctaves='3'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0, 0 0 0 0 0, 0 0 0 0 0, 0 0 0 -1.6 1.32'/%3E%3C/filter%3E%3Crect width='60' height='40' filter='url(%23s)'/%3E%3C/svg%3E");
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
 }
 
-/* logo Ordi aslinya tinta gelap dengan alpha — dibalik jadi cream
-   waktu dipasang di atas permukaan bean/espresso */
-.logo-on-dark {
-  filter: brightness(0) invert(1);
-  opacity: 0.94;
+/* tombol yang kepencet beneran: turun 2px, bayangannya ilang */
+.press {
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease,
+    background-color 0.16s ease;
+}
+.press:active {
+  transform: translateY(2px);
+}
+
+/* kertas yang bisa diangkat sedikit pas disentuh */
+.sheet-lift {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.22s ease;
+}
+@media (hover: hover) {
+  .sheet-lift:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.ink-shadow {
+  box-shadow: 0 18px 34px -26px rgba(45, 26, 14, 0.55);
 }
 
 .scrollbar-none::-webkit-scrollbar {
@@ -117,8 +189,17 @@ body {
   scrollbar-width: none;
 }
 
+/* ── GERAK ───────────────────────────────────────────────────── */
+/* Semua gerak non-esensial dimatikan, keadaan akhir langsung dirender. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

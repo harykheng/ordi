@@ -174,8 +174,8 @@ that's fine, they're not rendered.
   requires `^20.19.0 || >=22.12.0`, which isn't guaranteed by Cloudflare's
   default). Cloudflare Pages ignores `package.json` `engines` for this —
   only `.nvmrc`/`.node-version` actually works.
-- `index.html` on `landing-alternatif` loads **only** Fraunces + Plus Jakarta
-  Sans, the two families that branch renders. The `landing-second` components
+- `index.html` on `landing-alternatif` loads **only** Fraunces (incl. italic) +
+  Plus Jakarta Sans, the two families that branch renders. The `landing-second` components
   still sitting in `src/components/*.jsx` reference Bricolage Grotesque /
   Public Sans / IBM Plex Mono, so if `App.jsx` is ever swapped back on this
   branch, restore that font link too (or just compare against the
@@ -209,97 +209,131 @@ that's fine, they're not rendered.
 ## Versi alternatif (`landing-alternatif`, this branch)
 
 Brief in one line: **"Website pesan online untuk UMKM F&B yang ingin berhenti
-mengandalkan chat sebagai kasir."** Product-led, not ownership-led: the page
-has to answer *what is Ordi / what do I get / what does it cost* fast, then
-carry the ownership argument as the differentiator rather than the opener.
-Flow is MASALAH → SOLUSI → BUKTI VISUAL → HARGA → CTA.
+mengandalkan chat sebagai kasir."** Product-led, and since the second pass it
+is also deliberately **editorial/print**, not SaaS: the page should read like
+something a studio set in type and printed, with one playable order simulation
+carrying the product story. Flow is MASALAH → SOLUSI → BUKTI VISUAL → HARGA →
+CTA, but the proof arrives first, inside the hero.
+
+### Direction (locked by the client brief, don't drift back)
+
+Do: editorial layout that feels hand-set, asymmetric composition, tactile
+paper, microinteractions that follow the *real* order flow, a demo you can
+actually play, scroll-triggered storytelling, strong typography, and as few
+repeated card grids as possible.
+
+Don't: glassmorphism, generic bento grids, gradient mesh, uniform dashboard
+cards, floating pills everywhere, plain fade-in reveals, the standard
+text-left/screenshot-right SaaS hero, or a page littered with badges.
+
+Two structural rules that came with it: **at most one main visual per
+section**, and **not every section may be a card**. Most sections here are
+type + hairlines only.
 
 ### Design tokens (`@theme` in `src/index.css`)
 
-Warm "espresso" palette, editorial, max two font families. All pairs below
-were contrast-computed, not eyeballed:
+Palette is unchanged from the first alternative pass, all pairs
+contrast-computed:
 
-- `--color-cream` `#fdf8f4` — page background
-- `--color-sand` `#f3e7db` — alternating section band (the brief's "paper")
-- `--color-card` `#ffffff` — card surfaces
-- `--color-bean` `#2d1a0e` — hero + closing CTA card (cream on it = 15.7:1)
-- `--color-espresso` `#553125` — body text (10.7:1 on cream)
-- `--color-latte` `#c4956a` — warm accent, step numbers, chips
-- `--color-coral` `#c0392b` — CTA fill only (cream on coral = 5.2:1)
-- `--color-coral-deep` `#a32d1f` — the text variant; plain `coral` as text on
-  `sand` is 4.47:1 and fails AA, `coral-deep` is 5.9:1
-- `--color-mint` `#d9fdd3` / `--color-mint-deep` `#256d3f` — success/status only
-- Text opacity floor is `/75` on light backgrounds (4.75:1 on sand). Don't go
-  below it for real copy; `/85` is the default for secondary text.
+- `--color-cream` `#fdf8f4` page, `--color-sand` `#f3e7db` band,
+  `--color-card` `#ffffff` sheet
+- `--color-bean` `#2d1a0e` ink block, `--color-espresso` `#553125` body text
+- `--color-latte` `#c4956a` warm accent (decorative only, 2.2:1 on sand, never
+  put real copy in it), `--color-coral` `#c0392b` CTA fill,
+  `--color-coral-deep` `#a32d1f` red text on light
+- `--color-mint` / `--color-mint-deep` success only
 
-Fonts: `Fraunces` for statements via `.font-statement` (has `SOFT`/`WONK`
-variable-axis settings baked in), `Plus Jakarta Sans` for everything else via
-the default `font-sans`. `.eyebrow` is the small uppercase label style.
+**Contrast floor on light backgrounds is `text-espresso/80`** (5.5:1 on sand,
+6.6:1 on cream). Anything lower failed the audit and was swept up; don't
+reintroduce `/50`–`/75` for real copy. Page-wide audit currently reports zero
+AA failures, measured by painting computed colors on a canvas (Tailwind v4
+compiles opacity modifiers to `color-mix()`, so naive `rgba()` parsing of
+`getComputedStyle().color` gives nonsense — don't "verify" contrast that way).
 
-Card pattern here is **hairline border + soft shadow**
-(`border border-espresso/12` + `shadow-[0_Npx_Npx_-Npx_rgba(45,26,14,...)]`),
-not the offset hard shadow of `landing-second`. No doodles on this branch.
+### Print utilities (`src/index.css`)
+
+`.display` (Fraunces statement type, SOFT/WONK axes), `.standfirst` (serif
+deck, italic in places), `.kicker` (small caps label), `.dropcap`,
+`.misprint` (a 1.5px coral offset on one phrase, deliberate ink
+misregistration), `.tnum`, `.paper-fiber` (one fixed SVG-turbulence overlay in
+`App.jsx`, multiply blend), `.ruled` (ledger lines at 34px to match row
+height), `.stamp` (bordered label with a turbulence mask so the ink looks
+broken), `.press` (2px depress on `:active`), `.sheet-lift`, `.ink-shadow`.
+`:focus-visible` is coral everywhere, latte inside `.on-ink` blocks.
+`Paper.jsx` holds `TornEdge` (deckled edge from a seeded PRNG, so it is
+irregular but stable across renders), `Rule`, `Stamp`, `Kicker`, `InkStroke`.
+
+### `OrderSim.jsx` — the hero simulation
+
+A playable order: pick produk → alamat → ongkir dihitung → total bergulir →
+pesanan masuk ke buku dashboard, with an ink arrow drawn between the two
+sheets and a WhatsApp notification slip. Rules it must keep:
+
+- **Playable first.** Every step is a real `<button>`; clicking a different
+  product or address recalculates instead of locking the flow. Orders
+  accumulate in the ledger (`#0231`, `#0232`, ...) so replaying is rewarding.
+- **Autoplay runs once, only while in view** (`useInView`), and stops the
+  moment anyone clicks. Visible control toggles Jeda / Jalanin otomatis, and
+  becomes Ulangi at the end. This is the interactive-demo contract from the
+  design audit: visible controls, pause offscreen, final state kept as static
+  content.
+- **`prefers-reduced-motion` renders the final state immediately** and never
+  autoplays; everything stays clickable.
+- One `aria-live="polite"` narrator line doubles as the visible caption.
+- Data is dummy and says so under the sim, next to the demo link.
+- The ink arrow is anchored to the ledger (`absolute -left-14`), not to a
+  percentage of the container, so it stays put when the left sheet grows.
 
 ### Section structure (`App.jsx`)
 
 ```
-AltHeader          — sticky, transparan di atas hero gelap, cream setelah scroll
-AltHero            — bean/dark, headline + CatalogScreen mockup + dua CTA
-TrustStrip         — sand band, 3 poin, no fake logos
-ProblemSection     — 3 kartu masalah
-HowItWorks         — 4 langkah, tiap langkah punya mini-mockup
-FeatureSection     — 5 fitur urut manfaat; QRIS & notif WA dapat visual
-BeforeAfter        — dua kolom, panah di seam (desktop)
-OwnershipSection   — diferensiasi + disclosure biaya hosting
-AltPricing         — 3 tier, harga & retainer sama persis dengan landing-second
-AltComparison      — tabel 4 kolom (md+), kartu per opsi (mobile)
-AltFAQ             — 7 pertanyaan, native <details>
-AltFinalCTA        — kartu bean + footer
-StickyMobileCTA    — mobile only, muncul setelah hero, ngumpet di footer
-AltConsentBanner   — GA4 Consent Mode v2
+AltHeader       — tipis, garis bawah baru muncul setelah scroll
+AltHero         — masthead editorial + OrderSim (satu-satunya visual besar)
+ProblemSpike    — tiga sobekan nota numpuk, mekar ngikutin scroll
+FlowStrip       — 4 langkah di satu garis tinta yang kegambar ngikutin scroll
+FeatureLedger   — daftar spesifikasi bergaris rambut, satu struk QRIS
+LedgerSwap      — satu halaman buku, baris lama dicoret sambil scroll
+OwnershipNote   — blok tinta bertepi sobek (bukan pita full-bleed)
+PriceSheet      — daftar harga cetak, tiga baris, bukan tiga kartu
+AltComparison   — tabel 3 kolom (tetap tabel), cuma garis rambut
+AltFAQ          — tanya jawab bergaris, <details> asli
+AltFinalCTA     — kolofon 3 bagian + blok tinta penutup + footer
 ```
 
-Hero DOM order is judul → mockup → CTA because mobile needs the product
-visual between them; desktop re-groups the left column with
-`display: contents` on the wrapper (`contents md:block`). Don't "simplify"
-that to `row-span-2` — a spanning grid item distributes its height across
-both rows and reopens a dead gap between subheadline and CTA.
+Scroll work follows the audit's rules: scrub-driven (never a plain fade-in),
+nothing is pinned, body copy is never parallaxed, and every scrubbed value has
+a `reduce` branch that renders the end state.
 
-### Mockups
+### Hooks gotcha
 
-`src/components/alt/ProductMockups.jsx` — all HTML/CSS, dummy data, no
-screenshot assets exist in this repo (the brief listed `assets/catalog-full.png`
-etc.; they were never added, so the fallback path is the real path). Illustrative
-store is "Kopi Senja". If real screenshots ever land, they replace these
-component-by-component, not the whole section.
+`useTransform` cannot be called inside `.map()` — `ProblemSpike` and
+`LedgerSwap` each push their per-row transforms into a child component
+(`Slip`, `SwapRow`). This was an actual bug caught before first build; don't
+inline them back.
 
 ### Honesty constraints that are load-bearing here
 
-- QRIS: nominal auto, **verification stays manual** — said in the feature card,
-  the mockup caption, the pricing feature list, and the FAQ. Don't soften it.
-- Hosting/maintenance cost is disclosed as opsional but explicitly **not zero**
-  (OwnershipSection's "Jujurnya" note + FAQ #3).
-- Setup takes time, deliberately: Comparison "waktu mulai" + FAQ #5 both say
+- QRIS: nominal auto, **verification stays manual** — stated in the feature
+  row, on the QRIS slip's stamp, in the pricing features, and in the FAQ.
+- Hosting/maintenance is opsional but explicitly **not zero** (the "Jujurnya"
+  note in `OwnershipNote` + FAQ #3).
+- Setup takes time on purpose: Comparison "waktu mulai" and FAQ #5 both say
   Ordi is the wrong pick if you need something online today.
-- The highlighted tier says **"Rekomendasi kami"**, not "paling banyak dipilih"
-  — there's no client base yet to make a popularity claim provable.
-- The competitor's monthly price is deliberately *not* quoted as a number on
-  this branch (`landing-second` quotes Rp300rb/bulan); the comparison says
-  recurring-vs-one-time without an unverifiable figure.
+- Highlighted tier says **"Rekomendasi kami"**, never a popularity claim.
+- The competitor's monthly price is deliberately not quoted as a number.
 
-### Mobile rules verified at build time
+### Verified at build time
 
-Zero horizontal overflow at 320/375/390/768/1024/1920. Grid items that contain
-mockups carry `min-w-0` — without it a `truncate` (white-space: nowrap) child
-raises the item's min-content width and blows the single-column grid out at
-320px. Tap targets are ≥44px except the header logo link (40px). Sticky CTA
-waits for the cookie banner (`hidden={consentOpen}` from `App.jsx`) and hides
-itself once `#kontak` is on screen.
+Zero horizontal overflow and zero page errors at 320/375/390/414/768/1024/
+1280/1920. Zero WCAG AA text failures. Every tap target ≥44px except one
+inline link inside a sentence (exempt). Keyboard order matches visual order
+and reaches every simulation control. Reduced motion lands on the final state
+with no autoplay.
 
 ### GA4 events
 
-Same names as `landing-second` so the two versions stay comparable:
-`klik_wa` (`lokasi`: header/hero/final-cta/sticky-mobile), `klik_demo`
-(`lokasi`: hero/final-cta), `klik_tier` (`tier`), `consent_choice`.
-Every WhatsApp CTA prefills a different message via `waLink()` in
-`src/data/altContent.js`, so an incoming chat says which section it came from.
+Unchanged so the versions stay comparable: `klik_wa` (`lokasi`:
+header/hero/final-cta/sticky-mobile), `klik_demo` (`lokasi`:
+hero/hero-sim/final-cta), `klik_tier` (`tier`), `consent_choice`. Every
+WhatsApp CTA prefills a different message via `waLink()` in
+`src/data/altContent.js`.

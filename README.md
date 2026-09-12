@@ -35,9 +35,19 @@ project.
 Halaman yang dirender di branch ini ada di `src/components/alt/*`, datanya di
 `src/data/altContent.js`. Komponen `landing-second` sengaja **nggak dihapus**
 (masih di `src/components/*.jsx`, nggak dirender) supaya dua pendekatan gampang
-dibandingin. Alur halamannya: masalah → solusi → bukti visual → harga → CTA,
-dengan CTA WhatsApp di header, hero, tiap kartu paket, CTA penutup, plus sticky
-button khusus mobile.
+dibandingin.
+
+Arahnya editorial/cetak, bukan SaaS: tipografi Fraunces + Plus Jakarta Sans,
+tata letak asimetris, tekstur kertas, dan cerita yang jalan ngikutin scroll.
+Pembukaannya bukan screenshot diam tapi **simulasi pesan yang bisa dimainkan**
+(`OrderSim.jsx`): pilih produk, isi alamat, ongkir kehitung, total gerak, terus
+pesanannya nyebrang ke buku dashboard. Jalan sendiri sekali kalau dibiarin,
+berhenti begitu diklik, dan langsung nampilin keadaan akhir kalau pengguna
+nyalain reduced motion.
+
+Sebagian besar section sengaja bukan kartu: daftar bergaris rambut, tumpukan
+nota, halaman buku yang dicoret sambil scroll, dan dua blok tinta bertepi
+sobek. Detail aturannya ada di `CLAUDE.md`.
 
 Detail konvensi desain, struktur section, dan aturan positioning ada di
 `CLAUDE.md`.

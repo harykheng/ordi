@@ -1,6 +1,6 @@
-import Reveal from "../Reveal";
-import { IconWhatsApp, IconArrowRight } from "./Icons";
-import { DEMO_URL, waLink } from "../../data/altContent";
+import { Rule, TornEdge } from "./Paper";
+import { IconWhatsApp } from "./Icons";
+import { DEMO_URL, TRUST_POINTS, waLink } from "../../data/altContent";
 import ordiLogo from "../../assets/ordi-logo.png";
 
 const WA_FINAL = waLink(
@@ -9,66 +9,83 @@ const WA_FINAL = waLink(
 
 export default function AltFinalCTA() {
   return (
-    <footer id="kontak" className="px-5 pb-12 pt-16 sm:pt-20">
-      <div className="mx-auto max-w-4xl">
-        <Reveal>
-          <div className="relative overflow-hidden rounded-3xl bg-bean px-6 py-12 text-center sm:px-10 sm:py-14">
-            <div className="grain-dark absolute inset-0" aria-hidden="true" />
+    <footer id="kontak" className="px-5 pb-10 pt-16 sm:pt-24">
+      <div className="mx-auto max-w-6xl">
+        {/* kolofon tiga bagian, dipisah garis, bukan tiga kartu */}
+        <div className="grid gap-6 border-y border-espresso/20 py-7 md:grid-cols-3 md:gap-0">
+          {TRUST_POINTS.map((p, i) => (
             <div
-              className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-espresso/70 blur-3xl"
-              aria-hidden="true"
-            />
-            <div className="relative">
-              <h2 className="font-statement text-[1.9rem] text-cream sm:text-4xl">
+              key={p.title}
+              className={
+                i > 0 ? "md:border-l md:border-espresso/20 md:pl-7" : "md:pr-7"
+              }
+            >
+              <p className="kicker text-coral-deep">{p.title}</p>
+              <p className="mt-1.5 max-w-[30ch] text-[14px] leading-relaxed text-espresso/85">
+                {p.body}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="on-ink relative mt-12 overflow-hidden bg-bean px-6 py-14 text-cream sm:px-10 sm:py-16">
+          <TornEdge side="top" />
+          <TornEdge side="bottom" />
+
+          <div className="relative md:grid md:grid-cols-12 md:gap-10">
+            <div className="md:col-span-7">
+              <Rule n="11" label="Mulai dari sini" tone="cream" className="mb-7" />
+              <h2 className="display text-[clamp(1.9rem,1.3rem+2.2vw,3.2rem)] text-cream">
                 Ceritakan dulu cara kerja bisnismu.
               </h2>
-              <p className="mx-auto mt-4 max-w-lg text-[15px] leading-relaxed text-cream/85">
+              <p className="standfirst mt-5 max-w-md text-cream/85">
                 Kita bahas sistem yang paling masuk akal buat kebutuhanmu.
                 Nggak harus langsung ambil paket lengkap.
               </p>
+            </div>
 
-              <div className="mt-7 flex flex-col items-stretch gap-3 sm:flex-row sm:justify-center">
-                <a
-                  href={WA_FINAL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    window.gtag?.("event", "klik_wa", { lokasi: "final-cta" })
-                  }
-                  className="flex min-h-12 items-center justify-center gap-2 rounded-full bg-coral px-7 py-3.5 text-base font-bold text-cream transition-colors hover:bg-coral-deep"
-                >
-                  <IconWhatsApp className="h-5 w-5" />
-                  Chat di WhatsApp
-                </a>
-                <a
-                  href={DEMO_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() =>
-                    window.gtag?.("event", "klik_demo", { lokasi: "final-cta" })
-                  }
-                  className="flex min-h-12 items-center justify-center gap-2 rounded-full border border-cream/40 px-7 py-3.5 text-base font-semibold text-cream transition-colors hover:bg-cream hover:text-bean"
-                >
-                  Coba Demo Ordi
-                  <IconArrowRight className="h-4 w-4" />
-                </a>
-              </div>
-
-              <p className="mt-4 text-[13px] text-cream/85">
+            <div className="mt-9 md:col-span-4 md:col-start-9 md:mt-0 md:self-end">
+              <a
+                href={WA_FINAL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  window.gtag?.("event", "klik_wa", { lokasi: "final-cta" })
+                }
+                className="press inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-[3px] bg-coral px-6 text-[15px] font-bold text-cream hover:bg-coral-deep"
+              >
+                <IconWhatsApp className="h-[18px] w-[18px]" />
+                Chat di WhatsApp
+              </a>
+              <a
+                href={DEMO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() =>
+                  window.gtag?.("event", "klik_demo", { lokasi: "final-cta" })
+                }
+                className="mt-4 inline-flex min-h-11 items-center gap-1.5 text-[15px] font-semibold text-cream underline decoration-cream/40 underline-offset-[6px] hover:decoration-latte"
+              >
+                Coba demo Ordi
+                <span aria-hidden="true">&rarr;</span>
+              </a>
+              <p className="mt-3 text-[12px] leading-snug text-cream/75">
                 ordistore.studioharel.id, demo interaktif dengan data contoh,
                 bukan toko asli.
               </p>
             </div>
           </div>
-        </Reveal>
+        </div>
 
-        <div className="mt-12 flex flex-col items-center gap-2 border-t border-espresso/10 pt-8 text-center">
-          <img src={ordiLogo} alt="Ordi" className="h-6 w-auto" />
-          <p className="text-[13px] text-espresso/85">
-            Order Disini, website pesan online dari Studio Harel.
-          </p>
-          <p className="mt-1 text-xs text-espresso/75">
-            © {new Date().getFullYear()} Studio Harel. Dibangun untuk UMKM
+        <div className="mt-10 flex flex-col gap-3 border-t border-espresso/20 pt-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-3">
+            <img src={ordiLogo} alt="Ordi" className="h-5 w-auto" />
+            <p className="text-[13px] text-espresso/80">
+              Order Disini, dikerjakan Studio Harel.
+            </p>
+          </div>
+          <p className="text-[12px] text-espresso/80">
+            &copy; {new Date().getFullYear()} Studio Harel. Dibangun untuk UMKM
             F&amp;B Indonesia.
           </p>
         </div>

@@ -24,7 +24,7 @@ export default function AltConsentBanner({ onResolve }) {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-espresso/15 bg-cream px-5 py-4">
+    <div className="fixed inset-x-0 bottom-0 z-50 border-t border-espresso/25 bg-cream px-5 py-4">
       <div
         className="mx-auto flex max-w-4xl flex-col items-center justify-between gap-3 sm:flex-row"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
@@ -36,13 +36,13 @@ export default function AltConsentBanner({ onResolve }) {
         <div className="flex shrink-0 gap-2">
           <button
             onClick={() => resolve("denied")}
-            className="rounded-full border border-espresso/25 px-4 py-2 text-[13px] font-semibold text-espresso transition-colors hover:bg-espresso hover:text-cream"
+            className="press rounded-[3px] border border-espresso/30 px-4 py-2 text-[13px] font-semibold text-espresso hover:bg-espresso hover:text-cream"
           >
             Nolak
           </button>
           <button
             onClick={() => resolve("granted")}
-            className="rounded-full bg-espresso px-4 py-2 text-[13px] font-semibold text-cream transition-colors hover:bg-bean"
+            className="press rounded-[3px] bg-espresso px-4 py-2 text-[13px] font-semibold text-cream hover:bg-bean"
           >
             Oke, Lanjut
           </button>
