@@ -35,70 +35,44 @@ export const TRUST_POINTS = [
 export const PROBLEMS = [
   {
     title: "Pesanan tenggelam",
-    body: "Chat baru menutupi order lama. Yang belum diproses ketutup sendiri.",
+    body: "Chat baru nutupin order lama.",
   },
   {
     title: "Salah catat",
-    body: "Harga, jumlah, alamat, atau ongkir gampang kelewat pas lagi rame.",
+    body: "Harga, alamat, ongkir gampang kelewat.",
   },
   {
     title: "Pelanggan tanya terus",
-    body: "Menu, stok, ongkir, total, dan status pesanan masih dijawab satu-satu.",
+    body: "Menu, stok, dan ongkir dijawab satu-satu.",
   },
 ];
 
-export const STEPS = [
+// Cara kerja dan fitur digabung: tiap langkah bawa manfaatnya sendiri,
+// jadi nggak ada dua section yang ngomongin hal sama dua kali.
+export const FLOW = [
   {
     n: "01",
     title: "Pelanggan buka katalog",
-    body: "Menu, harga, dan stok kelihatan sendiri tanpa kamu ketik ulang.",
-    visual: "CATALOG",
+    body: "Menu, harga, dan stok kelihatan sendiri.",
+    fitur: "Katalog online",
   },
   {
     n: "02",
-    title: "Pilih produk, isi alamat",
-    body: "Pelanggan yang ngetik alamatnya sendiri, jadi nggak salah dengar.",
-    visual: "ADDRESS",
+    title: "Isi alamat sendiri",
+    body: "Ongkir muncul sebelum checkout, bukan ditebak.",
+    fitur: "Ongkir otomatis",
   },
   {
     n: "03",
-    title: "Total dan ongkir muncul",
-    body: "Sistem yang hitung, sebelum checkout, bukan kamu sambil masak.",
-    visual: "TOTAL",
+    title: "Bayar sesuai total",
+    body: "Nominal QR ngikutin total pesanan. Verifikasi bukti bayar tetap manual by kamu.",
+    fitur: "QRIS sesuai nominal",
   },
   {
     n: "04",
     title: "Pesanan masuk ke dashboard",
-    body: "Order tercatat rapi dan notifikasinya nyampe ke WhatsApp kamu.",
-    visual: "ORDER_IN",
-  },
-];
-
-export const FEATURES = [
-  {
-    title: "Katalog online",
-    body: "Harga dan stok bisa dilihat pelanggan tanpa kamu ketik berulang kali.",
-    tag: "Katalog",
-  },
-  {
-    title: "Pesanan lebih rapi",
-    body: "Semua order tercatat dan bisa dipantau dari dashboard, lengkap sama statusnya.",
-    tag: "Pesanan",
-  },
-  {
-    title: "Ongkir otomatis",
-    body: "Pelanggan mengisi alamat sendiri dan pilihan ongkir muncul sebelum checkout.",
-    tag: "Pengiriman",
-  },
-  {
-    title: "QRIS sesuai nominal",
-    body: "Nominal QR dibuat mengikuti total pesanan. Verifikasi pembayaran tetap dilakukan manual oleh admin.",
-    tag: "Pembayaran",
-  },
-  {
-    title: "Notifikasi WhatsApp",
-    body: "Pesanan baru lebih mudah diketahui tanpa menggali chat lama.",
-    tag: "Notifikasi",
+    body: "Tercatat rapi, notifikasinya nyampe ke WhatsApp.",
+    fitur: "Dashboard dan notifikasi",
   },
 ];
 

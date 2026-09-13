@@ -3,7 +3,6 @@ import AltHeader from "./components/alt/AltHeader";
 import AltHero from "./components/alt/AltHero";
 import ProblemSpike from "./components/alt/ProblemSpike";
 import FlowStrip from "./components/alt/FlowStrip";
-import FeatureLedger from "./components/alt/FeatureLedger";
 import LedgerSwap from "./components/alt/LedgerSwap";
 import OwnershipNote from "./components/alt/OwnershipNote";
 import PriceSheet from "./components/alt/PriceSheet";
@@ -31,7 +30,6 @@ export default function App() {
         <AltHero />
         <ProblemSpike />
         <FlowStrip />
-        <FeatureLedger />
         <LedgerSwap />
         <OwnershipNote />
         <PriceSheet />

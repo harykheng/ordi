@@ -34,7 +34,7 @@ export default function AltFinalCTA() {
 
           <div className="relative md:grid md:grid-cols-12 md:gap-10">
             <div className="md:col-span-7">
-              <Rule n="11" label="Mulai dari sini" tone="cream" className="mb-7" />
+              <Rule n="10" label="Mulai dari sini" tone="cream" className="mb-7" />
               <h2 className="display text-[clamp(1.9rem,1.3rem+2.2vw,3.2rem)] text-cream">
                 Ceritakan dulu cara kerja bisnismu.
               </h2>

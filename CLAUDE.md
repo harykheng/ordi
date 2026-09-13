@@ -230,6 +230,14 @@ Two structural rules that came with it: **at most one main visual per
 section**, and **not every section may be a card**. Most sections here are
 type + hairlines only.
 
+Third pass tightened it further into a **product demonstration**: the hero
+leads with a large product mockup instead of prose, the simulation carries the
+argument, and prose in the opening sections was cut hard (hero 93 → 34 words,
+masalah 76 → 40, cara-kerja + fitur 191 → 80; ~57% off the opening). Keep that
+budget — if a section needs a paragraph to explain itself, the visual is doing
+too little. **Cara kerja and fitur are one section now** (`FlowStrip`); don't
+split them again, and don't add sections.
+
 ### Design tokens (`@theme` in `src/index.css`)
 
 Palette is unchanged from the first alternative pass, all pairs
@@ -265,9 +273,27 @@ irregular but stable across renders), `Rule`, `Stamp`, `Kicker`, `InkStroke`.
 
 ### `OrderSim.jsx` — the hero simulation
 
-A playable order: pick produk → alamat → ongkir dihitung → total bergulir →
-pesanan masuk ke buku dashboard, with an ink arrow drawn between the two
-sheets and a WhatsApp notification slip. Rules it must keep:
+A playable order: klik produk → keranjang nambah → alamat → ongkir dihitung →
+total bergulir → struk terbang ke buku dashboard → status jalan → WhatsApp
+bunyi. Every animation has to explain a business change; nothing here is a
+decorative fade. What each one is for:
+
+- **Cart badge** springs and floats a `+1` — proves the customer is the one
+  adding, not you.
+- **Qty** goes up when the same product is clicked again (max 3), so the total
+  visibly moves for a reason the visitor caused.
+- **Total** rolls and flashes a latte highlight on every change.
+- **Ongkir** pulses "menghitung" before it lands, so the calculation reads as
+  work the system did.
+- **The struk physically flies** from the catalog sheet to the ledger row,
+  measured from real `getBoundingClientRect()` deltas so it works at any
+  breakpoint. `onAnimationComplete` commits the order — don't replace this with
+  a timeout, and don't fake the path with fixed percentages.
+- **Status chip** goes Baru → Diproses 1.7s later.
+- **Ends with** "Begitulah pelangganmu bisa pesan sendiri." and the primary CTA
+  "Coba demo Ordi yang sebenarnya →".
+
+Rules it must keep:
 
 - **Playable first.** Every step is a real `<button>`; clicking a different
   product or address recalculates instead of locking the flow. Orders
@@ -288,10 +314,10 @@ sheets and a WhatsApp notification slip. Rules it must keep:
 
 ```
 AltHeader       — tipis, garis bawah baru muncul setelah scroll
-AltHero         — masthead editorial + OrderSim (satu-satunya visual besar)
+AltHero         — judul pendek + dua CTA, lalu OrderSim ukuran besar
 ProblemSpike    — tiga sobekan nota numpuk, mekar ngikutin scroll
-FlowStrip       — 4 langkah di satu garis tinta yang kegambar ngikutin scroll
-FeatureLedger   — daftar spesifikasi bergaris rambut, satu struk QRIS
+FlowStrip       — cara kerja DAN fitur jadi satu: 4 langkah di garis tinta,
+                  tiap langkah bawa nama fiturnya, satu struk QRIS
 LedgerSwap      — satu halaman buku, baris lama dicoret sambil scroll
 OwnershipNote   — blok tinta bertepi sobek (bukan pita full-bleed)
 PriceSheet      — daftar harga cetak, tiga baris, bukan tiga kartu
@@ -311,6 +337,25 @@ a `reduce` branch that renders the end state.
 (`Slip`, `SwapRow`). This was an actual bug caught before first build; don't
 inline them back.
 
+### Aset produk
+
+`FoodArt.jsx` holds the catalog imagery as print-style duotone SVG (halftone
+raster, espresso/latte ink). **There are no real product photos or app
+screenshots in this repo**, and `ordistore.studioharel.id` is blocked by the
+build environment's network policy (403 on CONNECT), so they cannot be fetched
+here either. If real photos or catalog/dashboard screenshots ever land, swap
+the components inside `FoodArt.jsx` — `OrderSim` imports them by name and needs
+no change.
+
+### CTA hierarchy
+
+The demo CTA outranks the informational one in the hero and after the
+simulation: "Coba demo Ordi yang sebenarnya →" is the filled coral button,
+"Ceritakan bisnismu" (WhatsApp) is the underlined secondary. WhatsApp keeps
+full weight everywhere else — header, pricing rows, closing block, sticky
+mobile bar — so the conversion path is not weakened, only re-ordered at the
+top of the page.
+
 ### Honesty constraints that are load-bearing here
 
 - QRIS: nominal auto, **verification stays manual** — stated in the feature
@@ -325,10 +370,10 @@ inline them back.
 ### Verified at build time
 
 Zero horizontal overflow and zero page errors at 320/375/390/414/768/1024/
-1280/1920. Zero WCAG AA text failures. Every tap target ≥44px except one
-inline link inside a sentence (exempt). Keyboard order matches visual order
-and reaches every simulation control. Reduced motion lands on the final state
-with no autoplay.
+1280/1920. Zero WCAG AA text failures. Every tap target ≥44px on mobile widths
+(desktop-only nav links sit at 34px, above the 24px pointer minimum). Keyboard
+order matches visual order and reaches every simulation control. Reduced motion
+lands on the final state with no autoplay, no flight, no status ticker.
 
 ### GA4 events
 

@@ -12,7 +12,7 @@ export default function OwnershipNote() {
           <TornEdge side="bottom" />
 
           <div className="relative">
-            <Rule n="07" label="Kepemilikan" tone="cream" className="mb-8" />
+            <Rule n="06" label="Kepemilikan" tone="cream" className="mb-8" />
 
             <div className="md:grid md:grid-cols-12 md:gap-10">
               <div className="md:col-span-7">

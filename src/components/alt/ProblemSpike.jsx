@@ -45,13 +45,8 @@ export default function ProblemSpike() {
         <div className="grid gap-10 md:grid-cols-12 md:gap-8">
           <div className="md:col-span-5">
             <h2 className="display text-[clamp(1.75rem,1.2rem+2vw,2.9rem)]">
-              Kalau semua pesanan masuk lewat chat, yang berantakan bukan cuma
-              chatnya.
+              Pesanan lewat chat, yang berantakan bukan cuma chatnya.
             </h2>
-            <p className="mt-5 max-w-sm text-[15px] leading-relaxed text-espresso/85">
-              Yang kepotong itu waktu kamu: ngetik ulang menu, ngitung ongkir
-              sambil masak, nyari bukti transfer yang ketutup chat baru.
-            </p>
           </div>
 
           <div ref={ref} className="relative pr-7 md:col-span-6 md:col-start-7">

@@ -10,7 +10,7 @@ export default function AltFAQ() {
       className="border-t border-espresso/15 bg-sand px-5 py-16 sm:py-24"
     >
       <div className="mx-auto max-w-6xl">
-        <Rule n="10" label="Yang biasanya ditanya" className="mb-8" />
+        <Rule n="09" label="Yang biasanya ditanya" className="mb-8" />
 
         <div className="md:grid md:grid-cols-12 md:gap-8">
           <h2 className="display text-[clamp(1.75rem,1.2rem+2vw,2.9rem)] md:col-span-4">

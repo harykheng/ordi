@@ -40,10 +40,15 @@ dibandingin.
 Arahnya editorial/cetak, bukan SaaS: tipografi Fraunces + Plus Jakarta Sans,
 tata letak asimetris, tekstur kertas, dan cerita yang jalan ngikutin scroll.
 Pembukaannya bukan screenshot diam tapi **simulasi pesan yang bisa dimainkan**
-(`OrderSim.jsx`): pilih produk, isi alamat, ongkir kehitung, total gerak, terus
-pesanannya nyebrang ke buku dashboard. Jalan sendiri sekali kalau dibiarin,
-berhenti begitu diklik, dan langsung nampilin keadaan akhir kalau pengguna
-nyalain reduced motion.
+(`OrderSim.jsx`): klik produk, keranjang nambah, isi alamat, ongkir kehitung,
+total gerak, struknya terbang ke buku dashboard, status jalan, notifikasi
+WhatsApp bunyi, lalu keluar ajakan nyoba demo yang sebenarnya. Jalan sendiri
+sekali kalau dibiarin, berhenti begitu diklik, dan langsung nampilin keadaan
+akhir kalau pengguna nyalain reduced motion.
+
+Gambar produk di katalog itu ilustrasi cetak (`FoodArt.jsx`), bukan foto: repo
+ini belum punya aset foto dan domain demo diblokir dari lingkungan build. Kalau
+nanti foto asli tersedia, cukup tukar isi `FoodArt.jsx`.
 
 Sebagian besar section sengaja bukan kartu: daftar bergaris rambut, tumpukan
 nota, halaman buku yang dicoret sambil scroll, dan dua blok tinta bertepi

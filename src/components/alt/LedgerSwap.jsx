@@ -72,7 +72,7 @@ export default function LedgerSwap() {
   return (
     <section className="px-5 py-16 sm:py-24">
       <div className="mx-auto max-w-5xl">
-        <Rule n="06" label="Sebelum dan sesudah" className="mb-8" />
+        <Rule n="05" label="Sebelum dan sesudah" className="mb-8" />
 
         <h2 className="display max-w-[22ch] text-[clamp(1.75rem,1.2rem+2vw,2.9rem)]">
           Kerjaanmu nggak hilang. Yang berulang-ulang aja yang dikurangi.
