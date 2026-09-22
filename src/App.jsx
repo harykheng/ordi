@@ -1,9 +1,8 @@
 import { useCallback, useState } from "react";
 import AltHeader from "./components/alt/AltHeader";
 import AltHero from "./components/alt/AltHero";
-import ProblemSpike from "./components/alt/ProblemSpike";
+import BeforeAfter from "./components/alt/BeforeAfter";
 import FlowStrip from "./components/alt/FlowStrip";
-import LedgerSwap from "./components/alt/LedgerSwap";
 import OwnershipNote from "./components/alt/OwnershipNote";
 import PriceSheet from "./components/alt/PriceSheet";
 import AltComparison from "./components/alt/AltComparison";
@@ -22,15 +21,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-cream text-espresso">
-      {/* serat kertas, satu lapis di atas semuanya, nggak bisa diklik */}
-      <div className="paper-fiber" aria-hidden="true" />
-
       <AltHeader />
       <main>
         <AltHero />
-        <ProblemSpike />
+        <BeforeAfter />
         <FlowStrip />
-        <LedgerSwap />
         <OwnershipNote />
         <PriceSheet />
         <AltComparison />

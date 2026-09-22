@@ -15,35 +15,20 @@ export function waLink(message) {
 }
 
 export const POSITIONING =
-  "Website pesan online untuk UMKM F&B yang ingin berhenti mengandalkan chat sebagai kasir.";
+  "Katalog online buat kedai kopi, bakery, dan katering. Pelanggan pesan lewat web, ordernya masuk ke dashboard kamu.";
 
 export const TRUST_POINTS = [
   {
-    title: "Sistem milik bisnismu",
-    body: "Dibangun atas nama bisnis kamu, bukan disewa per bulan dari platform orang lain.",
+    title: "Sistemnya punya kamu",
+    body: "Dibangun atas nama bisnis kamu. Setelah lunas, nggak ada langganan yang bisa matiin.",
   },
   {
-    title: "Data dan alur pesanan lebih rapi",
-    body: "Order, alamat, dan total pembayaran tercatat di satu tempat, bukan tersebar di chat.",
+    title: "Semua order kecatat",
+    body: "Order, alamat, sama totalnya ada di satu tempat yang gampang dibuka lagi besok.",
   },
   {
-    title: "Bisa mulai dari yang paling dibutuhkan",
-    body: "Nggak harus ambil paket lengkap di awal. Fitur bisa ditambah belakangan.",
-  },
-];
-
-export const PROBLEMS = [
-  {
-    title: "Pesanan tenggelam",
-    body: "Chat baru nutupin order lama.",
-  },
-  {
-    title: "Salah catat",
-    body: "Harga, alamat, ongkir gampang kelewat.",
-  },
-  {
-    title: "Pelanggan tanya terus",
-    body: "Menu, stok, dan ongkir dijawab satu-satu.",
+    title: "Mulainya bisa kecil",
+    body: "Ambil yang paling bikin repot sekarang. Sisanya nyusul kalau memang perlu.",
   },
 ];
 
@@ -52,63 +37,63 @@ export const PROBLEMS = [
 export const FLOW = [
   {
     n: "01",
-    title: "Pelanggan buka katalog",
-    body: "Menu, harga, dan stok kelihatan sendiri.",
+    title: "Pelanggan buka katalog kamu",
+    body: "Dia lihat menu, harga, sama stok yang kamu update tadi pagi.",
     fitur: "Katalog online",
   },
   {
     n: "02",
-    title: "Isi alamat sendiri",
-    body: "Ongkir muncul sebelum checkout, bukan ditebak.",
+    title: "Dia isi alamatnya sendiri",
+    body: "Ongkirnya kehitung dari alamat itu, muncul sebelum dia checkout.",
     fitur: "Ongkir otomatis",
   },
   {
     n: "03",
-    title: "Bayar sesuai total",
-    body: "Nominal QR ngikutin total pesanan. Verifikasi bukti bayar tetap manual by kamu.",
+    title: "Bayar pakai QR",
+    body: "Nominalnya udah pas sama total pesanan. Bukti bayarnya masih kamu yang cek satu-satu.",
     fitur: "QRIS sesuai nominal",
   },
   {
     n: "04",
-    title: "Pesanan masuk ke dashboard",
-    body: "Tercatat rapi, notifikasinya nyampe ke WhatsApp.",
+    title: "Ordernya masuk ke kamu",
+    body: "Nongol di dashboard, dan WhatsApp kamu bunyi.",
     fitur: "Dashboard dan notifikasi",
   },
 ];
 
 export const BEFORE_AFTER = {
   before: [
-    "Chat berantakan",
-    "Jawab pertanyaan berulang",
-    "Hitung ongkir manual",
-    "Cari bukti transfer",
-    "Rekap dari nota",
+    "Order ketimbun chat baru",
+    "Ngetik ulang menu tiap ditanya",
+    "Ngira-ngira ongkir sambil masak",
+    "Nyari bukti transfer di scroll-an",
+    "Rekap malam dari tumpukan nota",
   ],
   after: [
-    "Katalog bisa dilihat sendiri",
-    "Order masuk terstruktur",
-    "Ongkir muncul otomatis",
-    "Nominal pembayaran jelas",
-    "Rekap tersedia di dashboard",
+    "Order berderet rapi di dashboard",
+    "Pelanggan baca sendiri di katalog",
+    "Ongkir kehitung dari alamatnya",
+    "Nominal QR-nya udah pas",
+    "Rekapnya udah jadi pas tutup",
   ],
 };
 
 export const OWNERSHIP_POINTS = [
   {
     title: "Atas nama bisnis kamu",
-    body: "Sistem dan datanya berada di bawah bisnis kamu, bukan nempel di akun platform lain.",
+    body: "Sistem sama datanya ada di akun kamu sendiri.",
   },
   {
-    title: "Domain dan hosting sendiri",
-    body: "Bisa pakai identitas bisnismu, bukan subdomain bawaan yang dipakai ribuan toko.",
+    title: "Domain sendiri",
+    body: "Bisa pakai nama tokomu, misalnya kopisenja.com.",
   },
   {
-    title: "Alur ngikutin cara kerjamu",
-    body: "Dibangun dari cara bisnismu jalan sekarang, bukan dari template yang harus kamu ikuti.",
+    title: "Alurnya ngikut kamu",
+    body: "Kalau kamu cuma terima pesanan H-1, sistemnya dibikin begitu.",
   },
   {
-    title: "Bisa berkembang bertahap",
-    body: "Mulai dari fitur yang paling kepake, tambah yang lain kalau memang sudah butuh.",
+    title: "Bisa nambah belakangan",
+    body: "Fitur baru dipasang waktu kamu udah butuh, tanpa pindah sistem.",
   },
 ];
 
@@ -171,21 +156,21 @@ export const ALT_COMPARISON = {
   rows: [
     {
       label: "Biaya",
-      manual: "Nggak ada biaya tool, tapi kepakai di waktu dan salah hitung.",
+      manual: "Nggak keluar biaya tool. Yang kebayar waktunya kamu.",
       sewa: "Biaya bulanan jalan terus selama sistem dipakai.",
       ordi: "Bayar sekali di awal. Hosting dan maintenance opsional.",
     },
     {
       label: "Kepemilikan",
-      manual: "Data pesanan tersebar di chat dan nggak terstruktur.",
+      manual: "Data pesanan nyangkut di riwayat chat.",
       sewa: "Sistem dan data nempel di platform penyedia.",
       ordi: "Sistem dan data ada di bawah bisnis kamu.",
     },
     {
       label: "Kustomisasi",
       manual: "Bebas, tapi semuanya dikerjakan manual.",
-      sewa: "Ikut template dan fitur yang disediakan.",
-      ordi: "Dibangun ngikutin alur bisnis kamu.",
+      sewa: "Ikut template dan fitur yang sudah disediakan.",
+      ordi: "Dibangun ngikutin alur kamu sekarang.",
     },
     {
       label: "Waktu mulai",

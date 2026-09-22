@@ -208,177 +208,153 @@ that's fine, they're not rendered.
 
 ## Versi alternatif (`landing-alternatif`, this branch)
 
-Brief in one line: **"Website pesan online untuk UMKM F&B yang ingin berhenti
-mengandalkan chat sebagai kasir."** Product-led, and since the second pass it
-is also deliberately **editorial/print**, not SaaS: the page should read like
-something a studio set in type and printed, with one playable order simulation
-carrying the product story. Flow is MASALAH → SOLUSI → BUKTI VISUAL → HARGA →
-CTA, but the proof arrives first, inside the hero.
+Product-led page for the same business facts as `landing-second`. Positioning
+in one line: **katalog online buat kedai kopi, bakery, dan katering, pelanggan
+pesan lewat web dan ordernya masuk ke dashboard pemilik.** A playable order
+simulation in the hero carries the argument; the rest of the page is short.
 
-### Direction (locked by the client brief, don't drift back)
+### Direction (fourth pass, supersedes the editorial/print pass)
 
-Do: editorial layout that feels hand-set, asymmetric composition, tactile
-paper, microinteractions that follow the *real* order flow, a demo you can
-actually play, scroll-triggered storytelling, strong typography, and as few
-repeated card grids as possible.
+The second and third passes went editorial/print: numbered section rails,
+Fraunces everywhere, torn paper edges, ink stamps, halftone misprint, ruled
+ledger paper, drop caps, marginalia. **Hary rejected it** as too hard to
+understand and "terlalu AI". That whole costume is gone. Don't bring it back.
 
-Don't: glassmorphism, generic bento grids, gradient mesh, uniform dashboard
-cards, floating pills everywhere, plain fade-in reveals, the standard
-text-left/screenshot-right SaaS hero, or a page littered with badges.
+What replaced it, using the design-engineering skills in
+`github.com/WatermelonCorp/watermelon-platform`
+(`skills/make-interfaces-feel-better`):
 
-Two structural rules that came with it: **at most one main visual per
-section**, and **not every section may be a card**. Most sections here are
-type + hairlines only.
+- **Depth comes from layered shadows, not 1px borders.** `--shadow-border`,
+  `--shadow-border-hover`, `--shadow-lift` in `index.css`; the `.surface` and
+  `.surface-hover` classes wrap them. Borders are still correct for *dividers*
+  (row separators, section rules) — those stay `border-t border-espresso/12`.
+- **Concentric radius.** `outerRadius = innerRadius + padding`. The catalog
+  sheet is the strict case: outer `rounded-[20px]`, padding `p-3` (12px),
+  tiles `rounded-lg` (8px). Where padding exceeds ~24px the layers count as
+  separate surfaces and radii are chosen independently.
+- **Press feedback is `scale(0.96)`,** never lower, via `.press`. It also
+  declares its transition properties explicitly; there is no `transition: all`
+  anywhere.
+- **Enter animations are split and staggered,** not one container fade:
+  `.rise` + `.rise-1/2/3` (opacity, `translateY(12px)`, `blur(4px)`, 100ms
+  apart). Framer-motion springs use `{ type: "spring", duration, bounce: 0 }`;
+  bounce is always 0.
+- `text-wrap: balance` on h1-h3, `pretty` on p/li/dd. Font smoothing at the
+  root. `tabular-nums` on every number that changes.
+- Images and the QR get `outline: 1px solid rgba(0,0,0,0.1)` with
+  `outline-offset: -1px`. Pure black, never a tinted near-black.
+- Every interactive element clears 44px.
 
-Third pass tightened it further into a **product demonstration**: the hero
-leads with a large product mockup instead of prose, the simulation carries the
-argument, and prose in the opening sections was cut hard (hero 93 → 34 words,
-masalah 76 → 40, cara-kerja + fitur 191 → 80; ~57% off the opening). Keep that
-budget — if a section needs a paragraph to explain itself, the visual is doing
-too little. **Cara kerja and fitur are one section now** (`FlowStrip`); don't
-split them again, and don't add sections.
+Warmth still comes from the palette, Fraunces on headings only, and the food
+illustrations. It should read as a calm product page a small F&B owner can
+scan, not as a design portfolio.
 
-### Design tokens (`@theme` in `src/index.css`)
+### Copy rules (this is what made it read as AI)
 
-Palette is unchanged from the first alternative pass, all pairs
-contrast-computed:
+The page had **fourteen** instances of the "X, bukan Y" construction, one in
+nearly every value proposition, plus headlines built as balanced two-part
+antitheses ("Satu alur buat pelanggan. Satu dashboard buat kamu."). Per the
+humanizer skill these are §9 negative parallelism and §31 manufactured
+punchlines, and stacked that densely they are the single loudest machine tell.
+They were removed.
 
-- `--color-cream` `#fdf8f4` page, `--color-sand` `#f3e7db` band,
-  `--color-card` `#ffffff` sheet
-- `--color-bean` `#2d1a0e` ink block, `--color-espresso` `#553125` body text
-- `--color-latte` `#c4956a` warm accent (decorative only, 2.2:1 on sand, never
-  put real copy in it), `--color-coral` `#c0392b` CTA fill,
-  `--color-coral-deep` `#a32d1f` red text on light
-- `--color-mint` / `--color-mint-deep` success only
+Rules now:
 
-**Contrast floor on light backgrounds is `text-espresso/80`** (5.5:1 on sand,
-6.6:1 on cream). Anything lower failed the audit and was swept up; don't
-reintroduce `/50`–`/75` for real copy. Page-wide audit currently reports zero
-AA failures, measured by painting computed colors on a canvas (Tailwind v4
-compiles opacity modifiers to `color-mix()`, so naive `rgba()` parsing of
-`getComputedStyle().color` gives nonsense — don't "verify" contrast that way).
-
-### Print utilities (`src/index.css`)
-
-`.display` (Fraunces statement type, SOFT/WONK axes), `.standfirst` (serif
-deck, italic in places), `.kicker` (small caps label), `.dropcap`,
-`.misprint` (a 1.5px coral offset on one phrase, deliberate ink
-misregistration), `.tnum`, `.paper-fiber` (one fixed SVG-turbulence overlay in
-`App.jsx`, multiply blend), `.ruled` (ledger lines at 34px to match row
-height), `.stamp` (bordered label with a turbulence mask so the ink looks
-broken), `.press` (2px depress on `:active`), `.sheet-lift`, `.ink-shadow`.
-`:focus-visible` is coral everywhere, latte inside `.on-ink` blocks.
-`Paper.jsx` holds `TornEdge` (deckled edge from a seeded PRNG, so it is
-irregular but stable across renders), `Rule`, `Stamp`, `Kicker`, `InkStroke`.
-
-### `OrderSim.jsx` — the hero simulation
-
-A playable order: klik produk → keranjang nambah → alamat → ongkir dihitung →
-total bergulir → struk terbang ke buku dashboard → status jalan → WhatsApp
-bunyi. Every animation has to explain a business change; nothing here is a
-decorative fade. What each one is for:
-
-- **Cart badge** springs and floats a `+1` — proves the customer is the one
-  adding, not you.
-- **Qty** goes up when the same product is clicked again (max 3), so the total
-  visibly moves for a reason the visitor caused.
-- **Total** rolls and flashes a latte highlight on every change.
-- **Ongkir** pulses "menghitung" before it lands, so the calculation reads as
-  work the system did.
-- **The struk physically flies** from the catalog sheet to the ledger row,
-  measured from real `getBoundingClientRect()` deltas so it works at any
-  breakpoint. `onAnimationComplete` commits the order — don't replace this with
-  a timeout, and don't fake the path with fixed percentages.
-- **Status chip** goes Baru → Diproses 1.7s later.
-- **Ends with** "Begitulah pelangganmu bisa pesan sendiri." and the primary CTA
-  "Coba demo Ordi yang sebenarnya →".
-
-Rules it must keep:
-
-- **Playable first.** Every step is a real `<button>`; clicking a different
-  product or address recalculates instead of locking the flow. Orders
-  accumulate in the ledger (`#0231`, `#0232`, ...) so replaying is rewarding.
-- **Autoplay runs once, only while in view** (`useInView`), and stops the
-  moment anyone clicks. Visible control toggles Jeda / Jalanin otomatis, and
-  becomes Ulangi at the end. This is the interactive-demo contract from the
-  design audit: visible controls, pause offscreen, final state kept as static
-  content.
-- **`prefers-reduced-motion` renders the final state immediately** and never
-  autoplays; everything stays clickable.
-- One `aria-live="polite"` narrator line doubles as the visible caption.
-- Data is dummy and says so under the sim, next to the demo link.
-- The ink arrow is anchored to the ledger (`absolute -left-14`), not to a
-  percentage of the container, so it stays put when the left sheet grows.
+- **Say what happens. Don't define it against what it isn't.** "Ongkirnya
+  kehitung dari alamat itu" beats "Ongkir muncul sebelum checkout, bukan
+  ditebak." Keep a contrast only where the contrast *is* the argument (the
+  ownership-vs-rental answer in the FAQ), and only once.
+- Vary sentence length. Not every line should land like a slogan.
+- Prefer a concrete example to an abstraction: "Bisa pakai nama tokomu,
+  misalnya kopisenja.com" beats "Bisa pakai identitas bisnismu."
+- No section-number rails, no kicker-plus-balanced-headline on every single
+  section.
 
 ### Section structure (`App.jsx`)
 
 ```
-AltHeader       — tipis, garis bawah baru muncul setelah scroll
-AltHero         — judul pendek + dua CTA, lalu OrderSim ukuran besar
-ProblemSpike    — tiga sobekan nota numpuk, mekar ngikutin scroll
-FlowStrip       — cara kerja DAN fitur jadi satu: 4 langkah di garis tinta,
-                  tiap langkah bawa nama fiturnya, satu struk QRIS
-LedgerSwap      — satu halaman buku, baris lama dicoret sambil scroll
-OwnershipNote   — blok tinta bertepi sobek (bukan pita full-bleed)
-PriceSheet      — daftar harga cetak, tiga baris, bukan tiga kartu
-AltComparison   — tabel 3 kolom (tetap tabel), cuma garis rambut
-AltFAQ          — tanya jawab bergaris, <details> asli
-AltFinalCTA     — kolofon 3 bagian + blok tinta penutup + footer
+AltHeader       — tipis, garis bawahnya muncul setelah scroll
+AltHero         — judul, satu kalimat, dua CTA, lalu OrderSim
+BeforeAfter     — dulunya dua section (daftar masalah + sebelum/sesudah) yang
+                  ngomongin hal sama; sekarang satu baris per kerjaan
+FlowStrip       — cara kerja DAN fitur jadi satu, 4 langkah, satu struk QRIS
+OwnershipNote   — pernyataan + 4 poin + catatan jujur soal biaya
+PriceSheet      — 3 baris harga, bukan 3 kartu seragam
+AltComparison   — tabel 3 kolom (tetap tabel), garis rambut
+AltFAQ          — <details> asli
+AltFinalCTA     — kolofon + kartu tinta penutup + footer
 ```
 
-Scroll work follows the audit's rules: scrub-driven (never a plain fade-in),
-nothing is pinned, body copy is never parallaxed, and every scrubbed value has
-a `reduce` branch that renders the end state.
+`Section.jsx` holds the one shared `SectionHead` (label, title, optional
+lead). `Paper.jsx`, `ProblemSpike.jsx` and `LedgerSwap.jsx` are gone.
 
-### Hooks gotcha
+### Design tokens (`@theme` in `src/index.css`)
 
-`useTransform` cannot be called inside `.map()` — `ProblemSpike` and
-`LedgerSwap` each push their per-row transforms into a child component
-(`Slip`, `SwapRow`). This was an actual bug caught before first build; don't
-inline them back.
+Palette unchanged: `cream` page, `sand` band, `card` surface, `bean` ink
+block, `espresso` text, `latte` warm accent (decorative only, 2.2:1 on sand,
+never real copy), `coral` CTA fill, `coral-deep` red text on light, `mint` /
+`mint-deep` success.
+
+**Contrast floor on light backgrounds is `text-espresso/80`.** Lower values
+failed the audit twice; don't reintroduce `/50`-`/75` for real copy. Measure
+contrast by painting computed colors on a canvas — Tailwind v4 compiles
+opacity modifiers to `color-mix()`, so parsing `getComputedStyle().color` as
+`rgba()` returns nonsense.
+
+### `OrderSim.jsx` — the hero simulation
+
+Klik produk (keranjang nambah, `+1` melayang) → alamat → ongkir dihitung →
+total bergulir dan disorot → struk terbang ke dashboard → status Baru lalu
+Diproses → notifikasi WhatsApp → "Begitulah pelangganmu bisa pesan sendiri."
+plus CTA "Coba demo Ordi yang sebenarnya".
+
+- Every step is a real `<button>`; clicking a different product or address
+  recalculates. Klik produk yang sama nambah qty (maks 3). Orders accumulate.
+- The struk flight is measured from real `getBoundingClientRect()` deltas and
+  commits the order in `onAnimationComplete`. Don't swap that for a timeout or
+  fake the path with fixed percentages.
+- Autoplay runs once, only while in view, and stops on the first click.
+  Visible Jeda / Jalanin otomatis control.
+- `prefers-reduced-motion` renders the final state immediately: no autoplay,
+  no flight, no status ticker.
+- One `aria-live="polite"` line doubles as the visible caption.
 
 ### Aset produk
 
-`FoodArt.jsx` holds the catalog imagery as print-style duotone SVG (halftone
-raster, espresso/latte ink). **There are no real product photos or app
-screenshots in this repo**, and `ordistore.studioharel.id` is blocked by the
-build environment's network policy (403 on CONNECT), so they cannot be fetched
-here either. If real photos or catalog/dashboard screenshots ever land, swap
-the components inside `FoodArt.jsx` — `OrderSim` imports them by name and needs
-no change.
+`FoodArt.jsx` holds the catalog imagery as duotone SVG. **There are no real
+product photos or app screenshots in this repo**, and `ordistore.studioharel.id`
+is blocked by the build environment's network policy (403 on CONNECT), so they
+can't be fetched here. If real photos land, swap the components inside
+`FoodArt.jsx`; `OrderSim` imports them by name and needs no change.
 
 ### CTA hierarchy
 
-The demo CTA outranks the informational one in the hero and after the
-simulation: "Coba demo Ordi yang sebenarnya →" is the filled coral button,
-"Ceritakan bisnismu" (WhatsApp) is the underlined secondary. WhatsApp keeps
-full weight everywhere else — header, pricing rows, closing block, sticky
-mobile bar — so the conversion path is not weakened, only re-ordered at the
-top of the page.
+Demo outranks WhatsApp in the hero and after the simulation. WhatsApp keeps
+full weight in the header, pricing rows, closing block and sticky mobile bar.
 
 ### Honesty constraints that are load-bearing here
 
-- QRIS: nominal auto, **verification stays manual** — stated in the feature
-  row, on the QRIS slip's stamp, in the pricing features, and in the FAQ.
-- Hosting/maintenance is opsional but explicitly **not zero** (the "Jujurnya"
-  note in `OwnershipNote` + FAQ #3).
-- Setup takes time on purpose: Comparison "waktu mulai" and FAQ #5 both say
-  Ordi is the wrong pick if you need something online today.
-- Highlighted tier says **"Rekomendasi kami"**, never a popularity claim.
-- The competitor's monthly price is deliberately not quoted as a number.
+- QRIS: nominal auto, **verification stays manual** — in the flow step, on the
+  QRIS slip, in the pricing features, and in the FAQ.
+- Hosting/maintenance is opsional but explicitly **not zero**.
+- Setup takes time on purpose; the FAQ says Ordi is the wrong pick if you need
+  something online today.
+- Highlighted tier says **"Rekomendasi kami"**. A popularity claim like
+  "paling sering dipakai" was introduced once during a rewrite and reverted:
+  there is no client base to prove it.
+- The competitor's monthly price is never quoted as a number.
 
 ### Verified at build time
 
 Zero horizontal overflow and zero page errors at 320/375/390/414/768/1024/
-1280/1920. Zero WCAG AA text failures. Every tap target ≥44px on mobile widths
-(desktop-only nav links sit at 34px, above the 24px pointer minimum). Keyboard
-order matches visual order and reaches every simulation control. Reduced motion
-lands on the final state with no autoplay, no flight, no status ticker.
+1280/1920. Zero WCAG AA text failures. Every interactive element clears 44px.
+Reduced motion lands on the final state. Manual run of the simulation checks
+out: geprek Rp28.000 plus ongkir Cipete Rp14.000 gives Rp42.000, and that is
+the number that reaches the dashboard.
 
 ### GA4 events
 
 Unchanged so the versions stay comparable: `klik_wa` (`lokasi`:
 header/hero/final-cta/sticky-mobile), `klik_demo` (`lokasi`:
 hero/hero-sim/final-cta), `klik_tier` (`tier`), `consent_choice`. Every
-WhatsApp CTA prefills a different message via `waLink()` in
-`src/data/altContent.js`.
+WhatsApp CTA prefills a different message via `waLink()`.

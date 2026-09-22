@@ -1,57 +1,43 @@
-import { Rule } from "./Paper";
+import { SectionHead } from "./Section";
 import { IconWhatsApp } from "./Icons";
 import { ALT_PRICING_TIERS, waLink } from "../../data/altContent";
 
-// Daftar harga ala lembar cetak: baris bergaris rambut, angka besar
-// menggantung di kolomnya sendiri. Bukan tiga kartu seragam.
 export default function PriceSheet() {
   return (
-    <section
-      id="paket"
-      className="border-y border-espresso/15 bg-sand px-5 py-16 sm:py-24"
-    >
-      <div className="mx-auto max-w-6xl">
-        <Rule n="07" label="Harga" className="mb-8" />
+    <section id="paket" className="px-5 py-16 sm:py-20">
+      <div className="mx-auto max-w-5xl">
+        <SectionHead
+          label="Harga"
+          title="Bayar sekali buat pembangunan sistemnya."
+          lead="Hosting sama maintenance bulanannya opsional, cuma kalau kamu mau kami yang urus server sama domainnya."
+        />
 
-        <div className="md:grid md:grid-cols-12 md:gap-8">
-          <h2 className="display text-[clamp(1.75rem,1.2rem+2vw,2.9rem)] md:col-span-7">
-            Biaya pembangunan dibayar sekali. Hosting dan maintenance opsional.
-          </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-espresso/85 md:col-span-4 md:col-start-9 md:mt-2 md:self-end">
-            Sistem tetap jadi milik bisnis kamu. Biaya bulanan cuma berlaku
-            kalau kamu mau kami yang bantu jagain server, domain, dan
-            perawatannya.
-          </p>
-        </div>
-
-        <ol className="mt-12 border-t border-espresso/25">
+        <div className="mt-9">
           {ALT_PRICING_TIERS.map((tier) => (
-            <li
+            <div
               key={tier.name}
-              className={`grid gap-x-8 gap-y-5 border-b border-espresso/20 py-8 md:grid-cols-12 ${
-                tier.highlight ? "border-l-2 border-l-coral pl-4 md:pl-5" : ""
+              className={`grid gap-x-8 gap-y-4 border-t border-espresso/12 py-7 md:grid-cols-12 ${
+                tier.highlight ? "md:items-start" : ""
               }`}
             >
               <div className="md:col-span-4">
                 {tier.highlight && (
-                  <p className="kicker mb-1.5 text-coral-deep">
-                    Rekomendasi kami
-                  </p>
+                  <p className="label mb-1.5 text-coral-deep">Rekomendasi kami</p>
                 )}
-                <h3 className="display text-[1.6rem]">{tier.name}</h3>
-                <p className="mt-1.5 max-w-[28ch] text-[14px] leading-relaxed text-espresso/85">
+                <h3 className="display text-[1.45rem]">{tier.name}</h3>
+                <p className="mt-1.5 max-w-[30ch] text-[14px] leading-relaxed text-espresso/85">
                   {tier.tagline}
                 </p>
               </div>
 
               <div className="md:col-span-3">
-                <p className="display tnum text-[clamp(1.8rem,1.4rem+1.2vw,2.4rem)] leading-none">
+                <p className="display tnum text-[clamp(1.7rem,1.4rem+1vw,2.2rem)] leading-none">
                   {tier.price}
                 </p>
-                <p className="kicker mt-2 text-espresso/80">
-                  {tier.priceNote}
+                <p className="mt-1.5 text-[13px] text-espresso/80">
+                  sekali bayar
                 </p>
-                <p className="mt-3 max-w-[24ch] text-[12px] leading-snug text-espresso/80">
+                <p className="mt-2.5 max-w-[26ch] text-[12px] leading-snug text-espresso/80">
                   {tier.retainer}
                 </p>
               </div>
@@ -62,7 +48,7 @@ export default function PriceSheet() {
                   {tier.features.map((f, i) => (
                     <li key={f} className="inline">
                       {i > 0 && (
-                        <span aria-hidden="true" className="text-espresso/40">
+                        <span aria-hidden="true" className="text-espresso/80">
                           {" · "}
                         </span>
                       )}
@@ -76,27 +62,24 @@ export default function PriceSheet() {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={() =>
-                    window.gtag?.("event", "klik_tier", { tier: tier.name })
-                  }
-                  className={`press mt-5 inline-flex min-h-11 items-center gap-2 rounded-[3px] px-4 text-[14px] font-bold ${
+                  onClick={() => window.gtag?.("event", "klik_tier", { tier: tier.name })}
+                  className={`press mt-5 inline-flex min-h-11 items-center gap-2 rounded-xl pl-4 pr-3.5 text-[14px] font-bold ${
                     tier.highlight
                       ? "bg-coral text-cream hover:bg-coral-deep"
-                      : "border border-espresso/30 hover:bg-cream"
+                      : "surface surface-hover text-espresso"
                   }`}
                 >
                   <IconWhatsApp className="h-4 w-4" />
                   {tier.cta}
                 </a>
               </div>
-            </li>
+            </div>
           ))}
-        </ol>
+        </div>
 
-        <p className="mt-7 max-w-xl text-[14px] italic leading-relaxed text-espresso/85">
+        <p className="mt-8 max-w-xl text-[14px] leading-relaxed text-espresso/85">
           Belum yakin paket mana yang pas? Cerita dulu aja soal cara kerja
-          bisnismu, nanti kita cari yang paling masuk akal buat kebutuhanmu
-          sekarang.
+          bisnismu, nanti kita cari yang paling masuk akal buat sekarang.
         </p>
       </div>
     </section>

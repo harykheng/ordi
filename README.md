@@ -37,25 +37,20 @@ Halaman yang dirender di branch ini ada di `src/components/alt/*`, datanya di
 (masih di `src/components/*.jsx`, nggak dirender) supaya dua pendekatan gampang
 dibandingin.
 
-Arahnya editorial/cetak, bukan SaaS: tipografi Fraunces + Plus Jakarta Sans,
-tata letak asimetris, tekstur kertas, dan cerita yang jalan ngikutin scroll.
-Pembukaannya bukan screenshot diam tapi **simulasi pesan yang bisa dimainkan**
-(`OrderSim.jsx`): klik produk, keranjang nambah, isi alamat, ongkir kehitung,
-total gerak, struknya terbang ke buku dashboard, status jalan, notifikasi
-WhatsApp bunyi, lalu keluar ajakan nyoba demo yang sebenarnya. Jalan sendiri
+Pembukaannya **simulasi pesan yang bisa diklik** (`OrderSim.jsx`): pilih
+produk, keranjang nambah, isi alamat, ongkir kehitung, total gerak, struknya
+terbang ke dashboard, status jalan, notifikasi WhatsApp bunyi. Jalan sendiri
 sekali kalau dibiarin, berhenti begitu diklik, dan langsung nampilin keadaan
-akhir kalau pengguna nyalain reduced motion.
+akhir kalau reduced motion nyala.
 
-Gambar produk di katalog itu ilustrasi cetak (`FoodArt.jsx`), bukan foto: repo
-ini belum punya aset foto dan domain demo diblokir dari lingkungan build. Kalau
-nanti foto asli tersedia, cukup tukar isi `FoodArt.jsx`.
+Gaya visualnya kertas hangat yang tenang: kedalaman pakai bayangan berlapis
+(bukan garis 1px), radius konsentris, tekan `scale(0.96)`, dan animasi masuk
+yang dipecah bertahap. Panduannya diambil dari
+[watermelon-platform](https://github.com/WatermelonCorp/watermelon-platform)
+(`skills/make-interfaces-feel-better`). Detail aturannya ada di `CLAUDE.md`.
 
-Sebagian besar section sengaja bukan kartu: daftar bergaris rambut, tumpukan
-nota, halaman buku yang dicoret sambil scroll, dan dua blok tinta bertepi
-sobek. Detail aturannya ada di `CLAUDE.md`.
-
-Detail konvensi desain, struktur section, dan aturan positioning ada di
-`CLAUDE.md`.
+Gambar produk di katalog itu ilustrasi (`FoodArt.jsx`), bukan foto: repo ini
+belum punya aset foto dan domain demo diblokir dari lingkungan build.
 
 ## Development
 

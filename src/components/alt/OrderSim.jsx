@@ -67,32 +67,6 @@ function CartGlyph({ className = "h-4 w-4" }) {
   );
 }
 
-function InkArrow({ drawn, vertical = false, className = "" }) {
-  const reduce = useReducedMotion();
-  const anim = {
-    initial: { pathLength: reduce ? 1 : 0 },
-    animate: { pathLength: drawn ? 1 : 0 },
-    transition: { duration: reduce ? 0 : 0.5, ease: "easeInOut" },
-  };
-  return (
-    <svg
-      viewBox={vertical ? "0 0 40 64" : "0 0 116 34"}
-      aria-hidden="true"
-      className={`text-coral ${className}`}
-      fill="none" stroke="currentColor" strokeWidth="2.4"
-      strokeLinecap="round" strokeLinejoin="round"
-    >
-      <motion.path d={vertical ? "M20 3C27 17 13 28 20 52" : "M3 12C32 2 68 26 106 14"} {...anim} opacity="0.85" />
-      <motion.path
-        d={vertical ? "M13 44L20 56L27 45" : "M96 5L108 14L96 24"}
-        {...anim}
-        transition={{ ...anim.transition, delay: reduce ? 0 : 0.28 }}
-        opacity="0.85"
-      />
-    </svg>
-  );
-}
-
 function StatusChip({ status, reduce }) {
   const done = status === "Diproses";
   return (
@@ -100,8 +74,8 @@ function StatusChip({ status, reduce }) {
       key={status}
       initial={reduce ? false : { scale: 0.8, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", stiffness: 460, damping: 18 }}
-      className={`shrink-0 rounded-[2px] px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em] ${
+      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
+      className={`shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em] ${
         done ? "bg-mint text-mint-deep" : "bg-coral text-cream"
       }`}
     >
@@ -234,10 +208,10 @@ export default function OrderSim() {
   }, [phase, reduce, orders.length]);
 
   const narasi = {
-    pick: "Klik satu produk, keranjangnya ngisi sendiri.",
-    address: "Pelanggan yang isi alamatnya, bukan kamu yang nanya.",
+    pick: "Klik salah satu produk buat mulai.",
+    address: "Alamatnya diisi pelanggan sendiri.",
     calc: "Ongkir lagi dihitung dari alamat itu.",
-    confirm: addr ? `Ongkir ${rupiah(addr.ongkir)} masuk, total ikut gerak.` : "Pilih produknya dulu.",
+    confirm: addr ? `Ongkir ${rupiah(addr.ongkir)} masuk. Totalnya ikut gerak.` : "Pilih produknya dulu.",
     flying: "Pesanan lagi nyebrang ke dashboard.",
     done: "Begitulah pelangganmu bisa pesan sendiri.",
   }[phase];
@@ -246,9 +220,9 @@ export default function OrderSim() {
     <div ref={wrapRef} className="relative">
       <div className="md:grid md:grid-cols-12 md:items-start md:gap-6">
         {/* ── KATALOG: layar yang dilihat pelanggan ─────────────── */}
-        <div className="relative z-10 md:col-span-7 md:-rotate-[0.4deg]">
-          <div className="ink-shadow overflow-hidden rounded-[3px] border border-espresso/20 bg-card">
-            <div className="flex items-center gap-2 border-b border-espresso/15 bg-sand/70 px-3 py-2">
+        <div className="relative z-10 md:col-span-7">
+          <div className="surface overflow-hidden rounded-[20px]">
+            <div className="flex items-center gap-2 border-b border-espresso/12 bg-sand/60 px-3 py-2">
               <span className="flex gap-1" aria-hidden="true">
                 <span className="h-1.5 w-1.5 rounded-full bg-espresso/25" />
                 <span className="h-1.5 w-1.5 rounded-full bg-espresso/25" />
@@ -270,7 +244,7 @@ export default function OrderSim() {
                   key={`c${bump}`}
                   initial={reduce || bump === 0 ? false : { scale: 0.5 }}
                   animate={{ scale: 1 }}
-                  transition={{ type: "spring", stiffness: 520, damping: 13 }}
+                  transition={{ type: "spring", duration: 0.3, bounce: 0 }}
                   className="tnum text-[12px] font-bold"
                 >
                   {qty}
@@ -299,8 +273,13 @@ export default function OrderSim() {
                     type="button"
                     onClick={() => add(p)}
                     aria-pressed={aktif}
-                    className={`press relative overflow-hidden rounded-[3px] border text-left ${
-                      aktif ? "border-coral bg-sand" : "border-espresso/15 hover:bg-sand/60"
+                    style={{
+                      boxShadow: aktif
+                        ? "0 0 0 2px var(--color-coral)"
+                        : "var(--shadow-border)",
+                    }}
+                    className={`press relative overflow-hidden rounded-lg text-left ${
+                      aktif ? "bg-sand" : "hover:bg-sand/50"
                     }`}
                   >
                     <span className="block aspect-square">
@@ -353,7 +332,7 @@ export default function OrderSim() {
                 </span>
               </div>
 
-              <p className="kicker mb-2 mt-4 text-espresso/80">Antar ke</p>
+              <p className="label mb-2 mt-4 text-espresso/80">Antar ke</p>
               <div className="min-h-11">
                 {addr ? (
                   <button
@@ -363,7 +342,7 @@ export default function OrderSim() {
                       setAddr(null);
                       setPhase("address");
                     }}
-                    className="press flex min-h-11 w-full items-center justify-between gap-2 rounded-[3px] border border-espresso/20 bg-card px-3 text-left"
+                    className="surface surface-hover press flex min-h-11 w-full items-center justify-between gap-2 rounded-xl px-3 text-left"
                   >
                     <span className="text-[13px] font-semibold">
                       {addr.label}
@@ -371,7 +350,7 @@ export default function OrderSim() {
                         {addr.jarak}
                       </span>
                     </span>
-                    <span className="kicker shrink-0 text-coral-deep">ganti</span>
+                    <span className="label shrink-0 text-coral-deep">ganti</span>
                   </button>
                 ) : (
                   <div className="flex flex-wrap gap-2">
@@ -380,7 +359,7 @@ export default function OrderSim() {
                         key={a.id}
                         type="button"
                         onClick={() => pilihAlamat(a)}
-                        className="press inline-flex min-h-11 items-center rounded-[3px] border border-espresso/25 bg-card px-3 text-[12px] hover:bg-sand"
+                        className="surface surface-hover press inline-flex min-h-11 items-center rounded-xl px-3.5 text-[12px]"
                       >
                         {a.label} <span className="ml-1.5 text-espresso/80">{a.jarak}</span>
                       </button>
@@ -409,13 +388,13 @@ export default function OrderSim() {
               </div>
 
               <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-espresso/25 pt-3">
-                <span className="kicker">Total bayar</span>
+                <span className="label text-espresso/80">Total bayar</span>
                 <motion.span
                   key={total}
                   initial={reduce ? false : { backgroundColor: "rgba(196,149,106,0.5)" }}
                   animate={{ backgroundColor: "rgba(196,149,106,0)" }}
                   transition={{ duration: 0.8 }}
-                  className="display tnum rounded-[2px] px-1 text-[1.7rem] text-coral-deep"
+                  className="display tnum rounded-md px-1 text-[1.7rem] text-coral-deep"
                 >
                   {rupiah(totalRolling)}
                 </motion.span>
@@ -425,12 +404,12 @@ export default function OrderSim() {
                 type="button"
                 onClick={() => (phase === "done" ? restart() : kirim())}
                 disabled={phase !== "done" && !siap}
-                className={`press mt-4 flex min-h-12 w-full items-center justify-center rounded-[3px] px-4 text-[15px] font-bold ${
+                className={`press mt-4 flex min-h-12 w-full items-center justify-center rounded-xl px-4 text-[15px] font-bold ${
                   phase === "done"
-                    ? "border border-espresso/30 bg-card hover:bg-sand"
+                    ? "surface surface-hover"
                     : siap
                       ? "bg-coral text-cream hover:bg-coral-deep"
-                      : "cursor-not-allowed bg-espresso/12 text-espresso/80"
+                      : "cursor-not-allowed bg-espresso/10 text-espresso/80"
                 }`}
               >
                 {phase === "done" ? "Pesan lagi" : "Kirim pesanan"}
@@ -439,24 +418,15 @@ export default function OrderSim() {
           </div>
         </div>
 
-        <div className="flex justify-center py-2 md:hidden">
-          <InkArrow drawn={phase === "done"} vertical className="h-16 w-12" />
-        </div>
-
         {/* ── DASHBOARD: layar yang kamu lihat ──────────────────── */}
-        <div className="relative md:col-span-5 md:mt-14 md:rotate-[0.6deg]">
-          <InkArrow
-            drawn={phase === "done"}
-            className="absolute -left-14 top-[76px] z-20 hidden h-7 w-16 md:block"
-          />
-          <div className="ink-shadow overflow-hidden rounded-[3px] border border-espresso/20 bg-card">
-            <div className="flex items-baseline justify-between gap-2 border-b border-espresso/15 px-4 py-3">
+        <div className="relative md:col-span-5 md:mt-10">
+          <div className="surface overflow-hidden rounded-[20px]">
+            <div className="flex items-baseline justify-between gap-2 border-b border-espresso/12 px-4 py-3">
               <p className="display text-[1.05rem]">Pesanan masuk</p>
-              <p className="kicker text-espresso/80">hari ini</p>
+              <p className="text-[12px] text-espresso/80">hari ini</p>
             </div>
 
-            <div className="ruled relative min-h-[170px] px-4 py-1">
-              <span aria-hidden="true" className="absolute inset-y-0 left-[46px] w-px bg-coral/25 sm:left-[52px]" />
+            <div className="relative min-h-[170px] px-4 py-1">
               <div ref={targetRef}>
                 <AnimatePresence initial={false}>
                   {orders.map((o, i) => (
@@ -465,10 +435,10 @@ export default function OrderSim() {
                       layout={!reduce}
                       initial={reduce ? false : { opacity: 0, y: -12 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ type: "spring", duration: 0.4, bounce: 0 }}
                       className="flex h-[34px] items-center gap-2 pl-[54px] pr-1 sm:pl-16"
                     >
-                      <span className="kicker tnum absolute left-3 text-coral sm:left-4">
+                      <span className="tnum absolute left-3 text-[12px] font-bold text-coral-deep sm:left-4">
                         {o.id}
                       </span>
                       <span className="min-w-0 flex-1 truncate text-[12px]">{o.name}</span>
@@ -483,7 +453,7 @@ export default function OrderSim() {
 
               {RIWAYAT.map((o) => (
                 <div key={o.id} className="flex h-[34px] items-center gap-2 pl-[54px] pr-1 opacity-55 sm:pl-16">
-                  <span className="kicker tnum absolute left-3 text-espresso/80 sm:left-4">
+                  <span className="tnum absolute left-3 text-[12px] text-espresso/80 sm:left-4">
                     {o.id}
                   </span>
                   <span className="min-w-0 flex-1 truncate text-[12px]">{o.name}</span>
@@ -499,7 +469,7 @@ export default function OrderSim() {
                   animate={{ opacity: 1, y: 0, scale: reduce ? 1 : [0.97, 1.03, 1] }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.4, delay: reduce ? 0 : 0.2 }}
-                  className="m-3 rounded-[3px] bg-mint px-3 py-2.5"
+                  className="m-3 rounded-xl bg-mint px-3 py-2.5"
                 >
                   <p className="text-[11px] font-bold text-mint-deep">
                     WhatsApp kamu bunyi
@@ -525,7 +495,7 @@ export default function OrderSim() {
             onAnimationComplete={commit}
             style={{ width: flight.w }}
             aria-hidden="true"
-            className="ink-shadow pointer-events-none absolute left-0 top-0 z-40 rounded-[3px] border border-espresso/25 bg-card px-3 py-2"
+            className="surface pointer-events-none absolute left-0 top-0 z-40 rounded-xl px-3 py-2"
           >
             <p className="text-[11px] font-bold">
               {qty}x {item?.name}
@@ -542,7 +512,7 @@ export default function OrderSim() {
           className={
             phase === "done"
               ? "display max-w-md text-[clamp(1.3rem,1.1rem+0.8vw,1.8rem)]"
-              : "standfirst max-w-md italic text-espresso/90"
+              : "max-w-md text-[15px] leading-relaxed text-espresso/85"
           }
         >
           {narasi}
@@ -556,7 +526,7 @@ export default function OrderSim() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => window.gtag?.("event", "klik_demo", { lokasi: "hero-sim" })}
-                className="press inline-flex min-h-12 items-center gap-2 rounded-[3px] bg-coral px-6 text-[15px] font-bold text-cream hover:bg-coral-deep"
+                className="press inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
               >
                 Coba demo Ordi yang sebenarnya
                 <span aria-hidden="true">&rarr;</span>
@@ -573,7 +543,7 @@ export default function OrderSim() {
             <button
               type="button"
               onClick={() => setAuto((a) => !a)}
-              className="press inline-flex min-h-11 items-center rounded-[3px] border border-espresso/30 px-4 text-[13px] font-semibold hover:bg-sand"
+              className="surface surface-hover press inline-flex min-h-11 items-center rounded-xl px-4 text-[13px] font-semibold"
             >
               {auto ? "Jeda, saya klik sendiri" : "Jalanin otomatis"}
             </button>

@@ -1,42 +1,36 @@
 import { Fragment } from "react";
-import { Rule } from "./Paper";
+import { SectionHead } from "./Section";
 import { ALT_COMPARISON } from "../../data/altContent";
 
-// Tetap tabel tiga kolom, tapi tanpa kotak kartu: cuma garis rambut dan
-// satu kolom yang ditandai tinta merah.
 export default function AltComparison() {
   const { columns, rows } = ALT_COMPARISON;
 
   return (
-    <section className="px-5 py-16 sm:py-24">
-      <div className="mx-auto max-w-6xl">
-        <Rule n="08" label="Perbandingan" className="mb-8" />
+    <section className="border-y border-espresso/12 bg-sand px-5 py-16 sm:py-20">
+      <div className="mx-auto max-w-5xl">
+        <SectionHead
+          label="Bandingin"
+          title="Tiga cara ngatur pesanan."
+          lead="Masing-masing ada enaknya dan ada tukarannya, termasuk Ordi."
+        />
 
-        <div className="md:grid md:grid-cols-12 md:gap-8">
-          <h2 className="display text-[clamp(1.75rem,1.2rem+2vw,2.9rem)] md:col-span-6">
-            Tiga cara ngatur pesanan, tiga konsekuensi yang beda.
-          </h2>
-          <p className="mt-4 text-[15px] leading-relaxed text-espresso/85 md:col-span-5 md:col-start-8 md:mt-2 md:self-end">
-            Nggak ada yang paling benar buat semua orang. Ini biar kelihatan apa
-            yang kamu tukar di tiap pilihan, termasuk kalau milih Ordi.
-          </p>
-        </div>
-
-        {/* Mobile: satu blok per pilihan. Tabel empat kolom selalu kesempitan
-            di layar kecil, jadi markup-nya sengaja dipisah. */}
-        <div className="mt-10 md:hidden">
+        {/* Mobile: satu blok per pilihan. Tabel empat kolom selalu
+            kesempitan di layar kecil. */}
+        <div className="mt-9 md:hidden">
           {columns.map((col) => (
-            <div
-              key={col.key}
-              className={`border-t border-espresso/20 py-6 ${
-                col.key === "ordi" ? "border-l-2 border-l-coral pl-4" : ""
-              }`}
-            >
-              <h3 className="display text-[1.3rem]">{col.label}</h3>
-              <dl className="mt-3">
+            <div key={col.key} className="border-t border-espresso/15 py-5">
+              <h3 className="text-[16px] font-bold">
+                {col.label}
+                {col.key === "ordi" && (
+                  <span className="ml-2 rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream">
+                    ini
+                  </span>
+                )}
+              </h3>
+              <dl className="mt-2.5">
                 {rows.map((row) => (
-                  <div key={row.label} className="py-2">
-                    <dt className="kicker text-espresso/80">{row.label}</dt>
+                  <div key={row.label} className="py-1.5">
+                    <dt className="label text-espresso/80">{row.label}</dt>
                     <dd className="mt-0.5 text-[14px] leading-relaxed text-espresso/85">
                       {row[col.key]}
                     </dd>
@@ -47,18 +41,18 @@ export default function AltComparison() {
           ))}
         </div>
 
-        <div className="mt-10 hidden md:block">
-          <div className="grid grid-cols-[132px_repeat(3,1fr)] border-t border-espresso/25">
-            <div />
+        <div className="mt-9 hidden md:block">
+          <div className="grid grid-cols-[120px_repeat(3,1fr)]">
+            <div className="border-b border-espresso/20" />
             {columns.map((col) => (
               <div
                 key={col.key}
-                className={`px-4 py-4 ${
-                  col.key === "ordi" ? "bg-espresso/[0.06]" : ""
+                className={`border-b-2 px-4 pb-3 ${
+                  col.key === "ordi" ? "border-coral" : "border-espresso/20"
                 }`}
               >
                 <p
-                  className={`display text-[1.1rem] ${
+                  className={`text-[16px] font-bold ${
                     col.key === "ordi" ? "text-coral-deep" : ""
                   }`}
                 >
@@ -69,15 +63,15 @@ export default function AltComparison() {
 
             {rows.map((row) => (
               <Fragment key={row.label}>
-                <div className="border-t border-espresso/15 px-1 py-4">
-                  <span className="kicker text-espresso/80">{row.label}</span>
+                <div className="border-b border-espresso/12 py-4 pr-2">
+                  <span className="label text-espresso/80">{row.label}</span>
                 </div>
                 {columns.map((col) => (
                   <div
                     key={col.key}
-                    className={`border-t border-espresso/15 px-4 py-4 text-[14px] leading-relaxed ${
+                    className={`border-b border-espresso/12 px-4 py-4 text-[14px] leading-relaxed ${
                       col.key === "ordi"
-                        ? "bg-espresso/[0.06] font-medium"
+                        ? "bg-cream/70 font-medium"
                         : "text-espresso/85"
                     }`}
                   >

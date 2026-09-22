@@ -1,16 +1,20 @@
 import { useRef } from "react";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
-import { Rule, Stamp } from "./Paper";
+import { motion, useInView, useReducedMotion } from "framer-motion";
+import { SectionHead } from "./Section";
 import { FLOW } from "../../data/altContent";
 
-// Satu-satunya visual section ini: struk QRIS, ditempel di langkah yang
-// memang ngomongin pembayaran, supaya catatan verifikasi manualnya
-// kebaca bareng klaimnya.
+// Satu-satunya gambar di section ini: struk QRIS, nempel di langkah yang
+// ngomongin pembayaran, biar catatan cek manualnya kebaca bareng klaimnya.
 function QrisSlip() {
   return (
-    <div className="ink-shadow mt-4 max-w-xs rotate-[-0.8deg] border border-espresso/20 bg-card p-4">
-      <div className="flex items-start gap-3">
-        <svg viewBox="0 0 100 100" className="h-14 w-14 shrink-0" aria-hidden="true">
+    <div className="surface mt-4 max-w-sm rounded-2xl p-4">
+      <div className="flex items-center gap-4">
+        <svg
+          viewBox="0 0 100 100"
+          className="h-14 w-14 shrink-0 rounded-lg"
+          style={{ outline: "1px solid rgba(0,0,0,0.1)", outlineOffset: "-1px" }}
+          aria-hidden="true"
+        >
           <rect width="100" height="100" fill="#fdf8f4" />
           {Array.from({ length: 10 }).map((_, row) =>
             Array.from({ length: 10 }).map((_, col) =>
@@ -28,75 +32,60 @@ function QrisSlip() {
           ))}
         </svg>
         <div className="min-w-0">
-          <p className="kicker text-espresso/80">Nominal QR</p>
-          <p className="display tnum text-[1.4rem] text-coral-deep">Rp45.000</p>
+          <p className="text-[12px] text-espresso/80">Nominal QR</p>
+          <p className="display tnum text-[1.5rem] text-coral-deep">Rp45.000</p>
+          <p className="mt-0.5 text-[12px] leading-snug text-espresso/80">
+            Bukti bayarnya masih kamu yang cek.
+          </p>
         </div>
-      </div>
-      <div className="mt-3 flex items-center gap-2 border-t border-dashed border-espresso/25 pt-3">
-        <Stamp className="shrink-0 text-espresso/80" rotate={-4}>
-          cek manual
-        </Stamp>
-        <p className="text-[11px] leading-snug text-espresso/80">
-          Bukti bayarnya tetap kamu yang cek.
-        </p>
       </div>
     </div>
   );
 }
 
+function Step({ step, i, reduce, showSlip }) {
+  const ref = useRef(null);
+  const seen = useInView(ref, { once: true, amount: 0.5 });
+  return (
+    <motion.li
+      ref={ref}
+      initial={reduce ? false : { opacity: 0, y: 12, filter: "blur(4px)" }}
+      animate={seen || reduce ? { opacity: 1, y: 0, filter: "blur(0px)" } : undefined}
+      transition={{ type: "spring", duration: 0.5, bounce: 0, delay: i * 0.05 }}
+      className="flex gap-4 border-t border-espresso/12 py-6 sm:gap-5"
+    >
+      <span className="surface tnum mt-0.5 flex size-8 shrink-0 items-center justify-center rounded-full text-[14px] font-bold text-espresso">
+        {i + 1}
+      </span>
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+          <h3 className="text-[17px] font-bold">{step.title}</h3>
+          <span className="label text-espresso/80">{step.fitur}</span>
+        </div>
+        <p className="mt-1.5 max-w-xl text-[15px] leading-relaxed text-espresso/85">
+          {step.body}
+        </p>
+        {showSlip && <QrisSlip />}
+      </div>
+    </motion.li>
+  );
+}
+
 export default function FlowStrip() {
   const reduce = useReducedMotion();
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 78%", "end 72%"],
-  });
-  const draw = useTransform(scrollYProgress, [0, 1], [0, 1]);
-
   return (
     <section
       id="cara-kerja"
-      className="border-y border-espresso/15 bg-sand px-5 py-16 sm:py-20"
+      className="border-y border-espresso/12 bg-sand px-5 py-16 sm:py-20"
     >
-      <div className="mx-auto max-w-6xl">
-        <Rule n="04" label="Cara kerjanya" className="mb-8" />
-
-        <h2 className="display max-w-[20ch] text-[clamp(1.75rem,1.2rem+2vw,2.9rem)]">
-          Satu alur buat pelanggan. Satu dashboard buat kamu.
-        </h2>
-
-        {/* Garis tinta yang kegambar ngikutin scroll: satu pesanan jalan
-            dari katalog sampai masuk buku, bukan empat animasi terpisah. */}
-        <ol ref={ref} className="relative mt-11">
-          <span aria-hidden="true" className="absolute bottom-3 left-[15px] top-3 w-px bg-espresso/20" />
-          <motion.span
-            aria-hidden="true"
-            style={{ scaleY: reduce ? 1 : draw }}
-            className="absolute bottom-3 left-[15px] top-3 w-px origin-top bg-coral"
-          />
-
+      <div className="mx-auto max-w-5xl">
+        <SectionHead
+          label="Cara kerja"
+          title="Empat langkah, dari pelanggan buka katalog sampai ordernya sampai ke kamu."
+        />
+        <ol className="mt-9">
           {FLOW.map((step, i) => (
-            <li key={step.n} className="relative pb-9 pl-12 last:pb-0 sm:pl-16">
-              <span className="absolute left-0 top-0 flex h-8 w-8 items-center justify-center bg-sand">
-                <span className="display text-[1.35rem] leading-none text-coral-deep">
-                  {step.n}
-                </span>
-              </span>
-              <div className="md:grid md:grid-cols-12 md:gap-6">
-                <div className="md:col-span-7">
-                  <h3 className="display text-[1.3rem] sm:text-[1.5rem]">
-                    {step.title}
-                  </h3>
-                  <p className="mt-1.5 max-w-lg text-[15px] leading-relaxed text-espresso/85">
-                    {step.body}
-                  </p>
-                  {i === 2 && <QrisSlip />}
-                </div>
-                <p className="kicker mt-2 text-espresso/80 md:col-span-4 md:col-start-9 md:mt-2 md:text-right">
-                  {step.fitur}
-                </p>
-              </div>
-            </li>
+            <Step key={step.n} step={step} i={i} reduce={reduce} showSlip={i === 2} />
           ))}
         </ol>
       </div>
