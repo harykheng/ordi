@@ -19,7 +19,7 @@ export default function AltFinalCTA() {
             target="_blank"
             rel="noopener noreferrer"
             onClick={() => trackWa("final")}
-            className="press mt-8 inline-flex min-h-14 items-center gap-2.5 rounded-xl bg-coral pl-7 pr-6 text-[16px] font-bold text-cream hover:bg-coral-deep"
+            className="press lift cta mt-8 inline-flex min-h-14 items-center gap-2.5 rounded-xl bg-coral pl-7 pr-6 text-[16px] font-bold text-cream hover:bg-coral-deep"
           >
             <IconWhatsApp className="h-5 w-5" />
             {FINAL.cta}

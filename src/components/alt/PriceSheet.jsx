@@ -20,7 +20,7 @@ export default function PriceSheet() {
           {ALT_PRICING_TIERS.map((tier) => (
             <li
               key={tier.id}
-              className={`surface flex h-full flex-col rounded-2xl p-5 ${
+              className={`surface lift-card flex h-full flex-col rounded-2xl p-5 ${
                 tier.highlight ? "md:-mt-3 md:pb-7 md:pt-7" : ""
               }`}
               style={tier.highlight ? { boxShadow: "var(--shadow-lift)" } : undefined}
@@ -67,9 +67,9 @@ export default function PriceSheet() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackPricing(tier.name, tier.id)}
-                className={`press mt-6 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-[14px] font-bold ${
+                className={`press lift mt-6 flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-[14px] font-bold ${
                   tier.highlight
-                    ? "bg-coral text-cream hover:bg-coral-deep"
+                    ? "cta bg-coral text-cream hover:bg-coral-deep"
                     : "bg-espresso text-cream hover:bg-bean"
                 }`}
               >

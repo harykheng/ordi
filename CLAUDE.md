@@ -236,32 +236,85 @@ dan FAQ nomor tiga.
 Anchor nav `#cara-kerja` sudah nggak ada. Kalau menambah section, cek lagi
 anchor di `AltHeader.jsx`; ini pernah putus sekali waktu `FlowTabs` dihapus.
 
-### `OrderSim.jsx` — empat tahap
+### Gerak: "satu order berjalan sampai selesai"
 
-Katalog, Keranjang, Bayar, Masuk. Indikator tahap di atas, panel di tengah,
-dan **bar ringkasan yang selalu kelihatan** di bawah (jumlah item, total,
-tombol aksi). Semua lewat ketukan, nggak ada yang butuh hover.
+Bahasa geraknya satu: **benda ringan yang dipindahkan di atas meja kerja.**
+Berangkat cepat, mendarat pelan, nggak ada yang memantul. Tokennya di
+`src/lib/motion.js` (`EASE_MOVE`, `EASE_ENTER`, `DUR`). Pakai token itu,
+jangan nulis durasi dan easing baru di komponen.
 
-Momen utamanya: ketuk produk, total di bar naik, pindah ke Bayar, nominal QR
-sama persis dengan total itu, ganti pin alamat lalu nominal QR ikut berubah,
-kirim, kartu ordernya pindah ke dashboard.
+Ceritanya satu order yang sama, `#0232`, dan dia kebawa dari hero sampai
+rekap: 2x Kopi Susu Gula Aren + 1x Croissant Butter, antar ke Kemang Raya,
+Rp67.000 (36.000 + 22.000 + 9.000 ongkir). **Angka itu saling ngunci.**
+Kalau harga menu atau ongkir di `OrderSim.jsx` diubah, `BeforeOrder`,
+`WhenOrder`, dan `AfterOrder` ikut salah, karena ketiganya nulis Rp67.000
+secara harfiah.
 
-**Cuma tiga jenis animasi di seluruh halaman.** Jangan tambah jenis baru:
+#### `OrderSim.jsx` — empat tahap
 
-1. Pergantian tahap: fade + geser 220ms.
-2. Angka bergulir (`useRollingNumber`), dipakai buat total dan nominal QR.
-3. Kartu order pindah ke dashboard, diukur dari `getBoundingClientRect()` asli
-   dan meng-commit tahap di `onAnimationComplete`.
+Katalog, Keranjang, Bayar, Dashboard. Indikator tahap di atas, panel di
+tengah, keranjang di kepala jendela, dan bar ringkasan di bawah. Semua lewat
+ketukan, nggak ada yang butuh hover.
 
-Plus `.rise` buat masuknya hero. Yang sudah dibuang di pass ini: pulse ongkir,
-badge `+1` melayang, chip status Baru ke Diproses, badge "+1 order baru" di
-kepala dashboard.
+Urutan kejadiannya, dan tiap langkah sengaja nunggu langkah sebelumnya:
 
-Autoplay jalan sekali saat terlihat lalu berhenti pada ketukan pertama.
-`prefers-reduced-motion` **nggak** autoplay sama sekali dan transisinya
-instan, tapi keempat tahap tetap bisa dijalanin dengan ketukan. (Ini beda dari
-pass sebelumnya yang langsung lompat ke keadaan akhir; sekarang demonya
-tap-driven, jadi mulai dari tahap satu lebih masuk akal.)
+1. Ketuk produk, kartunya terbang ke ikon keranjang.
+2. **Keranjangnya baru nambah waktu kartunya mendarat**, bukan waktu diketuk.
+   Yang mindahin itu `flight.commit`, dipanggil di `onAnimationComplete`.
+   Jadi badge 0 ke 1 dan totalnya berubah di ujung gerak, bukan di awal.
+3. Tombol `Lanjutkan` baru muncul setelah keranjangnya keisi. Sebelum itu
+   tempatnya diisi kalimat petunjuk, bukan tombol mati.
+4. Di layar Bayar, nominal QR-nya sama persis sama total. Ganti pin alamat,
+   nominalnya ikut.
+5. `Kirim order` menerbangkan kartu ordernya ke dashboard.
+6. Di dashboard, badge "Order baru masuk" berdenyut sekali, lalu status jalan
+   sendiri Baru, Diproses, Selesai.
+
+Cuma boleh ada satu benda terbang dalam satu waktu. `add()` dan `kirim()`
+dua-duanya mulai dengan `if (flight) return;`. Tanpa itu dua ketukan cepat
+bisa menghapus satu `commit`.
+
+Jarak terbangnya diukur dari `getBoundingClientRect()` asli, bukan dari angka
+tetap, jadi tetap benar di lebar layar apa pun.
+
+#### Gerak waktu discroll
+
+- `BeforeOrder`: tiga chat tercecer merapat, meredup ke opacity 0.72, lalu
+  kartu order `#0232` muncul di sebelahnya. **Jangan turunin opacity-nya lagi**
+  di bawah 0.72; teksnya jatuh di bawah AA (di 0.4 ratio-nya 1,9:1).
+- `WhenOrder`: status kartu ordernya jalan sekali Baru, Diproses, Selesai.
+- `AfterOrder`: angka 12 dan Rp540.000 naik dari nol sekali, `useCountUp`.
+
+Semua pakai `useInView(..., { once: true })`. Sekali jalan, nggak diulang tiap
+kali discroll balik.
+
+#### Microinteraction
+
+Ada di `index.css`, bukan ditulis ulang per komponen:
+
+- `.press` tekan jadi `scale(0.96)`.
+- `.lift` naik 2px waktu ditunjuk kursor, `.lift-card` naik 4px.
+- `.cta` bayangannya menghangat waktu ditunjuk kursor.
+- `.tapcard` bayangannya naik selama jari masih nempel, plus
+  `[data-on="true"]` buat cincin koral waktu produknya kepilih.
+
+**Semua hover dikurung `@media (hover: hover)`.** Di layar sentuh hover bisa
+nyangkut sampai ketukan berikutnya, dan itu kebaca sebagai bug.
+
+`.lift` sengaja pakai properti `translate`, bukan `transform`, supaya nggak
+tabrakan sama `scale` punya `.press` di elemen yang sama.
+
+#### `prefers-reduced-motion`
+
+Dihormati lewat `useReducedMotion()` di komponen dan satu blok di
+`index.css`. Yang berubah:
+
+- Simulasi nggak autoplay sama sekali, tapi **keempat tahapnya tetap bisa
+  diketuk**, dan keranjangnya nambah langsung tanpa kartu terbang.
+- Angka rekap langsung di nilainya (`useCountUp` dengan `ms = 0` mulai dari
+  target, jadi nggak ada kedip nol).
+- Status kartu di `WhenOrder` diam di "Baru".
+- Hover cuma ganti warna dan bayangan, nggak naik.
 
 ### Visual
 
@@ -314,17 +367,26 @@ Nggak ada em dash di string yang dirender.
 
 ### Terverifikasi
 
-`npm run lint` dan `npm run build` bersih. Nol horizontal overflow dan nol page
-error di 320/375/390/414/768/1024/1280/1920. Nol kegagalan kontras WCAG AA.
-Semua elemen interaktif lewat 44px. 13 CTA hidup, nol link mati. Simulasi
-diuji ujung ke ujung: geprek Rp28.000 plus ongkir Cipete Rp14.000 jadi
-Rp42.000, nominal QR ikut Rp42.000, ganti ke Kemang jadi Rp37.000, kirim, dan
-kartunya mendarat di dashboard. FAQ tertutup semua saat load. Anchor `#paket`
-mendarat di 80px. Reduced motion nggak autoplay tapi ketukan tetap jalan. Di
-mobile CTA utama ada di viewport pertama (y=392) dan tap produk berfungsi.
+`npm run lint` dan `npm run build` bersih. Nol horizontal overflow di
+320/360/375/390/414/768/1024/1280/1920 sesudah discroll habis. Nol galat
+halaman asli (yang muncul di sandbox cuma kegagalan jaringan buat font dan
+analytics, itu diblokir policy). Nol kegagalan kontras WCAG AA, diukur dengan
+melukis warna computed di kanvas. Semua tombol dan tautan lewat 44px. 6 tautan
+WhatsApp, semuanya ke nomor yang sama, nol tautan mati. Harga masih utuh.
 
-Copy turun dari 574 ke 453 kata (21%). Section yang mengulang sudah dihapus
-seluruhnya; sisa copy-nya harga, empat FAQ, dan pengungkapan jujur di atas.
+Simulasi diuji ujung ke ujung: ketuk tiga kartu, badge 0 ke 1 ke 3, subtotal
+Rp58.000, pilih Kemang Raya, nominal QR Rp67.000, kirim, kartunya mendarat di
+dashboard bawa isi order dan alamatnya, status jalan Baru ke Diproses ke
+Selesai, reset balik ke keranjang kosong. Autoplay tanpa disentuh sampai ke
+dashboard dengan order contoh yang sama. Reduced motion: nggak autoplay,
+keempat tahap tetap bisa diketuk, angka rekap langsung di nilainya. Di 375px
+tap produk nambah keranjang tanpa hover.
+
+Copy turun dari 574 ke 453 kata (21%) di pass sebelumnya, dan pass gerak ini
+nggak nambah paragraf baru, cuma label di dalam mockup.
 
 **Project ini nggak punya script `typecheck` maupun `test`** (`package.json`
-cuma punya dev, build, lint, preview). Lint plus build yang jadi gerbangnya.
+cuma punya dev, build, lint, preview; nggak ada TypeScript). Lint plus build
+yang jadi gerbangnya, sisanya pengujian browser sekali jalan. `playwright`
+dipasang dan dicopot per sesi pakai `--no-save`, jangan ditinggal di
+`package.json`.

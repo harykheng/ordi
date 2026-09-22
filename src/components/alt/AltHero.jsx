@@ -17,14 +17,14 @@ export default function AltHero() {
           <div className="rise rise-3 mt-8 flex flex-wrap items-center gap-3">
             <a
               href="#alur"
-              className="press inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
+              className="press lift cta inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
             >
               {HERO.primary}
               <span aria-hidden="true">&darr;</span>
             </a>
             <a
               href="#paket"
-              className="surface surface-hover press inline-flex min-h-12 items-center rounded-xl px-5 text-[15px] font-semibold"
+              className="surface surface-hover press lift inline-flex min-h-12 items-center rounded-xl px-5 text-[15px] font-semibold"
             >
               {HERO.secondary}
             </a>

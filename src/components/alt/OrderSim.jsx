@@ -6,9 +6,11 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArtKopi, ArtCroissant, ArtGeprek } from "./FoodArt";
+import { useRollingNumber } from "../../lib/useCountUp";
+import { DUR, EASE_ENTER, EASE_MOVE } from "../../lib/motion";
 import { trackStep } from "../../lib/track";
 
-// Satu simulasi, empat tahap: katalog, keranjang, bayar, masuk.
+// Satu order dijalankan sampai selesai: katalog, keranjang, bayar, dashboard.
 // Data contoh, bukan toko asli. Ditulis sekali di sini.
 const MENU = [
   { id: "kopi", name: "Kopi Susu Gula Aren", price: 18000, Art: ArtKopi },
@@ -25,36 +27,53 @@ const STAGES = [
   { id: "katalog", label: "Katalog" },
   { id: "keranjang", label: "Keranjang" },
   { id: "bayar", label: "Bayar" },
-  { id: "masuk", label: "Masuk" },
+  { id: "dashboard", label: "Dashboard" },
 ];
+
+const STATUS = ["Baru", "Diproses", "Selesai"];
+
+// Order yang dijalanin sendiri waktu simulasinya masuk layar:
+// 2x Kopi Susu Gula Aren + 1x Croissant Butter, antar ke Kemang Raya.
+// 36.000 + 22.000 + 9.000 ongkir = 67.000.
+const DEMO = { kopi: 2, roti: 1 };
 
 const rupiah = (n) => `Rp${n.toLocaleString("id-ID")}`;
 
-// Satu-satunya animasi angka di halaman ini.
-function useRollingNumber(target, animate) {
-  const [shown, setShown] = useState(target);
-  const from = useRef(target);
-  useEffect(() => {
-    if (!animate) {
-      from.current = target;
-      setShown(target);
-      return;
-    }
-    const start = from.current;
-    const delta = target - start;
-    if (delta === 0) return;
-    const t0 = performance.now();
-    let raf;
-    const tick = (t) => {
-      const p = Math.min(1, (t - t0) / 420);
-      setShown(Math.round(start + delta * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) raf = requestAnimationFrame(tick);
-      else from.current = target;
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [target, animate]);
-  return shown;
+function IconKeranjang({ className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M3 5h2.2l1.9 10.2a1.8 1.8 0 0 0 1.8 1.5h7.6a1.8 1.8 0 0 0 1.8-1.4L20 8H6.2" />
+      <circle cx="9.5" cy="20" r="1.2" />
+      <circle cx="17" cy="20" r="1.2" />
+    </svg>
+  );
+}
+
+function IconPin({ className = "" }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      className={className}
+      aria-hidden="true"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.4" />
+    </svg>
+  );
 }
 
 function Qr({ className = "" }) {
@@ -69,11 +88,22 @@ function Qr({ className = "" }) {
       {Array.from({ length: 10 }).map((_, row) =>
         Array.from({ length: 10 }).map((_, col) =>
           (row * 7 + col * 13) % 5 === 0 ? null : (
-            <rect key={`${row}-${col}`} x={col * 10} y={row * 10} width="9" height="9" fill="#2d1a0e" />
+            <rect
+              key={`${row}-${col}`}
+              x={col * 10}
+              y={row * 10}
+              width="9"
+              height="9"
+              fill="#2d1a0e"
+            />
           )
         )
       )}
-      {[[0, 0], [78, 0], [0, 78]].map(([x, y]) => (
+      {[
+        [0, 0],
+        [78, 0],
+        [0, 78],
+      ].map(([x, y]) => (
         <g key={`${x}-${y}`}>
           <rect x={x} y={y} width="22" height="22" fill="#2d1a0e" />
           <rect x={x + 4} y={y + 4} width="14" height="14" fill="#fdf8f4" />
@@ -99,14 +129,11 @@ function PinAlamat({ addr, onPick }) {
               type="button"
               onClick={() => onPick(a)}
               aria-pressed={on}
-              className={`press inline-flex min-h-11 items-center gap-2 rounded-xl px-3.5 text-[13px] font-medium ${
+              className={`press lift inline-flex min-h-11 items-center gap-2 rounded-xl px-3.5 text-[13px] font-medium ${
                 on ? "bg-espresso text-cream" : "surface"
               }`}
             >
-              <svg viewBox="0 0 24 24" className="size-4 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
-                <circle cx="12" cy="10" r="2.4" />
-              </svg>
+              <IconPin className="size-4 shrink-0" />
               {a.label}
               <span className={on ? "text-cream/70" : "text-espresso/70"}>
                 {a.jarak}
@@ -122,12 +149,15 @@ function PinAlamat({ addr, onPick }) {
 export default function OrderSim() {
   const reduce = useReducedMotion();
   const frameRef = useRef(null);
-  const originRef = useRef(null);
+  const cartRef = useRef(null);
+  const bayarRef = useRef(null);
+  const tileRefs = useRef({});
   const inView = useInView(frameRef, { amount: 0.25 });
 
   const [cart, setCart] = useState({});
   const [addr, setAddr] = useState(null);
   const [stage, setStage] = useState(0);
+  const [status, setStatus] = useState(0);
   const [auto, setAuto] = useState(true);
   const [flight, setFlight] = useState(null);
 
@@ -141,42 +171,76 @@ export default function OrderSim() {
   const totalRolling = useRollingNumber(total, !reduce);
   const id = STAGES[stage].id;
 
-  const add = useCallback((p, fromAuto = false) => {
+  const goto = useCallback((i, fromAuto = false) => {
     if (!fromAuto) setAuto(false);
-    setCart((c) => ({ ...c, [p.id]: Math.min((c[p.id] ?? 0) + 1, 3) }));
+    setStage(i);
+    trackStep(STAGES[i].id);
   }, []);
+
+  // Gerak satu: kartu produk pindah ke keranjang. Keranjangnya baru nambah
+  // begitu kartunya mendarat, jadi badge dan totalnya berubah di ujung gerak.
+  const add = useCallback(
+    (p, el, fromAuto = false) => {
+      if (!fromAuto) setAuto(false);
+      if (flight) return;
+      const frame = frameRef.current;
+      const keranjang = cartRef.current;
+      const commit = () =>
+        setCart((c) => ({ ...c, [p.id]: Math.min((c[p.id] ?? 0) + 1, 3) }));
+
+      if (reduce || !frame || !keranjang || !el) {
+        commit();
+        return;
+      }
+      const f = frame.getBoundingClientRect();
+      const s = el.getBoundingClientRect();
+      const k = keranjang.getBoundingClientRect();
+      setFlight({
+        kind: "produk",
+        produk: p,
+        w: s.width,
+        h: s.height,
+        from: { x: s.left - f.left, y: s.top - f.top },
+        to: {
+          x: k.left - f.left + k.width / 2 - s.width / 2,
+          y: k.top - f.top + k.height / 2 - s.height / 2,
+        },
+        commit,
+      });
+    },
+    [flight, reduce]
+  );
 
   const pickAddr = useCallback((a, fromAuto = false) => {
     if (!fromAuto) setAuto(false);
     setAddr(a);
   }, []);
 
-  const goto = useCallback(
-    (i, fromAuto = false) => {
-      if (!fromAuto) setAuto(false);
-      setStage(i);
-      trackStep(STAGES[i].id);
-    },
-    []
-  );
-
-  // Satu gerakan tanda tangan: kartu order pindah ke dashboard.
+  // Gerak dua: kartu order pindah ke dashboard.
   const kirim = useCallback(
     (fromAuto = false) => {
       if (!fromAuto) setAuto(false);
-      if (reduce || !frameRef.current || !originRef.current) {
+      if (flight) return;
+      const frame = frameRef.current;
+      const asal = bayarRef.current;
+      if (reduce || !frame || !asal) {
         goto(3, fromAuto);
         return;
       }
-      const f = frameRef.current.getBoundingClientRect();
-      const o = originRef.current.getBoundingClientRect();
+      const f = frame.getBoundingClientRect();
+      const o = asal.getBoundingClientRect();
       setFlight({
+        kind: "order",
         w: Math.min(o.width, 260),
         from: { x: o.left - f.left, y: o.top - f.top },
         to: { x: o.left - f.left, y: 64 },
+        commit: () => {
+          setStage(3);
+          trackStep("dashboard");
+        },
       });
     },
-    [reduce, goto]
+    [flight, reduce, goto]
   );
 
   const reset = useCallback(() => {
@@ -184,44 +248,86 @@ export default function OrderSim() {
     setCart({});
     setAddr(null);
     setFlight(null);
+    setStatus(0);
     setStage(0);
   }, []);
+
+  // Order yang sudah masuk jalan sendiri: Baru, Diproses, Selesai. Yang minta
+  // gerak seperlunya langsung lihat ketiganya tanpa nunggu.
+  useEffect(() => {
+    if (id !== "dashboard") {
+      setStatus(0);
+      return;
+    }
+    if (reduce) {
+      setStatus(2);
+      return;
+    }
+    const a = setTimeout(() => setStatus(1), 1300);
+    const b = setTimeout(() => setStatus(2), 2900);
+    return () => {
+      clearTimeout(a);
+      clearTimeout(b);
+    };
+  }, [id, reduce]);
 
   // Jalan sendiri sekali kalau kelihatan di layar, berhenti pada sentuhan
   // pertama. Reduced motion nggak ikut jalan sama sekali.
   useEffect(() => {
     if (!auto || !inView || reduce || flight) return;
     let t;
-    if (id === "katalog")
+    if (id === "katalog") {
+      const kurang = MENU.find((p) => (cart[p.id] ?? 0) < (DEMO[p.id] ?? 0));
       t = setTimeout(
-        () => (count ? goto(1, true) : add(MENU[0], true)),
-        count ? 1000 : 1500
+        () =>
+          kurang ? add(kurang, tileRefs.current[kurang.id], true) : goto(1, true),
+        kurang ? (count ? 700 : 1400) : 900
       );
-    else if (id === "keranjang")
+    } else if (id === "keranjang") {
       t = setTimeout(
         () => (addr ? goto(2, true) : pickAddr(TUJUAN[0], true)),
-        addr ? 1000 : 1200
+        addr ? 900 : 1100
       );
-    else if (id === "bayar") t = setTimeout(() => kirim(true), 1700);
+    } else if (id === "bayar") {
+      t = setTimeout(() => kirim(true), 1700);
+    }
     return () => clearTimeout(t);
-  }, [auto, inView, reduce, flight, id, count, addr, add, pickAddr, goto, kirim]);
+  }, [
+    auto,
+    inView,
+    reduce,
+    flight,
+    id,
+    cart,
+    count,
+    addr,
+    add,
+    pickAddr,
+    goto,
+    kirim,
+  ]);
 
   const siap =
     (id === "katalog" && count > 0) ||
     (id === "keranjang" && Boolean(addr)) ||
     id === "bayar" ||
-    id === "masuk";
+    id === "dashboard";
 
   const aksi = {
-    katalog: count ? "Lanjut ke keranjang" : "Pilih produk dulu",
-    keranjang: addr ? "Bayar" : "Pilih alamat dulu",
-    bayar: "Kirim pesanan",
-    masuk: "Coba lagi dari awal",
+    katalog: "Lanjutkan",
+    keranjang: "Bayar",
+    bayar: "Kirim order",
+    dashboard: "Coba sendiri dari awal",
+  }[id];
+
+  const petunjuk = {
+    katalog: "Ketuk produknya dulu",
+    keranjang: "Pilih alamat antarnya dulu",
   }[id];
 
   const onAksi = () => {
     if (id === "bayar") kirim();
-    else if (id === "masuk") reset();
+    else if (id === "dashboard") reset();
     else goto(stage + 1);
   };
 
@@ -231,7 +337,7 @@ export default function OrderSim() {
         ref={frameRef}
         className="surface relative overflow-hidden rounded-[20px]"
       >
-        {/* kepala jendela */}
+        {/* kepala jendela, plus keranjang yang dituju kartu produk */}
         <div className="flex items-center gap-2 border-b border-espresso/12 bg-sand/60 px-3 py-2">
           <span className="flex gap-1" aria-hidden="true">
             <span className="size-1.5 rounded-full bg-espresso/25" />
@@ -240,6 +346,27 @@ export default function OrderSim() {
           </span>
           <span className="mx-auto truncate rounded-full bg-card px-3 py-0.5 text-[10px] text-espresso/80">
             ordistore.studioharel.id
+          </span>
+          <span
+            ref={cartRef}
+            className="relative flex size-7 shrink-0 items-center justify-center rounded-lg bg-card"
+          >
+            <IconKeranjang className="size-4 text-espresso/80" />
+            <motion.span
+              key={count}
+              initial={reduce ? false : { scale: 0.4, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ type: "spring", duration: 0.42, bounce: 0.35 }}
+              aria-hidden="true"
+              className={`tnum absolute -right-1.5 -top-1.5 flex min-w-[17px] justify-center rounded-full px-1 text-[10px] font-bold leading-[17px] ${
+                count ? "bg-coral text-cream" : "bg-espresso/15 text-espresso/80"
+              }`}
+            >
+              {count}
+            </motion.span>
+            <span className="sr-only" aria-live="polite">
+              {count} produk di keranjang
+            </span>
           </span>
         </div>
 
@@ -251,7 +378,7 @@ export default function OrderSim() {
             return (
               <li key={s.id} className="flex flex-1 items-center gap-1.5">
                 <span
-                  className={`tnum flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                  className={`tnum flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold transition-colors duration-200 ${
                     on
                       ? "bg-coral text-cream"
                       : lewat
@@ -281,7 +408,7 @@ export default function OrderSim() {
               initial={reduce ? false : { opacity: 0, x: 14 }}
               animate={{ opacity: 1, x: 0 }}
               exit={reduce ? undefined : { opacity: 0, x: -10 }}
-              transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
+              transition={{ duration: DUR.swap, ease: EASE_MOVE }}
               className="p-4"
             >
               {id === "katalog" && (
@@ -298,13 +425,12 @@ export default function OrderSim() {
                         <button
                           key={p.id}
                           type="button"
-                          onClick={() => add(p)}
-                          className="press relative overflow-hidden rounded-lg text-left"
-                          style={{
-                            boxShadow: qty
-                              ? "0 0 0 2px var(--color-coral)"
-                              : "var(--shadow-border)",
+                          ref={(el) => {
+                            tileRefs.current[p.id] = el;
                           }}
+                          onClick={(e) => add(p, e.currentTarget)}
+                          data-on={qty > 0}
+                          className="tapcard lift relative overflow-hidden rounded-lg bg-card text-left"
                         >
                           <span className="block aspect-[4/3]">
                             <Art />
@@ -318,9 +444,21 @@ export default function OrderSim() {
                                 {rupiah(p.price)}
                               </span>
                               {qty > 0 && (
-                                <span className="tnum rounded-md bg-coral px-1.5 text-[10px] font-bold text-cream">
+                                <motion.span
+                                  key={qty}
+                                  initial={
+                                    reduce ? false : { scale: 0.5, opacity: 0 }
+                                  }
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{
+                                    type: "spring",
+                                    duration: 0.4,
+                                    bounce: 0.35,
+                                  }}
+                                  className="tnum rounded-md bg-coral px-1.5 text-[10px] font-bold text-cream"
+                                >
                                   {qty}x
-                                </span>
+                                </motion.span>
                               )}
                             </span>
                           </span>
@@ -369,7 +507,7 @@ export default function OrderSim() {
               )}
 
               {id === "bayar" && (
-                <div ref={originRef}>
+                <div ref={bayarRef}>
                   <div className="flex items-center gap-4">
                     <Qr className="size-24 shrink-0 rounded-lg" />
                     <div className="min-w-0">
@@ -392,18 +530,30 @@ export default function OrderSim() {
                 </div>
               )}
 
-              {id === "masuk" && (
+              {id === "dashboard" && (
                 <div>
                   <div className="flex items-baseline justify-between gap-2">
-                    <p className="text-[13px] font-bold">Pesanan masuk</p>
-                    <span className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream">
-                      order baru
+                    <p className="text-[13px] font-bold">Dashboard kamu</p>
+                    <span className="relative inline-flex">
+                      <span className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream">
+                        order baru masuk
+                      </span>
+                      {!reduce && (
+                        <motion.span
+                          aria-hidden="true"
+                          className="pointer-events-none absolute -inset-px rounded-md ring-2 ring-coral"
+                          initial={{ opacity: 0.65, scale: 1 }}
+                          animate={{ opacity: 0, scale: 1.45 }}
+                          transition={{ duration: 0.9, ease: "easeOut" }}
+                        />
+                      )}
                     </span>
                   </div>
-                  <div className="mt-2.5 surface rounded-xl p-3">
+
+                  <div className="surface mt-2.5 rounded-xl p-3">
                     <div className="flex items-baseline justify-between gap-2">
                       <span className="tnum text-[12px] font-bold text-coral-deep">
-                        #0231
+                        #0232
                       </span>
                       <span className="tnum text-[13px] font-bold">
                         {rupiah(total)}
@@ -412,16 +562,52 @@ export default function OrderSim() {
                     <p className="mt-1 text-[12px] leading-snug text-espresso/85">
                       {items.map((i) => `${i.qty}x ${i.name}`).join(", ")}
                     </p>
-                    <p className="mt-1 text-[12px] text-espresso/80">
-                      Antar ke {addr?.label}, {addr?.jarak}
+                    <p className="mt-1 flex items-center gap-1 text-[12px] text-espresso/80">
+                      <IconPin className="size-3.5 shrink-0" />
+                      {addr?.label}, {addr?.jarak}
                     </p>
+
+                    {/* status jalan sendiri sampai selesai */}
+                    <ol className="mt-3 flex items-center gap-1.5 border-t border-espresso/12 pt-3">
+                      {STATUS.map((s, i) => {
+                        const kini = i === status;
+                        const lewat = i < status;
+                        return (
+                          <li key={s} className="flex items-center gap-1.5">
+                            {i > 0 && (
+                              <span
+                                aria-hidden="true"
+                                className={`h-px w-3 ${
+                                  i <= status ? "bg-espresso/45" : "bg-espresso/15"
+                                }`}
+                              />
+                            )}
+                            <span
+                              aria-current={kini ? "step" : undefined}
+                              className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold transition-colors duration-300 ${
+                                kini && i === 2
+                                  ? "bg-mint text-mint-deep"
+                                  : kini
+                                    ? "bg-coral text-cream"
+                                    : lewat
+                                      ? "bg-sand text-espresso/80"
+                                      : "text-espresso/80"
+                              }`}
+                            >
+                              {s}
+                            </span>
+                          </li>
+                        );
+                      })}
+                    </ol>
                   </div>
+
                   <div className="mt-2.5 rounded-xl bg-mint px-3 py-2.5">
                     <p className="text-[11px] font-bold text-mint-deep">
                       WhatsApp kamu bunyi
                     </p>
                     <p className="mt-0.5 text-[11px] leading-snug">
-                      Order #0231 masuk. Datanya sudah lengkap.
+                      Order #0232 masuk. Datanya sudah lengkap.
                     </p>
                   </div>
                 </div>
@@ -440,38 +626,78 @@ export default function OrderSim() {
               {rupiah(totalRolling)}
             </p>
           </div>
-          <button
-            type="button"
-            onClick={onAksi}
-            disabled={!siap}
-            className={`press ml-auto inline-flex min-h-11 shrink-0 items-center rounded-xl px-4 text-[14px] font-bold ${
-              siap
-                ? "bg-coral text-cream hover:bg-coral-deep"
-                : "cursor-not-allowed bg-espresso/10 text-espresso/80"
-            }`}
-          >
-            {aksi}
-          </button>
+          <div className="ml-auto flex min-h-11 shrink-0 items-center">
+            <AnimatePresence mode="wait" initial={false}>
+              {siap ? (
+                <motion.button
+                  key="aksi"
+                  type="button"
+                  onClick={onAksi}
+                  initial={reduce ? false : { opacity: 0, y: 6, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={reduce ? undefined : { opacity: 0, scale: 0.97 }}
+                  transition={{ duration: DUR.tap, ease: EASE_ENTER }}
+                  className="press lift cta inline-flex min-h-11 items-center rounded-xl bg-coral px-4 text-[14px] font-bold text-cream hover:bg-coral-deep"
+                >
+                  {aksi}
+                </motion.button>
+              ) : (
+                <motion.p
+                  key="petunjuk"
+                  initial={reduce ? false : { opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={reduce ? undefined : { opacity: 0 }}
+                  transition={{ duration: DUR.tap }}
+                  className="text-right text-[12px] leading-snug text-espresso/80"
+                >
+                  {petunjuk}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
 
-        {/* kartu order yang pindah ke dashboard */}
+        {/* barang yang lagi dipindahkan */}
         <AnimatePresence>
           {flight && (
             <motion.div
-              initial={{ x: flight.from.x, y: flight.from.y, opacity: 1, scale: 1 }}
-              animate={{ x: flight.to.x, y: flight.to.y, opacity: 0.15, scale: 0.72 }}
-              transition={{ duration: 0.55, ease: [0.5, 0, 0.2, 1] }}
-              onAnimationComplete={() => {
-                setFlight(null);
-                setStage(3);
-                trackStep("masuk");
+              key={flight.kind}
+              initial={{
+                x: flight.from.x,
+                y: flight.from.y,
+                opacity: 1,
+                scale: 1,
               }}
-              style={{ width: flight.w }}
+              animate={{
+                x: flight.to.x,
+                y: flight.to.y,
+                opacity: flight.kind === "produk" ? 0.25 : 0.15,
+                scale: flight.kind === "produk" ? 0.3 : 0.72,
+              }}
+              transition={{ duration: DUR.move, ease: EASE_MOVE }}
+              onAnimationComplete={() => {
+                flight.commit();
+                setFlight(null);
+              }}
+              style={{
+                width: flight.w,
+                height: flight.kind === "produk" ? flight.h : undefined,
+              }}
               aria-hidden="true"
-              className="surface pointer-events-none absolute left-0 top-0 z-30 rounded-xl px-3 py-2"
+              className={`surface pointer-events-none absolute left-0 top-0 z-30 overflow-hidden ${
+                flight.kind === "produk" ? "rounded-lg" : "rounded-xl px-3 py-2"
+              }`}
             >
-              <p className="text-[11px] font-bold">Order #0231</p>
-              <p className="tnum text-[11px]">{rupiah(total)}</p>
+              {flight.kind === "produk" ? (
+                <span className="block aspect-[4/3]">
+                  <flight.produk.Art />
+                </span>
+              ) : (
+                <>
+                  <p className="text-[11px] font-bold">Order #0232</p>
+                  <p className="tnum text-[11px]">{rupiah(total)}</p>
+                </>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

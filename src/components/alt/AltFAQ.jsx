@@ -14,9 +14,10 @@ export default function AltFAQ() {
                 <span className="text-[16px] font-semibold">{item.q}</span>
                 <span
                   aria-hidden="true"
-                  className="shrink-0 text-xl leading-none text-coral-deep transition-transform duration-200 group-open:rotate-45"
+                  className="relative size-4 shrink-0 text-coral-deep"
                 >
-                  +
+                  <span className="absolute left-0 top-1/2 h-0.5 w-4 -translate-y-1/2 rounded-full bg-current" />
+                  <span className="absolute left-0 top-1/2 h-0.5 w-4 -translate-y-1/2 rotate-90 rounded-full bg-current transition-transform duration-300 ease-[cubic-bezier(0.2,0,0,1)] group-open:rotate-0" />
                 </span>
               </summary>
               <p className="-mt-1 max-w-2xl pb-5 text-[14px] leading-relaxed text-espresso/85">

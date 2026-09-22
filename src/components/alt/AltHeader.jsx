@@ -58,7 +58,7 @@ export default function AltHeader() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackDemo("header")}
-          className="press ml-auto inline-flex min-h-11 shrink-0 items-center rounded-lg bg-coral px-4 text-[13px] font-bold text-cream hover:bg-coral-deep md:ml-3"
+          className="press lift cta ml-auto inline-flex min-h-11 shrink-0 items-center rounded-lg bg-coral px-4 text-[13px] font-bold text-cream hover:bg-coral-deep md:ml-3"
         >
           <span className="hidden sm:inline">Coba demonya</span>
           <span className="sm:hidden">Coba demo</span>

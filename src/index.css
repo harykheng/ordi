@@ -134,6 +134,58 @@ dd {
   scale: 0.96;
 }
 
+/* Naik sedikit waktu ditunjuk kursor. Pakai `translate`, bukan `transform`,
+   supaya nggak tabrakan sama `scale` punya `.press`. Semua dikurung
+   `hover: hover` biar di layar sentuh nggak ada keadaan nyangkut. */
+.lift {
+  transition-property: translate, box-shadow, background-color, color;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+@media (hover: hover) {
+  .lift:hover {
+    translate: 0 -2px;
+  }
+  .lift-card:hover {
+    translate: 0 -4px;
+    box-shadow: var(--shadow-lift);
+  }
+  .cta:hover {
+    box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--color-coral) 70%, transparent);
+  }
+}
+
+.lift-card {
+  transition-property: translate, box-shadow;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+.cta {
+  transition-property: translate, box-shadow, background-color, color;
+  transition-duration: 180ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* Kartu yang diketuk: bayangannya naik selama jari masih nempel. Ini satu
+   satunya umpan balik yang kebaca di layar sentuh. */
+.tapcard {
+  box-shadow: var(--shadow-border);
+  transition-property: box-shadow, scale;
+  transition-duration: 150ms;
+  transition-timing-function: cubic-bezier(0.2, 0, 0, 1);
+}
+.tapcard:active {
+  box-shadow: var(--shadow-lift);
+  scale: 0.97;
+}
+.tapcard[data-on="true"] {
+  box-shadow:
+    0 0 0 2px var(--color-coral),
+    var(--shadow-border);
+}
+
 /* Masuk bertahap: turun sedikit, buram sedikit, lalu jernih. */
 @keyframes rise {
   to {
@@ -175,6 +227,15 @@ dd {
     transform: none;
     filter: none;
     animation: none;
+  }
+  .lift:hover,
+  .lift-card:hover,
+  .cta:hover {
+    translate: none;
+  }
+  .press:active,
+  .tapcard:active {
+    scale: none;
   }
   *,
   *::before,

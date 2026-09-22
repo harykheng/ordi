@@ -14,7 +14,7 @@ export default function ThreeSteps() {
 
         <ol className="mt-9 grid gap-4 sm:grid-cols-3">
           {START_STEPS.map((s, i) => (
-            <li key={s.title} className="surface rounded-2xl p-5">
+            <li key={s.title} className="surface lift-card rounded-2xl p-5">
               <span className="tnum flex size-8 items-center justify-center rounded-full bg-sand text-[14px] font-bold">
                 {i + 1}
               </span>
@@ -31,7 +31,7 @@ export default function ThreeSteps() {
           target="_blank"
           rel="noopener noreferrer"
           onClick={() => trackWa("demo")}
-          className="press mt-8 inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
+          className="press lift cta mt-8 inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
         >
           <IconWhatsApp className="h-[18px] w-[18px]" />
           Mulai dari langkah pertama

@@ -36,13 +36,13 @@ export default function AltConsentBanner({ onResolve }) {
         <div className="flex shrink-0 gap-2">
           <button
             onClick={() => resolve("denied")}
-            className="surface surface-hover press rounded-lg px-4 py-2 text-[13px] font-semibold text-espresso"
+            className="surface surface-hover press lift inline-flex min-h-11 items-center rounded-lg px-4 text-[13px] font-semibold text-espresso"
           >
             Nolak
           </button>
           <button
             onClick={() => resolve("granted")}
-            className="press rounded-lg bg-espresso px-4 py-2 text-[13px] font-semibold text-cream hover:bg-bean"
+            className="press lift inline-flex min-h-11 items-center rounded-lg bg-espresso px-4 text-[13px] font-semibold text-cream hover:bg-bean"
           >
             Oke, Lanjut
           </button>
