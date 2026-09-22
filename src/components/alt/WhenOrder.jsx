@@ -64,7 +64,9 @@ function KartuOrder({ status, reduce }) {
         </div>
       </dl>
       <div className="relative mt-3 rounded-xl bg-mint px-3 py-2.5">
-        <p className="text-[11px] font-bold text-mint-deep">Order baru masuk</p>
+        <p className="text-[11px] font-bold text-mint-deep">
+          Masuk ke sistemmu
+        </p>
         <p className="mt-0.5 text-[11px] leading-snug">
           Notifikasinya nyampe ke WhatsApp kamu.
         </p>

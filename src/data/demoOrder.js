@@ -15,7 +15,7 @@ export const ZONES = [
   { id: "cipete", label: "Cipete Raya", jarak: "5,8 km", ongkir: 23000 },
 ];
 
-// Keadaan dashboard sebelum order baru masuk. Jangan pernah render nol di
+// Keadaan dashboard sebelum order barunya masuk. Jangan pernah render nol di
 // sini; panel yang isinya "0 order, Rp0" kebaca sebagai aplikasi rusak.
 export const DASHBOARD_BASE = {
   orders: 12,

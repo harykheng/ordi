@@ -7,7 +7,7 @@ export { DEMO_URL, WHATSAPP_CTA_LINK };
 
 export const HERO = {
   eyebrow: "Sistem order untuk bisnis makanan",
-  headline: "Semua pesanan tokomu, masuk rapi di satu tempat.",
+  headline: "Udah punya bisnis sendiri. Harusnya punya sistem sendiri juga.",
   sub: "Pelanggan melihat katalog dan memesan sendiri. Kamu menerima order yang sudah jelas, tanpa mencari-cari lagi di chat.",
   primary: "Coba alurnya",
   secondary: "Lihat paket",

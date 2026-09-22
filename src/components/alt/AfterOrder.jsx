@@ -5,7 +5,7 @@ import { useCountUp } from "../../lib/useCountUp";
 import { DASHBOARD_BASE, rupiah } from "../../data/demoOrder";
 import { AFTER } from "../../data/altContent";
 
-// Satu visual: rekap harian di dashboard, keadaan sebelum order baru masuk.
+// Satu visual: rekap harian di dashboard, keadaan sebelum order barunya masuk.
 // Dua angkanya naik dari nol sekali saja waktu masuk layar. Angkanya contoh.
 // Hitungannya mulai dari sore hari, bukan dari nol, jadi panelnya nggak
 // pernah kebaca kosong walaupun ketahan sebentar sebelum masuk viewport.

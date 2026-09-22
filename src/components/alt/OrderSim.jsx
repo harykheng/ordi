@@ -472,7 +472,7 @@ export default function OrderSim({ onAdd }) {
                             transition={{ duration: 0.3, ease: EASE_ENTER }}
                             className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream"
                           >
-                            order baru masuk
+                            masuk ke sistemmu
                           </motion.span>
                           {!reduce && (
                             <motion.span

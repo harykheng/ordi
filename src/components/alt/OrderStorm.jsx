@@ -24,7 +24,7 @@ const DESKTOP = [
   { k: "chat", s: "Mbak croissant masih ada?", x: 57, y: 17, dx: -100, dy: -330, sx: -141, sy: -101, op: 0.32, d: 13, t: 0, f: false },
   { k: "chat", s: "Totalnya berapa ya kak?", x: 76, y: 15, dx: 90, dy: -360, sx: -51, sy: -91, op: 0.3, d: 15, t: 2.4, f: false },
   { k: "chat", s: "Alamat nanti saya share", x: 58, y: 86, dx: -160, dy: 300, sx: -102, sy: 81, op: 0.26, d: 14, t: 5.1, f: true },
-  { k: "card", s: "Order baru masuk", x: 84, y: 23, dx: 300, dy: -210, sx: -20, sy: -131, op: 0.35, d: 11, t: 1.2, f: false },
+  { k: "card", s: "Masuk ke sistemmu", x: 84, y: 23, dx: 300, dy: -210, sx: -20, sy: -131, op: 0.35, d: 11, t: 1.2, f: false },
   { k: "harga", s: "Rp67.000", x: 86, y: 44, dx: 330, dy: -40, sx: -40, sy: -40, op: 0.34, d: 12, t: 3.6, f: false },
   { k: "pin", s: "Kemang Raya \u00b7 3,2 km", x: 53, y: 58, dx: -300, dy: 250, sx: -294, sy: 283, op: 0.28, d: 16, t: 6.8, f: true },
   { k: "label", s: "Bukti transfer", x: 83, y: 80, dx: 280, dy: 230, sx: -10, sy: 81, op: 0.26, d: 14, t: 8.2, f: true },
@@ -41,7 +41,7 @@ const DESKTOP = [
 // ada yang lewat area judul, dan nggak ada yang ngikut kursor.
 const MOBILE = [
   { k: "chat", s: "Mbak croissant masih ada?", x: 32, y: 54, dx: -150, dy: 120, sx: -70, sy: -69, op: 0.28, d: 14, t: 0, f: false },
-  { k: "card", s: "Order baru masuk", x: 72, y: 52, dx: 160, dy: 130, sx: -8, sy: -92, op: 0.3, d: 12, t: 2.6, f: false },
+  { k: "card", s: "Masuk ke sistemmu", x: 72, y: 52, dx: 160, dy: 130, sx: -8, sy: -92, op: 0.3, d: 12, t: 2.6, f: false },
   { k: "harga", s: "Rp67.000", x: 20, y: 72, dx: -150, dy: 140, sx: -31, sy: 69, op: 0.32, d: 13, t: 5.4, f: false },
   { k: "pin", s: "Kemang Raya \u00b7 3,2 km", x: 72, y: 68, dx: 160, dy: 110, sx: -90, sy: -69, op: 0.26, d: 15, t: 7.9, f: true },
   { k: "notif", s: "+1 pesanan", x: 50, y: 58, dx: -40, dy: 190, sx: -39, sy: 92, op: 0.26, d: 11, t: 4.1, f: false },
@@ -107,7 +107,7 @@ function Item({ item }) {
 
 // Satu atau dua potongan yang ketarik masuk waktu pengunjung nambah produk.
 const PULL = [
-  { k: "card", s: "Order baru masuk", x: 54, y: 34, dx: -170, dy: -110 },
+  { k: "card", s: "Masuk ke sistemmu", x: 54, y: 34, dx: -170, dy: -110 },
   { k: "harga", s: "Rp67.000", x: 88, y: 52, dx: 190, dy: 90 },
 ];
 
