@@ -7,13 +7,13 @@ export default function PriceSheet() {
   return (
     <section
       id="paket"
-      className="border-y border-espresso/12 bg-sand px-5 py-16 sm:py-20"
+      className="px-5 py-16 sm:py-20"
     >
       <div className="mx-auto max-w-5xl">
         <SectionHead
           label="Harga"
-          title="Mulai dari yang paling bikin repot sekarang."
-          lead="Bayar pembangunan sistem sekali. Tambah fitur waktu bisnis kamu sudah membutuhkannya."
+          title="Bayar sekali untuk pembangunan sistemnya."
+          lead="Tambah fitur waktu tokomu sudah butuh."
         />
 
         <ul className="mt-9 grid items-start gap-4 md:grid-cols-3">

@@ -3,9 +3,9 @@ import { ALT_FAQ } from "../../data/altContent";
 
 export default function AltFAQ() {
   return (
-    <section id="faq" className="px-5 py-16 sm:py-20">
+    <section id="faq" className="border-y border-espresso/12 bg-sand px-5 py-16 sm:py-20">
       <div className="mx-auto max-w-5xl">
-        <SectionHead label="Pertanyaan" title="Empat hal yang biasanya ditanya duluan." />
+        <SectionHead label="Pertanyaan" title="Yang biasanya ditanya duluan." />
 
         <div className="mt-9 max-w-3xl">
           {ALT_FAQ.map((item) => (

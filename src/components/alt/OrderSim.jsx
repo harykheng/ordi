@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AnimatePresence,
   motion,
@@ -6,16 +6,14 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { ArtKopi, ArtCroissant, ArtGeprek } from "./FoodArt";
-import { DEMO_URL } from "../../data/altContent";
-import { trackDemo } from "../../lib/track";
+import { trackStep } from "../../lib/track";
 
-// Demonstrasi produk yang bisa diklik: pilih produk, keranjang nambah,
-// alamat dipilih, ongkir kehitung, total gerak, pesanan terbang ke
-// dashboard, notifikasi WhatsApp bunyi. Data contoh, bukan toko asli.
+// Satu simulasi, empat tahap: katalog, keranjang, bayar, masuk.
+// Data contoh, bukan toko asli. Ditulis sekali di sini.
 const MENU = [
-  { id: "kopi", name: "Kopi Susu Gula Aren", note: "Es / panas", price: 18000, Art: ArtKopi },
-  { id: "roti", name: "Croissant Butter", note: "Baru keluar oven", price: 22000, Art: ArtCroissant },
-  { id: "geprek", name: "Nasi Ayam Geprek", note: "Level 1 sampai 5", price: 28000, Art: ArtGeprek },
+  { id: "kopi", name: "Kopi Susu Gula Aren", price: 18000, Art: ArtKopi },
+  { id: "roti", name: "Croissant Butter", price: 22000, Art: ArtCroissant },
+  { id: "geprek", name: "Nasi Ayam Geprek", price: 28000, Art: ArtGeprek },
 ];
 
 const TUJUAN = [
@@ -23,13 +21,16 @@ const TUJUAN = [
   { id: "cipete", label: "Cipete Raya", jarak: "5,8 km", ongkir: 14000 },
 ];
 
-const RIWAYAT = [
-  { id: "#0230", name: "Croissant Butter", total: 36000 },
-  { id: "#0229", name: "Kopi Susu Gula Aren", total: 27000 },
+const STAGES = [
+  { id: "katalog", label: "Katalog" },
+  { id: "keranjang", label: "Keranjang" },
+  { id: "bayar", label: "Bayar" },
+  { id: "masuk", label: "Masuk" },
 ];
 
 const rupiah = (n) => `Rp${n.toLocaleString("id-ID")}`;
 
+// Satu-satunya animasi angka di halaman ini.
 function useRollingNumber(target, animate) {
   const [shown, setShown] = useState(target);
   const from = useRef(target);
@@ -45,9 +46,8 @@ function useRollingNumber(target, animate) {
     const t0 = performance.now();
     let raf;
     const tick = (t) => {
-      const p = Math.min(1, (t - t0) / 480);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setShown(Math.round(start + delta * eased));
+      const p = Math.min(1, (t - t0) / 420);
+      setShown(Math.round(start + delta * (1 - Math.pow(1 - p, 3))));
       if (p < 1) raf = requestAnimationFrame(tick);
       else from.current = target;
     };
@@ -57,519 +57,429 @@ function useRollingNumber(target, animate) {
   return shown;
 }
 
-function CartGlyph({ className = "h-4 w-4" }) {
+function Qr({ className = "" }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden="true" fill="none"
-      stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 5h2.2l2 10.5h10l2-7.5H7.2" />
-      <circle cx="9.5" cy="19" r="1.4" />
-      <circle cx="17" cy="19" r="1.4" />
+    <svg
+      viewBox="0 0 100 100"
+      className={className}
+      style={{ outline: "1px solid rgba(0,0,0,0.1)", outlineOffset: "-1px" }}
+      aria-hidden="true"
+    >
+      <rect width="100" height="100" fill="#fdf8f4" />
+      {Array.from({ length: 10 }).map((_, row) =>
+        Array.from({ length: 10 }).map((_, col) =>
+          (row * 7 + col * 13) % 5 === 0 ? null : (
+            <rect key={`${row}-${col}`} x={col * 10} y={row * 10} width="9" height="9" fill="#2d1a0e" />
+          )
+        )
+      )}
+      {[[0, 0], [78, 0], [0, 78]].map(([x, y]) => (
+        <g key={`${x}-${y}`}>
+          <rect x={x} y={y} width="22" height="22" fill="#2d1a0e" />
+          <rect x={x + 4} y={y + 4} width="14" height="14" fill="#fdf8f4" />
+          <rect x={x + 8} y={y + 8} width="6" height="6" fill="#2d1a0e" />
+        </g>
+      ))}
     </svg>
   );
 }
 
-function StatusChip({ status, reduce }) {
-  const done = status === "Diproses";
+// Pin alamat dipakai di keranjang dan di layar bayar, supaya ganti alamat
+// langsung kelihatan efeknya ke nominal QR.
+function PinAlamat({ addr, onPick }) {
   return (
-    <motion.span
-      key={status}
-      initial={reduce ? false : { scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-      className={`shrink-0 rounded-md px-1.5 py-0.5 text-[9px] font-bold uppercase tracking-[0.1em] ${
-        done ? "bg-mint text-mint-deep" : "bg-coral text-cream"
-      }`}
-    >
-      {status}
-    </motion.span>
+    <div>
+      <p className="label mb-2 text-espresso/80">Antar ke</p>
+      <div className="flex flex-wrap gap-2">
+        {TUJUAN.map((a) => {
+          const on = addr?.id === a.id;
+          return (
+            <button
+              key={a.id}
+              type="button"
+              onClick={() => onPick(a)}
+              aria-pressed={on}
+              className={`press inline-flex min-h-11 items-center gap-2 rounded-xl px-3.5 text-[13px] font-medium ${
+                on ? "bg-espresso text-cream" : "surface"
+              }`}
+            >
+              <svg viewBox="0 0 24 24" className="size-4 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
+                <circle cx="12" cy="10" r="2.4" />
+              </svg>
+              {a.label}
+              <span className={on ? "text-cream/70" : "text-espresso/70"}>
+                {a.jarak}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
 export default function OrderSim() {
   const reduce = useReducedMotion();
-  const wrapRef = useRef(null);
+  const frameRef = useRef(null);
   const originRef = useRef(null);
-  const targetRef = useRef(null);
-  const inView = useInView(wrapRef, { amount: 0.25 });
+  const inView = useInView(frameRef, { amount: 0.25 });
 
-  const [item, setItem] = useState(null);
-  const [qty, setQty] = useState(0);
+  const [cart, setCart] = useState({});
   const [addr, setAddr] = useState(null);
-  const [phase, setPhase] = useState("pick"); // pick > address > calc > confirm > flying > done
+  const [stage, setStage] = useState(0);
   const [auto, setAuto] = useState(true);
-  const [orders, setOrders] = useState([]);
-  const [bump, setBump] = useState(0);
   const [flight, setFlight] = useState(null);
-  const counter = useRef(231);
 
-  const ongkirTampil = addr && (phase === "confirm" || phase === "flying" || phase === "done");
-  const subtotal = item ? item.price * qty : 0;
-  const total = subtotal + (ongkirTampil ? addr.ongkir : 0);
-  const totalRolling = useRollingNumber(total, !reduce);
-  const siap = Boolean(item && addr) && phase !== "calc";
-
-  const commit = useCallback(() => {
-    const id = `#0${counter.current++}`;
-    setOrders((prev) =>
-      [{ id, name: item?.name ?? "", total, status: "Baru" }, ...prev].slice(0, 3)
-    );
-    setFlight(null);
-    setPhase("done");
-  }, [item, total]);
-
-  // Reduced motion: langsung di keadaan akhir, tanpa apa pun yang gerak.
-  useEffect(() => {
-    if (!reduce) return;
-    setAuto(false);
-    setItem(MENU[0]);
-    setQty(1);
-    setAddr(TUJUAN[0]);
-    setPhase("done");
-    setOrders([
-      { id: "#0231", name: MENU[0].name, total: MENU[0].price + TUJUAN[0].ongkir, status: "Diproses" },
-    ]);
-  }, [reduce]);
-
-  const add = useCallback(
-    (p, fromAuto = false) => {
-      if (!fromAuto) setAuto(false);
-      setBump((b) => b + 1);
-      setItem((prev) => {
-        const sama = prev?.id === p.id;
-        setQty((q) => (sama ? Math.min(q + 1, 3) : 1));
-        return p;
-      });
-      setPhase((prev) => (prev === "done" || prev === "flying" ? "confirm" : addr ? "confirm" : "address"));
-    },
-    [addr]
+  const items = useMemo(
+    () => MENU.filter((p) => cart[p.id]).map((p) => ({ ...p, qty: cart[p.id] })),
+    [cart]
   );
+  const count = items.reduce((n, i) => n + i.qty, 0);
+  const subtotal = items.reduce((n, i) => n + i.price * i.qty, 0);
+  const total = subtotal + (addr ? addr.ongkir : 0);
+  const totalRolling = useRollingNumber(total, !reduce);
+  const id = STAGES[stage].id;
 
-  const pilihAlamat = useCallback((a, fromAuto = false) => {
+  const add = useCallback((p, fromAuto = false) => {
     if (!fromAuto) setAuto(false);
-    setAddr(a);
-    setPhase("calc");
+    setCart((c) => ({ ...c, [p.id]: Math.min((c[p.id] ?? 0) + 1, 3) }));
   }, []);
 
-  // Struk beneran terbang dari katalog ke buku dashboard, bukan cuma muncul.
+  const pickAddr = useCallback((a, fromAuto = false) => {
+    if (!fromAuto) setAuto(false);
+    setAddr(a);
+  }, []);
+
+  const goto = useCallback(
+    (i, fromAuto = false) => {
+      if (!fromAuto) setAuto(false);
+      setStage(i);
+      trackStep(STAGES[i].id);
+    },
+    []
+  );
+
+  // Satu gerakan tanda tangan: kartu order pindah ke dashboard.
   const kirim = useCallback(
     (fromAuto = false) => {
       if (!fromAuto) setAuto(false);
-      if (!item || !addr) return;
-      if (reduce || !wrapRef.current || !originRef.current || !targetRef.current) {
-        commit();
+      if (reduce || !frameRef.current || !originRef.current) {
+        goto(3, fromAuto);
         return;
       }
-      const c = wrapRef.current.getBoundingClientRect();
+      const f = frameRef.current.getBoundingClientRect();
       const o = originRef.current.getBoundingClientRect();
-      const t = targetRef.current.getBoundingClientRect();
       setFlight({
         w: Math.min(o.width, 260),
-        from: { x: o.left - c.left, y: o.top - c.top },
-        to: { x: t.left - c.left + 6, y: t.top - c.top },
+        from: { x: o.left - f.left, y: o.top - f.top },
+        to: { x: o.left - f.left, y: 64 },
       });
-      setPhase("flying");
     },
-    [item, addr, reduce, commit]
+    [reduce, goto]
   );
 
-  const restart = useCallback(() => {
+  const reset = useCallback(() => {
     setAuto(false);
-    setItem(null);
-    setQty(0);
+    setCart({});
     setAddr(null);
     setFlight(null);
-    setPhase("pick");
+    setStage(0);
   }, []);
 
-  // Jalan sendiri sekali kalau kelihatan di layar, berhenti begitu diklik.
+  // Jalan sendiri sekali kalau kelihatan di layar, berhenti pada sentuhan
+  // pertama. Reduced motion nggak ikut jalan sama sekali.
   useEffect(() => {
-    if (!auto || !inView || reduce) return;
+    if (!auto || !inView || reduce || flight) return;
     let t;
-    if (phase === "pick") t = setTimeout(() => add(MENU[0], true), 1700);
-    else if (phase === "address") t = setTimeout(() => pilihAlamat(TUJUAN[0], true), 1400);
-    else if (phase === "confirm") t = setTimeout(() => kirim(true), 1500);
-    return () => clearTimeout(t);
-  }, [auto, inView, reduce, phase, add, pilihAlamat, kirim]);
-
-  useEffect(() => {
-    if (phase !== "calc") return;
-    const t = setTimeout(() => setPhase("confirm"), reduce ? 0 : 750);
-    return () => clearTimeout(t);
-  }, [phase, reduce]);
-
-  // Status pesanan jalan sendiri di dashboard: baru, lalu diproses.
-  useEffect(() => {
-    if (phase !== "done" || reduce || !orders.length) return;
-    const t = setTimeout(() => {
-      setOrders((prev) =>
-        prev.map((o, i) => (i === 0 ? { ...o, status: "Diproses" } : o))
+    if (id === "katalog")
+      t = setTimeout(
+        () => (count ? goto(1, true) : add(MENU[0], true)),
+        count ? 1000 : 1500
       );
-    }, 1700);
+    else if (id === "keranjang")
+      t = setTimeout(
+        () => (addr ? goto(2, true) : pickAddr(TUJUAN[0], true)),
+        addr ? 1000 : 1200
+      );
+    else if (id === "bayar") t = setTimeout(() => kirim(true), 1700);
     return () => clearTimeout(t);
-  }, [phase, reduce, orders.length]);
+  }, [auto, inView, reduce, flight, id, count, addr, add, pickAddr, goto, kirim]);
 
-  const narasi = {
-    pick: "Klik salah satu produk buat mulai.",
-    address: "Alamatnya diisi pelanggan sendiri.",
-    calc: "Ongkir lagi dihitung dari alamat itu.",
-    confirm: addr ? `Ongkir ${rupiah(addr.ongkir)} masuk. Totalnya ikut gerak.` : "Pilih produknya dulu.",
-    flying: "Pesanan lagi nyebrang ke dashboard.",
-    done: "Begitulah pelangganmu bisa pesan sendiri.",
-  }[phase];
+  const siap =
+    (id === "katalog" && count > 0) ||
+    (id === "keranjang" && Boolean(addr)) ||
+    id === "bayar" ||
+    id === "masuk";
+
+  const aksi = {
+    katalog: count ? "Lanjut ke keranjang" : "Pilih produk dulu",
+    keranjang: addr ? "Bayar" : "Pilih alamat dulu",
+    bayar: "Kirim pesanan",
+    masuk: "Coba lagi dari awal",
+  }[id];
+
+  const onAksi = () => {
+    if (id === "bayar") kirim();
+    else if (id === "masuk") reset();
+    else goto(stage + 1);
+  };
 
   return (
-    <div ref={wrapRef} className="relative">
-      <div className="space-y-4">
-        {/* ── KATALOG: layar yang dilihat pelanggan ─────────────── */}
-        <div className="relative z-10">
-          <div className="surface overflow-hidden rounded-[20px]">
-            <div className="flex items-center gap-2 border-b border-espresso/12 bg-sand/60 px-3 py-2">
-              <span className="flex gap-1" aria-hidden="true">
-                <span className="h-1.5 w-1.5 rounded-full bg-espresso/25" />
-                <span className="h-1.5 w-1.5 rounded-full bg-espresso/25" />
-                <span className="h-1.5 w-1.5 rounded-full bg-espresso/25" />
-              </span>
-              <span className="mx-auto truncate rounded-full bg-card px-3 py-0.5 text-[10px] text-espresso/80">
-                ordistore.studioharel.id
-              </span>
-            </div>
+    <div>
+      <div
+        ref={frameRef}
+        className="surface relative overflow-hidden rounded-[20px]"
+      >
+        {/* kepala jendela */}
+        <div className="flex items-center gap-2 border-b border-espresso/12 bg-sand/60 px-3 py-2">
+          <span className="flex gap-1" aria-hidden="true">
+            <span className="size-1.5 rounded-full bg-espresso/25" />
+            <span className="size-1.5 rounded-full bg-espresso/25" />
+            <span className="size-1.5 rounded-full bg-espresso/25" />
+          </span>
+          <span className="mx-auto truncate rounded-full bg-card px-3 py-0.5 text-[10px] text-espresso/80">
+            ordistore.studioharel.id
+          </span>
+        </div>
 
-            <div className="flex items-center justify-between gap-3 px-4 pb-2 pt-3">
-              <div className="min-w-0">
-                <p className="display text-[1.1rem] leading-tight">Kopi Senja</p>
-                <p className="text-[11px] text-espresso/80">Buka sampai 21:00</p>
-              </div>
-              <span className="relative flex shrink-0 items-center gap-1.5 rounded-[3px] border border-espresso/25 px-2.5 py-1.5">
-                <CartGlyph />
-                <motion.span
-                  key={`c${bump}`}
-                  initial={reduce || bump === 0 ? false : { scale: 0.5 }}
-                  animate={{ scale: 1 }}
-                  transition={{ type: "spring", duration: 0.3, bounce: 0 }}
-                  className="tnum text-[12px] font-bold"
+        {/* tahap */}
+        <ol className="flex items-center gap-1 border-b border-espresso/12 px-3 py-2.5">
+          {STAGES.map((s, i) => {
+            const on = i === stage;
+            const lewat = i < stage;
+            return (
+              <li key={s.id} className="flex flex-1 items-center gap-1.5">
+                <span
+                  className={`tnum flex size-5 shrink-0 items-center justify-center rounded-full text-[10px] font-bold ${
+                    on
+                      ? "bg-coral text-cream"
+                      : lewat
+                        ? "bg-espresso text-cream"
+                        : "bg-sand text-espresso/80"
+                  }`}
                 >
-                  {qty}
-                </motion.span>
-                {bump > 0 && !reduce && (
-                  <motion.span
-                    key={`p${bump}`}
-                    initial={{ opacity: 1, y: 2 }}
-                    animate={{ opacity: 0, y: -20 }}
-                    transition={{ duration: 0.75, ease: "easeOut" }}
-                    className="pointer-events-none absolute -top-2 right-2 text-[12px] font-extrabold text-coral"
-                  >
-                    +1
-                  </motion.span>
-                )}
-              </span>
-            </div>
+                  {i + 1}
+                </span>
+                <span
+                  className={`truncate text-[11px] ${
+                    on ? "font-bold text-espresso" : "text-espresso/80"
+                  }`}
+                >
+                  {s.label}
+                </span>
+              </li>
+            );
+          })}
+        </ol>
 
-            <div className="grid grid-cols-2 gap-2 px-3 pb-3 sm:grid-cols-3">
-              {MENU.map((p) => {
-                const aktif = item?.id === p.id;
-                const Art = p.Art;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => add(p)}
-                    aria-pressed={aktif}
-                    style={{
-                      boxShadow: aktif
-                        ? "0 0 0 2px var(--color-coral)"
-                        : "var(--shadow-border)",
-                    }}
-                    className={`press relative overflow-hidden rounded-lg text-left ${
-                      aktif ? "bg-sand" : "hover:bg-sand/50"
-                    }`}
-                  >
-                    <span className="block aspect-[4/3]">
-                      <Art />
-                    </span>
-                    <span className="block px-2 py-1.5">
-                      <span className="block min-h-8 text-[11px] font-semibold leading-tight">
-                        {p.name}
-                      </span>
-                      <span className="mt-1 flex items-center justify-between gap-1">
-                        <span className="tnum text-[11px] font-bold">
-                          {rupiah(p.price)}
-                        </span>
-                        {aktif && (
-                          <motion.span
-                            key={`q${qty}`}
-                            initial={reduce ? false : { scale: 0.6 }}
-                            animate={{ scale: 1 }}
-                            className="tnum rounded-[2px] bg-coral px-1.5 text-[10px] font-bold text-cream"
-                          >
-                            {qty}x
-                          </motion.span>
-                        )}
-                      </span>
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* ── struk: titik berangkatnya pesanan ─────────────── */}
-            <div
-              ref={originRef}
-              className="border-t border-dashed border-espresso/30 bg-cream/70 px-4 py-4"
+        {/* panel per tahap */}
+        <div className="min-h-[268px]">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.div
+              key={id}
+              initial={reduce ? false : { opacity: 0, x: 14 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={reduce ? undefined : { opacity: 0, x: -10 }}
+              transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}
+              className="p-4"
             >
-              <div className="flex items-baseline justify-between gap-3 text-[13px]">
-                <span className="min-w-0 truncate">
-                  {item ? (
-                    <>
-                      <span className="font-bold">{qty}x</span> {item.name}
-                    </>
-                  ) : (
-                    <span className="italic text-espresso/80">
-                      Keranjang masih kosong
-                    </span>
-                  )}
-                </span>
-                <span className="tnum shrink-0 font-semibold">
-                  {item ? rupiah(subtotal) : "-"}
-                </span>
-              </div>
-
-              <p className="label mb-2 mt-4 text-espresso/80">Antar ke</p>
-              <div className="min-h-11">
-                {addr ? (
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAuto(false);
-                      setAddr(null);
-                      setPhase("address");
-                    }}
-                    className="surface surface-hover press flex min-h-11 w-full items-center justify-between gap-2 rounded-xl px-3 text-left"
-                  >
-                    <span className="text-[13px] font-semibold">
-                      {addr.label}
-                      <span className="ml-2 font-normal text-espresso/80">
-                        {addr.jarak}
-                      </span>
-                    </span>
-                    <span className="label shrink-0 text-coral-deep">ganti</span>
-                  </button>
-                ) : (
-                  <div className="flex flex-wrap gap-2">
-                    {TUJUAN.map((a) => (
-                      <button
-                        key={a.id}
-                        type="button"
-                        onClick={() => pilihAlamat(a)}
-                        className="surface surface-hover press inline-flex min-h-11 items-center rounded-xl px-3.5 text-[12px]"
-                      >
-                        {a.label} <span className="ml-1.5 text-espresso/80">{a.jarak}</span>
-                      </button>
-                    ))}
+              {id === "katalog" && (
+                <div>
+                  <p className="text-[13px] font-bold">Kopi Senja</p>
+                  <p className="text-[11px] text-espresso/80">
+                    Ketuk produknya buat masuk keranjang
+                  </p>
+                  <div className="mt-3 grid grid-cols-3 gap-2">
+                    {MENU.map((p) => {
+                      const qty = cart[p.id] ?? 0;
+                      const Art = p.Art;
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => add(p)}
+                          className="press relative overflow-hidden rounded-lg text-left"
+                          style={{
+                            boxShadow: qty
+                              ? "0 0 0 2px var(--color-coral)"
+                              : "var(--shadow-border)",
+                          }}
+                        >
+                          <span className="block aspect-[4/3]">
+                            <Art />
+                          </span>
+                          <span className="block px-2 py-1.5">
+                            <span className="block min-h-8 text-[11px] font-semibold leading-tight">
+                              {p.name}
+                            </span>
+                            <span className="mt-1 flex items-center justify-between gap-1">
+                              <span className="tnum text-[11px] font-bold">
+                                {rupiah(p.price)}
+                              </span>
+                              {qty > 0 && (
+                                <span className="tnum rounded-md bg-coral px-1.5 text-[10px] font-bold text-cream">
+                                  {qty}x
+                                </span>
+                              )}
+                            </span>
+                          </span>
+                        </button>
+                      );
+                    })}
                   </div>
-                )}
-              </div>
-
-              <div className="mt-3 flex items-baseline justify-between gap-3 text-[13px]">
-                <span className="text-espresso/80">Ongkir</span>
-                <span className="tnum font-semibold">
-                  {phase === "calc" ? (
-                    <motion.span
-                      animate={reduce ? undefined : { opacity: [1, 0.35, 1] }}
-                      transition={{ duration: 0.7, repeat: Infinity }}
-                      className="text-espresso/80"
-                    >
-                      menghitung
-                    </motion.span>
-                  ) : ongkirTampil ? (
-                    rupiah(addr.ongkir)
-                  ) : (
-                    "-"
-                  )}
-                </span>
-              </div>
-
-              <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-espresso/25 pt-3">
-                <span className="label text-espresso/80">Total bayar</span>
-                <motion.span
-                  key={total}
-                  initial={reduce ? false : { backgroundColor: "rgba(196,149,106,0.5)" }}
-                  animate={{ backgroundColor: "rgba(196,149,106,0)" }}
-                  transition={{ duration: 0.8 }}
-                  className="display tnum rounded-md px-1 text-[1.7rem] text-coral-deep"
-                >
-                  {rupiah(totalRolling)}
-                </motion.span>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => (phase === "done" ? restart() : kirim())}
-                disabled={phase !== "done" && !siap}
-                className={`press mt-4 flex min-h-12 w-full items-center justify-center rounded-xl px-4 text-[15px] font-bold ${
-                  phase === "done"
-                    ? "surface surface-hover"
-                    : siap
-                      ? "bg-coral text-cream hover:bg-coral-deep"
-                      : "cursor-not-allowed bg-espresso/10 text-espresso/80"
-                }`}
-              >
-                {phase === "done" ? "Pesan lagi" : "Kirim pesanan"}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* ── DASHBOARD: layar yang kamu lihat ──────────────────── */}
-        <div className="relative">
-          <div className="surface overflow-hidden rounded-[20px]">
-            <div className="flex items-baseline justify-between gap-2 border-b border-espresso/12 px-4 py-3">
-              <p className="display flex items-center gap-2 text-[1.05rem]">
-                Pesanan masuk
-                <AnimatePresence initial={false}>
-                  {phase === "done" && (
-                    <motion.span
-                      key={orders[0]?.id}
-                      initial={reduce ? false : { opacity: 0, y: 6, scale: 0.9 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={reduce ? undefined : { opacity: 0, y: -4 }}
-                      transition={{ type: "spring", duration: 0.35, bounce: 0 }}
-                      className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream"
-                    >
-                      +1 order baru
-                    </motion.span>
-                  )}
-                </AnimatePresence>
-              </p>
-              <p className="text-[12px] text-espresso/80">hari ini</p>
-            </div>
-
-            <div className="relative min-h-[110px] px-4 py-1">
-              <div ref={targetRef}>
-                <AnimatePresence initial={false}>
-                  {orders.map((o, i) => (
-                    <motion.div
-                      key={o.id}
-                      layout={!reduce}
-                      initial={reduce ? false : { opacity: 0, y: -12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ type: "spring", duration: 0.4, bounce: 0 }}
-                      className="flex h-[34px] items-center gap-2 pl-[54px] pr-1 sm:pl-16"
-                    >
-                      <span className="tnum absolute left-3 text-[12px] font-bold text-coral-deep sm:left-4">
-                        {o.id}
-                      </span>
-                      <span className="min-w-0 flex-1 truncate text-[12px]">{o.name}</span>
-                      <span className="tnum shrink-0 text-[12px] font-bold">
-                        {rupiah(o.total)}
-                      </span>
-                      {i === 0 && <StatusChip status={o.status} reduce={reduce} />}
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-              </div>
-
-              {RIWAYAT.map((o) => (
-                <div key={o.id} className="flex h-[34px] items-center gap-2 pl-[54px] pr-1 opacity-55 sm:pl-16">
-                  <span className="tnum absolute left-3 text-[12px] text-espresso/80 sm:left-4">
-                    {o.id}
-                  </span>
-                  <span className="min-w-0 flex-1 truncate text-[12px]">{o.name}</span>
-                  <span className="tnum shrink-0 text-[12px]">{rupiah(o.total)}</span>
                 </div>
-              ))}
-            </div>
-
-            <AnimatePresence>
-              {phase === "done" && (
-                <motion.div
-                  initial={reduce ? false : { opacity: 0, y: 10, scale: 0.97 }}
-                  animate={{ opacity: 1, y: 0, scale: reduce ? 1 : [0.97, 1.03, 1] }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.4, delay: reduce ? 0 : 0.2 }}
-                  className="m-3 rounded-xl bg-mint px-3 py-2.5"
-                >
-                  <p className="text-[11px] font-bold text-mint-deep">
-                    WhatsApp kamu bunyi
-                  </p>
-                  <p className="mt-0.5 text-[11px] leading-snug">
-                    {orders[0]?.id} {item?.name}, antar ke {addr?.label}. Total{" "}
-                    {rupiah(orders[0]?.total ?? total)}.
-                  </p>
-                </motion.div>
               )}
-            </AnimatePresence>
-          </div>
-        </div>
-      </div>
 
-      {/* struk yang beneran pindah dari katalog ke dashboard */}
-      <AnimatePresence>
-        {flight && (
-          <motion.div
-            initial={{ x: flight.from.x, y: flight.from.y, opacity: 1, rotate: -1.5, scale: 1 }}
-            animate={{ x: flight.to.x, y: flight.to.y, opacity: 0.2, rotate: 8, scale: 0.6 }}
-            transition={{ duration: 0.8, ease: [0.5, 0, 0.2, 1] }}
-            onAnimationComplete={commit}
-            style={{ width: flight.w }}
-            aria-hidden="true"
-            className="surface pointer-events-none absolute left-0 top-0 z-40 rounded-xl px-3 py-2"
-          >
-            <p className="text-[11px] font-bold">
-              {qty}x {item?.name}
+              {id === "keranjang" && (
+                <div>
+                  <p className="label text-espresso/80">Keranjang</p>
+                  <ul className="mt-2">
+                    {items.length === 0 && (
+                      <li className="py-2 text-[13px] text-espresso/80">
+                        Belum ada produk.
+                      </li>
+                    )}
+                    {items.map((i) => (
+                      <li
+                        key={i.id}
+                        className="flex items-baseline justify-between gap-3 border-b border-espresso/12 py-2 text-[13px] last:border-0"
+                      >
+                        <span className="min-w-0 truncate">
+                          <span className="font-bold">{i.qty}x</span> {i.name}
+                        </span>
+                        <span className="tnum shrink-0 font-semibold">
+                          {rupiah(i.price * i.qty)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-4">
+                    <PinAlamat addr={addr} onPick={pickAddr} />
+                  </div>
+                  {addr && (
+                    <p className="mt-3 flex items-baseline justify-between text-[13px]">
+                      <span className="text-espresso/80">Ongkir</span>
+                      <span className="tnum font-semibold">
+                        {rupiah(addr.ongkir)}
+                      </span>
+                    </p>
+                  )}
+                </div>
+              )}
+
+              {id === "bayar" && (
+                <div ref={originRef}>
+                  <div className="flex items-center gap-4">
+                    <Qr className="size-24 shrink-0 rounded-lg" />
+                    <div className="min-w-0">
+                      <p className="text-[12px] text-espresso/80">Nominal QR</p>
+                      <p className="display tnum text-[1.7rem] text-coral-deep">
+                        {rupiah(totalRolling)}
+                      </p>
+                      <p className="mt-1 text-[12px] leading-snug text-espresso/80">
+                        Ikut total order.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <PinAlamat addr={addr} onPick={pickAddr} />
+                  </div>
+                  <p className="mt-3 text-[12px] leading-snug text-espresso/80">
+                    Ganti alamat, nominal QR-nya ikut berubah. Bukti bayarnya
+                    tetap dicek manual sama admin.
+                  </p>
+                </div>
+              )}
+
+              {id === "masuk" && (
+                <div>
+                  <div className="flex items-baseline justify-between gap-2">
+                    <p className="text-[13px] font-bold">Pesanan masuk</p>
+                    <span className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream">
+                      order baru
+                    </span>
+                  </div>
+                  <div className="mt-2.5 surface rounded-xl p-3">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="tnum text-[12px] font-bold text-coral-deep">
+                        #0231
+                      </span>
+                      <span className="tnum text-[13px] font-bold">
+                        {rupiah(total)}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-[12px] leading-snug text-espresso/85">
+                      {items.map((i) => `${i.qty}x ${i.name}`).join(", ")}
+                    </p>
+                    <p className="mt-1 text-[12px] text-espresso/80">
+                      Antar ke {addr?.label}, {addr?.jarak}
+                    </p>
+                  </div>
+                  <div className="mt-2.5 rounded-xl bg-mint px-3 py-2.5">
+                    <p className="text-[11px] font-bold text-mint-deep">
+                      WhatsApp kamu bunyi
+                    </p>
+                    <p className="mt-0.5 text-[11px] leading-snug">
+                      Order #0231 masuk. Datanya sudah lengkap.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        {/* ringkasan yang selalu kelihatan */}
+        <div className="flex items-center gap-3 border-t border-espresso/12 bg-sand/50 px-4 py-3">
+          <div className="min-w-0">
+            <p className="text-[11px] text-espresso/80">
+              {count} item{addr ? ` · ${addr.label}` : ""}
             </p>
-            <p className="tnum text-[11px]">{rupiah(total)}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ── narator, kontrol, dan ajakan nyoba demo asli ───────── */}
-      <div className="mt-7 border-t border-espresso/15 pt-5 md:flex md:items-center md:justify-between md:gap-8">
-        <p
-          aria-live="polite"
-          className={
-            phase === "done"
-              ? "display max-w-md text-[clamp(1.3rem,1.1rem+0.8vw,1.8rem)]"
-              : "max-w-md text-[15px] leading-relaxed text-espresso/85"
-          }
-        >
-          {narasi}
-        </p>
-
-        <div className="mt-5 shrink-0 md:mt-0 md:text-right">
-          {phase === "done" ? (
-            <>
-              <a
-                href={DEMO_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => trackDemo("hero-sim")}
-                className="press inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
-              >
-                Coba demo Ordi yang sebenarnya
-                <span aria-hidden="true">&rarr;</span>
-              </a>
-              <button
-                type="button"
-                onClick={restart}
-                className="press ml-0 mt-3 block min-h-11 text-[13px] font-semibold underline decoration-espresso/30 underline-offset-4 hover:decoration-coral md:ml-auto"
-              >
-                Ulangi simulasinya
-              </button>
-            </>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setAuto((a) => !a)}
-              className="surface surface-hover press inline-flex min-h-11 items-center rounded-xl px-4 text-[13px] font-semibold"
-            >
-              {auto ? "Jeda, saya klik sendiri" : "Jalanin otomatis"}
-            </button>
-          )}
-          <p className="mt-2 text-[11px] text-espresso/80 md:max-w-[16rem]">
-            Simulasi dengan data contoh.
-          </p>
+            <p className="display tnum text-[1.25rem] leading-tight">
+              {rupiah(totalRolling)}
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onAksi}
+            disabled={!siap}
+            className={`press ml-auto inline-flex min-h-11 shrink-0 items-center rounded-xl px-4 text-[14px] font-bold ${
+              siap
+                ? "bg-coral text-cream hover:bg-coral-deep"
+                : "cursor-not-allowed bg-espresso/10 text-espresso/80"
+            }`}
+          >
+            {aksi}
+          </button>
         </div>
+
+        {/* kartu order yang pindah ke dashboard */}
+        <AnimatePresence>
+          {flight && (
+            <motion.div
+              initial={{ x: flight.from.x, y: flight.from.y, opacity: 1, scale: 1 }}
+              animate={{ x: flight.to.x, y: flight.to.y, opacity: 0.15, scale: 0.72 }}
+              transition={{ duration: 0.55, ease: [0.5, 0, 0.2, 1] }}
+              onAnimationComplete={() => {
+                setFlight(null);
+                setStage(3);
+                trackStep("masuk");
+              }}
+              style={{ width: flight.w }}
+              aria-hidden="true"
+              className="surface pointer-events-none absolute left-0 top-0 z-30 rounded-xl px-3 py-2"
+            >
+              <p className="text-[11px] font-bold">Order #0231</p>
+              <p className="tnum text-[11px]">{rupiah(total)}</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
+
+      <p className="mt-3 text-[12px] text-espresso/80">
+        Simulasi dengan data contoh, bukan toko asli.
+      </p>
     </div>
   );
 }

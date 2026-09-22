@@ -1,12 +1,11 @@
 import { useCallback, useState } from "react";
 import AltHeader from "./components/alt/AltHeader";
 import AltHero from "./components/alt/AltHero";
-import TrustChips from "./components/alt/TrustChips";
-import Problems from "./components/alt/Problems";
-import FlowTabs from "./components/alt/FlowTabs";
-import OwnershipNote from "./components/alt/OwnershipNote";
+import BeforeOrder from "./components/alt/BeforeOrder";
+import WhenOrder from "./components/alt/WhenOrder";
+import AfterOrder from "./components/alt/AfterOrder";
+import ThreeSteps from "./components/alt/ThreeSteps";
 import PriceSheet from "./components/alt/PriceSheet";
-import AltComparison from "./components/alt/AltComparison";
 import AltFAQ from "./components/alt/AltFAQ";
 import AltFinalCTA from "./components/alt/AltFinalCTA";
 import StickyMobileCTA from "./components/alt/StickyMobileCTA";
@@ -25,12 +24,11 @@ export default function App() {
       <AltHeader />
       <main>
         <AltHero />
-        <TrustChips />
-        <Problems />
-        <FlowTabs />
-        <OwnershipNote />
+        <BeforeOrder />
+        <WhenOrder />
+        <AfterOrder />
+        <ThreeSteps />
         <PriceSheet />
-        <AltComparison />
         <AltFAQ />
       </main>
       <AltFinalCTA />

@@ -208,125 +208,123 @@ that's fine, they're not rendered.
 
 ## Versi alternatif (`landing-alternatif`, this branch)
 
-Konsep: **"Dari chat yang berantakan menjadi order yang masuk sendiri."**
-Halaman ini mini product demo, bukan artikel. Pengunjung lihat sistemnya jalan
-sebelum baca banyak teks.
+Halaman ini mini product demo, bukan artikel. Susunannya ngikutin alur bisnis
+pemilik toko, dan simulasi di hero yang bawa argumennya.
 
 ### Struktur (`App.jsx`)
 
 ```
-AltHeader    — sticky, blur tipis setelah scroll; nav: Cara kerja, Harga,
-               CTA "Coba demonya" (demo, bukan WA)
-AltHero      — eyebrow, judul, satu kalimat, CTA demo + CTA WA, microcopy,
-               lalu OrderSim di kolom kanan (lg+) / bawah CTA (mobile)
-TrustChips   — 3 chip fakta produk, tanpa testimoni
-Problems     — 3 kartu pendek, masing-masing punya gambar kecil
-FlowTabs     — demo bertab 4 langkah, panel mockup ganti dengan fade+slide
-OwnershipNote— satu blok tinta, 3 poin
+AltHeader    — sticky, blur tipis setelah scroll; nav: Cara kerja (#saat),
+               Harga (#paket), CTA "Coba demonya"
+AltHero      — judul hasil + OrderSim; CTA "Coba alurnya" (#alur) dan
+               "Lihat paket" (#paket)
+BeforeOrder  — "Sebelum order masuk": tiga pertanyaan pemilik toko, tipografis
+WhenOrder    — "Saat order masuk": tiga poin + satu kartu order
+AfterOrder   — "Setelah order selesai": satu panel rekap harian
+ThreeSteps   — "Cuma tiga langkah untuk mulai" + CTA WhatsApp
 PriceSheet   — 3 pricing card, yang tengah elevated
-AltComparison— tabel 3 kolom 4 baris (tetap tabel), kartu di mobile
 AltFAQ       — 4 pertanyaan, semua tertutup saat load
-AltFinalCTA  — CTA besar ke WA + footer
+AltFinalCTA  — CTA besar ke WhatsApp + footer
 ```
 
-Mobile menaruh CTA utama **di atas** mockup, bukan di bawah judul seperti
-bunyi brief, supaya CTA tetap masuk viewport pertama (aturan CRO menang atas
-urutan visual). Terukur: tombol ada di y=358 pada layar 375x812.
+Section yang **dihapus** karena cuma mengulang: `TrustChips`, `OwnershipNote`,
+`AltComparison`, `FlowTabs`, `Problems`, `BeforeAfter`, `LedgerSwap`,
+`ProblemSpike`, `Paper`. Jangan dihidupkan lagi. Fakta kepemilikan yang masih
+perlu ada sekarang tinggal di FAQ nomor dua, biaya hosting di catatan harga
+dan FAQ nomor tiga.
 
-### CTA dan tracking (`src/lib/track.js`)
+Anchor nav `#cara-kerja` sudah nggak ada. Kalau menambah section, cek lagi
+anchor di `AltHeader.jsx`; ini pernah putus sekali waktu `FlowTabs` dihapus.
 
-Satu pintu buat nomor WA, pesan prefilled, dan event. Nomor
-`6281292567788` cuma ada di file ini. `waHref(context)` untuk href,
-`trackWa` / `trackDemo` / `trackPricing` / `trackStep` untuk event.
+### `OrderSim.jsx` — empat tahap
 
-Tiap handler mengirim **dua nama event sekaligus**: nama lama (`klik_wa`,
-`klik_demo`, `klik_tier`) supaya angkanya masih bisa dibandingkan dengan
-`landing-second`, dan nama baru sesuai brief (`hero_demo_click`,
-`hero_whatsapp_click`, `demo_step_click`, `pricing_cta_click`,
-`final_whatsapp_click`). Jangan hapus salah satunya.
+Katalog, Keranjang, Bayar, Masuk. Indikator tahap di atas, panel di tengah,
+dan **bar ringkasan yang selalu kelihatan** di bawah (jumlah item, total,
+tombol aksi). Semua lewat ketukan, nggak ada yang butuh hover.
 
-Catatan waktu verifikasi: `index.html` mendefinisikan `window.gtag` inline,
-jadi menimpa spy `gtag` lewat `addInitScript` Playwright tidak akan terbaca.
-Periksa `window.dataLayer` saja.
+Momen utamanya: ketuk produk, total di bar naik, pindah ke Bayar, nominal QR
+sama persis dengan total itu, ganti pin alamat lalu nominal QR ikut berubah,
+kirim, kartu ordernya pindah ke dashboard.
 
-### Design system (`src/index.css`)
+**Cuma tiga jenis animasi di seluruh halaman.** Jangan tambah jenis baru:
 
-Dari skill `github.com/WatermelonCorp/watermelon-platform`
-(`skills/make-interfaces-feel-better`):
+1. Pergantian tahap: fade + geser 220ms.
+2. Angka bergulir (`useRollingNumber`), dipakai buat total dan nominal QR.
+3. Kartu order pindah ke dashboard, diukur dari `getBoundingClientRect()` asli
+   dan meng-commit tahap di `onAnimationComplete`.
 
-- Kedalaman dari bayangan berlapis (`--shadow-border`, `--shadow-border-hover`,
-  `--shadow-lift`, kelas `.surface` / `.surface-hover`). Garis 1px tetap benar
-  untuk pemisah baris.
-- Radius konsentris. `outerRadius = innerRadius + padding`.
-- `.press` memberi `scale(0.96)` dan menyebut properti transisinya. Tidak ada
-  `transition: all` di mana pun.
-- Animasi masuk dipecah bertahap (`.rise` + `.rise-1/2/3`), pegas framer-motion
-  selalu `bounce: 0`, transisi tab 220ms fade + slide.
-- `text-wrap: balance` di h1-h3, `pretty` di p/li/dd, `tabular-nums` di angka
-  yang berubah, outline hitam murni 10% di gambar dan QR.
-- Semua elemen interaktif lewat 44px.
+Plus `.rise` buat masuknya hero. Yang sudah dibuang di pass ini: pulse ongkir,
+badge `+1` melayang, chip status Baru ke Diproses, badge "+1 order baru" di
+kepala dashboard.
+
+Autoplay jalan sekali saat terlihat lalu berhenti pada ketukan pertama.
+`prefers-reduced-motion` **nggak** autoplay sama sekali dan transisinya
+instan, tapi keempat tahap tetap bisa dijalanin dengan ketukan. (Ini beda dari
+pass sebelumnya yang langsung lompat ke keadaan akhir; sekarang demonya
+tap-driven, jadi mulai dari tahap satu lebih masuk akal.)
+
+### Visual
+
+Off-white `cream`, band `sand`, satu aksen kuat `coral` khusus CTA, garis tipis
+`border-espresso/12` buat pemisah, bayangan lembut lewat `.surface`, radius
+konsentris, tipografi besar. Panduannya dari
+`github.com/WatermelonCorp/watermelon-platform`
+(`skills/make-interfaces-feel-better`).
+
+Gambar harus menjelaskan produk: kartu order, katalog, status order, struk,
+pin alamat, notifikasi order baru, dashboard. Nggak ada dekorasi generik.
 
 **Lantai kontras teks di latar terang: `text-espresso/80`.** Ukur kontras
 dengan melukis warna computed di canvas; Tailwind v4 mengompilasi opacity ke
 `color-mix()`, jadi mem-parse `getComputedStyle().color` sebagai `rgba()`
 menghasilkan angka ngawur.
 
+### CTA dan tracking (`src/lib/track.js`)
+
+Satu pintu buat nomor WA (`6281292567788`), pesan prefilled, dan event.
+Tiap handler ngirim dua nama event sekaligus: nama lama (`klik_wa`,
+`klik_demo`, `klik_tier`) supaya masih bisa dibandingin sama `landing-second`,
+dan nama baru sesuai brief (`hero_demo_click`, `demo_step_click`,
+`pricing_cta_click`, `final_whatsapp_click`). Jangan hapus salah satunya.
+
+CTA hero sekarang dua-duanya anchor internal, jadi **jalur WhatsApp di desktop
+cuma ada di ThreeSteps, pricing, dan CTA penutup**. Di mobile masih ada sticky
+bar. Ini konsekuensi dari brief, layak diawasi kalau klik WA turun.
+
+Catatan verifikasi: `index.html` mendefinisikan `window.gtag` inline, jadi
+menimpa spy `gtag` lewat `addInitScript` Playwright nggak akan kebaca. Periksa
+`window.dataLayer`.
+
 ### Aturan copy
 
 Jangan pakai konstruksi "X, bukan Y" berulang. Pola itu pernah dipakai 14 kali
-dan itulah yang bikin halaman terbaca sebagai tulisan mesin. Sekarang tiap
-baris menyebut apa yang terjadi. Kontras hanya dipakai satu kali, di judul
-section kepemilikan ("Bukan numpang di platform orang lain"), tempat kontras
-itu memang argumennya.
-
-Tidak ada em dash di string yang dirender.
-
-### `OrderSim.jsx`
-
-Klik produk (badge keranjang naik, `+1` melayang) sampai order masuk dashboard,
-status Baru lalu Diproses, notifikasi WhatsApp, badge "+1 order baru" di kepala
-dashboard. Panelnya ditumpuk vertikal supaya muat di kolom kanan hero.
-
-- Struk terbang diukur dari `getBoundingClientRect()` asli dan meng-commit
-  order di `onAnimationComplete`. Jangan ganti dengan timeout.
-- Autoplay jalan sekali, hanya saat terlihat, berhenti pada klik pertama.
-- `prefers-reduced-motion` langsung ke keadaan akhir.
-
-### Aset produk
-
-`FoodArt.jsx` berisi gambar katalog sebagai SVG duotone. **Belum ada foto
-produk atau screenshot aplikasi asli di repo ini**, dan
-`ordistore.studioharel.id` diblokir policy jaringan lingkungan build (403 di
-CONNECT). Kalau foto asli tersedia, tukar isi `FoodArt.jsx`.
+dan itu yang bikin halaman kebaca sebagai tulisan mesin. Pakai bahasa pemilik
+toko: "Order masuk dari tiga chat berbeda?", "Masukkan sekali, dipakai terus."
+Nggak ada em dash di string yang dirender.
 
 ### Batas jujur yang wajib dipertahankan
 
-- QRIS: nominal otomatis, **verifikasi tetap manual**. Disebut di langkah
-  "Bayar QR" pada FlowTabs dan di fitur paket Ordi + Bayar.
-- Hosting/maintenance opsional tapi **bukan nol**, disebut di catatan harga dan
-  FAQ #3.
-- Ordi tidak instan; disebut di FAQ #1 dan baris "Waktu mulai" pada tabel.
-- Tier tengah memakai **"Rekomendasi kami"**. Brief sempat menyebut "Paling
-  sering masuk akal" dan versi sebelumnya sempat memakai "Paling sering
-  dipakai"; keduanya terbaca sebagai klaim popularitas dan belum ada basis
-  kliennya.
-- Tidak ada testimoni, logo klien, jumlah pengguna, atau angka hasil.
+- QRIS: nominal otomatis, **verifikasi tetap manual**. Disebut di layar Bayar
+  pada simulasi, di poin ketiga `WhenOrder`, dan di fitur paket Ordi + Bayar.
+- Hosting/maintenance opsional tapi **bukan nol**: catatan harga dan FAQ #3.
+- Ordi nggak instan: FAQ #1.
+- Tier tengah pakai **"Rekomendasi kami"**, bukan klaim popularitas.
+- Angka di mockup (12 order, Rp540.000, dst) dilabeli "Contoh tampilan".
+- Nggak ada testimoni, logo klien, jumlah pengguna, atau angka hasil.
 
 ### Terverifikasi
 
-Build dan lint bersih. Nol horizontal overflow dan nol page error di
-320/375/390/414/768/1024/1280/1920. Nol kegagalan kontras WCAG AA. Semua
-elemen interaktif lewat 44px. 10 CTA hidup, nol link mati, tiap CTA WA membawa
-pesan prefilled sesuai konteks. Tab demo bisa dipakai mouse dan panah
-kiri/kanan. FAQ tertutup semua saat load. Anchor `#paket` mendarat di 80px
-(tidak ketutup nav). Reduced motion mendarat di keadaan akhir. Simulasi diuji
-manual: geprek Rp28.000 plus ongkir Cipete Rp14.000 jadi Rp42.000.
+`npm run lint` dan `npm run build` bersih. Nol horizontal overflow dan nol page
+error di 320/375/390/414/768/1024/1280/1920. Nol kegagalan kontras WCAG AA.
+Semua elemen interaktif lewat 44px. 13 CTA hidup, nol link mati. Simulasi
+diuji ujung ke ujung: geprek Rp28.000 plus ongkir Cipete Rp14.000 jadi
+Rp42.000, nominal QR ikut Rp42.000, ganti ke Kemang jadi Rp37.000, kirim, dan
+kartunya mendarat di dashboard. FAQ tertutup semua saat load. Anchor `#paket`
+mendarat di 80px. Reduced motion nggak autoplay tapi ketukan tetap jalan. Di
+mobile CTA utama ada di viewport pertama (y=392) dan tap produk berfungsi.
 
-Copy turun dari 779 ke 574 kata (**26%**), di bawah target brief 35-45%. Sisa
-copy-nya harga, angka, dan empat pengungkapan jujur di atas; memangkas lagi
-berarti membuang isi yang diminta brief itu sendiri.
+Copy turun dari 574 ke 453 kata (21%). Section yang mengulang sudah dihapus
+seluruhnya; sisa copy-nya harga, empat FAQ, dan pengungkapan jujur di atas.
 
-### Catatan buat pass berikutnya
-
-Tiga hipotesis A/B yang paling layak diuji ada di ringkasan commit
-`Rebuild landing page for conversion`.
+**Project ini nggak punya script `typecheck` maupun `test`** (`package.json`
+cuma punya dev, build, lint, preview). Lint plus build yang jadi gerbangnya.
