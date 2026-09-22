@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView, useReducedMotion } from "framer-motion";
 import { SectionHead } from "./Section";
+import { CONTOH_ORDER, rupiah } from "../../data/demoOrder";
 import { WHEN } from "../../data/altContent";
 
 const STATUS = ["Baru", "Diproses", "Selesai"];
@@ -12,7 +13,9 @@ function KartuOrder({ status, reduce }) {
   return (
     <div className="surface rounded-2xl p-4">
       <div className="flex items-baseline justify-between gap-2">
-        <span className="tnum text-[13px] font-bold text-coral-deep">#0232</span>
+        <span className="tnum text-[13px] font-bold text-coral-deep">
+          {CONTOH_ORDER.id}
+        </span>
         <span className="relative inline-flex">
           <motion.span
             key={status}
@@ -27,9 +30,7 @@ function KartuOrder({ status, reduce }) {
           </motion.span>
         </span>
       </div>
-      <p className="mt-2 text-[14px] font-semibold">
-        2x Kopi Susu Gula Aren, 1x Croissant Butter
-      </p>
+      <p className="mt-2 text-[14px] font-semibold">{CONTOH_ORDER.ringkas}</p>
       <p className="mt-2 flex items-center gap-1.5 text-[13px] text-espresso/85">
         <svg
           viewBox="0 0 24 24"
@@ -44,20 +45,22 @@ function KartuOrder({ status, reduce }) {
           <path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z" />
           <circle cx="12" cy="10" r="2.4" />
         </svg>
-        Kemang Raya, 3,2 km
+        {CONTOH_ORDER.zone.label}, {CONTOH_ORDER.zone.jarak}
       </p>
       <dl className="mt-3 border-t border-espresso/12 pt-3 text-[13px]">
         <div className="flex justify-between py-0.5">
           <dt className="text-espresso/80">Subtotal</dt>
-          <dd className="tnum font-semibold">Rp58.000</dd>
+          <dd className="tnum font-semibold">{rupiah(CONTOH_ORDER.subtotal)}</dd>
         </div>
         <div className="flex justify-between py-0.5">
-          <dt className="text-espresso/80">Ongkir</dt>
-          <dd className="tnum font-semibold">Rp9.000</dd>
+          <dt className="text-espresso/80">Ongkir {CONTOH_ORDER.zone.jarak}</dt>
+          <dd className="tnum font-semibold">{rupiah(CONTOH_ORDER.ongkir)}</dd>
         </div>
         <div className="mt-1.5 flex items-baseline justify-between border-t border-espresso/12 pt-2">
           <dt className="text-[13px] font-semibold">Total</dt>
-          <dd className="display tnum text-[1.3rem] text-coral-deep">Rp67.000</dd>
+          <dd className="display tnum text-[1.3rem] text-coral-deep">
+            {rupiah(CONTOH_ORDER.total)}
+          </dd>
         </div>
       </dl>
       <div className="relative mt-3 rounded-xl bg-mint px-3 py-2.5">

@@ -2,19 +2,14 @@ import { useRef } from "react";
 import { useInView, useReducedMotion } from "framer-motion";
 import { SectionHead } from "./Section";
 import { useCountUp } from "../../lib/useCountUp";
+import { DASHBOARD_BASE, rupiah } from "../../data/demoOrder";
 import { AFTER } from "../../data/altContent";
 
-const RIWAYAT = [
-  ["#0232", "Selesai", "Rp67.000"],
-  ["#0231", "Selesai", "Rp45.000"],
-  ["#0230", "Diproses", "Rp36.000"],
-];
-
-// Satu visual: rekap harian di dashboard. Dua angkanya naik dari nol sekali
-// saja waktu masuk layar. Angkanya contoh.
+// Satu visual: rekap harian di dashboard, keadaan sebelum order baru masuk.
+// Dua angkanya naik dari nol sekali saja waktu masuk layar. Angkanya contoh.
 function Rekap({ jalan, reduce }) {
-  const order = useCountUp(12, jalan, reduce ? 0 : 800);
-  const omzet = useCountUp(540000, jalan, reduce ? 0 : 1000);
+  const order = useCountUp(DASHBOARD_BASE.orders, jalan, reduce ? 0 : 800);
+  const omzet = useCountUp(DASHBOARD_BASE.omzet, jalan, reduce ? 0 : 1000, 1000);
 
   return (
     <div className="surface rounded-2xl p-4">
@@ -30,27 +25,27 @@ function Rekap({ jalan, reduce }) {
         <div className="rounded-xl bg-sand px-3 py-2.5">
           <p className="text-[11px] text-espresso/80">Masuk</p>
           <p className="display tnum text-[1.5rem] leading-tight text-coral-deep">
-            Rp{omzet.toLocaleString("id-ID")}
+            {rupiah(omzet)}
           </p>
         </div>
       </div>
       <ul className="mt-3">
-        {RIWAYAT.map(([id, status, nominal]) => (
+        {DASHBOARD_BASE.rows.map((o) => (
           <li
-            key={id}
+            key={o.id}
             className="flex items-center gap-2 border-t border-espresso/12 py-2 text-[12px]"
           >
-            <span className="tnum font-bold text-espresso/80">{id}</span>
+            <span className="tnum font-bold text-espresso/80">{o.id}</span>
             <span
               className={`rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
-                status === "Selesai"
+                o.status === "Selesai"
                   ? "bg-mint text-mint-deep"
                   : "bg-sand text-espresso/85"
               }`}
             >
-              {status}
+              {o.status}
             </span>
-            <span className="tnum ml-auto font-bold">{nominal}</span>
+            <span className="tnum ml-auto font-bold">{rupiah(o.nominal)}</span>
           </li>
         ))}
       </ul>

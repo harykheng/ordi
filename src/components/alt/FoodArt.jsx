@@ -84,6 +84,51 @@ export function ArtCroissant({ className = "" }) {
   );
 }
 
+export function ArtMatcha({ className = "" }) {
+  // Gelas tinggi, susu di bawah, matcha di atas, batas warnanya sengaja
+  // nggak rata biar kebaca es kopi susu kekinian, bukan ikon gelas.
+  const hijau = "var(--color-mint-deep)";
+  return (
+    <svg viewBox="0 0 120 120" className={`${box} ${className}`} aria-hidden="true">
+      <defs>
+        <Halftone id="ht-matcha" size={4.6} r={0.95} />
+        <clipPath id="clip-gelas">
+          <path d="M38 26h44l-5 66c-0.4 6-5 10-11 10h-12c-6 0-10.6-4-11-10Z" />
+        </clipPath>
+      </defs>
+      <rect width="120" height="120" fill={latte} opacity="0.18" />
+      <ellipse cx="62" cy="70" rx="40" ry="42" fill="url(#ht-matcha)" opacity="0.32" />
+      <g clipPath="url(#clip-gelas)">
+        <rect x="30" y="20" width="60" height="90" fill={cream} />
+        {/* susu */}
+        <rect x="30" y="62" width="60" height="48" fill={card} />
+        {/* matcha */}
+        <rect x="30" y="20" width="60" height="44" fill={hijau} opacity="0.78" />
+        <path d="M30 64c9-5 15 4 23 1 9-3 12-6 19-3 6 2 12 1 18-3v9H30Z" fill={hijau} opacity="0.5" />
+        {/* es */}
+        <rect x="44" y="33" width="15" height="15" rx="3" fill={cream} opacity="0.4" transform="rotate(-12 51 40)" />
+        <rect x="62" y="44" width="14" height="14" rx="3" fill={cream} opacity="0.35" transform="rotate(14 69 51)" />
+        <rect x="48" y="56" width="13" height="13" rx="3" fill={cream} opacity="0.28" transform="rotate(8 54 62)" />
+      </g>
+      {/* gelas */}
+      <path
+        d="M38 26h44l-5 66c-0.4 6-5 10-11 10h-12c-6 0-10.6-4-11-10Z"
+        fill="none"
+        stroke={ink}
+        strokeWidth="2.2"
+        strokeLinejoin="round"
+      />
+      <path d="M36 26h48" stroke={ink} strokeWidth="2.6" strokeLinecap="round" />
+      <path d="M41 64c11-5 17 4 26 1 8-3 11-5 15-3" stroke={ink} strokeWidth="1.5" fill="none" opacity="0.5" strokeLinecap="round" />
+      {/* sedotan */}
+      <path d="M68 16 58 60" stroke={ink} strokeWidth="4.6" strokeLinecap="round" />
+      <path d="M68 16 58 60" stroke="var(--color-coral)" strokeWidth="2.6" strokeLinecap="round" opacity="0.9" />
+      {/* kilap gelas */}
+      <path d="M45 34c-1 14-1 30 1 44" stroke={cream} strokeWidth="2.6" fill="none" opacity="0.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 export function ArtGeprek({ className = "" }) {
   return (
     <svg viewBox="0 0 120 120" className={`${box} ${className}`} aria-hidden="true">

@@ -243,50 +243,89 @@ Berangkat cepat, mendarat pelan, nggak ada yang memantul. Tokennya di
 `src/lib/motion.js` (`EASE_MOVE`, `EASE_ENTER`, `DUR`). Pakai token itu,
 jangan nulis durasi dan easing baru di komponen.
 
-Ceritanya satu order yang sama, `#0232`, dan dia kebawa dari hero sampai
-rekap: 2x Kopi Susu Gula Aren + 1x Croissant Butter, antar ke Kemang Raya,
-Rp67.000 (36.000 + 22.000 + 9.000 ongkir). **Angka itu saling ngunci.**
-Kalau harga menu atau ongkir di `OrderSim.jsx` diubah, `BeforeOrder`,
-`WhenOrder`, dan `AfterOrder` ikut salah, karena ketiganya nulis Rp67.000
-secara harfiah.
+#### `src/data/demoOrder.js` adalah satu-satunya sumber angka
+
+Menu, zona antar, keadaan dashboard, dan order contoh semuanya di situ.
+`OrderSim`, `BeforeOrder`, `WhenOrder`, dan `AfterOrder` baca dari sana.
+**Jangan nulis angka rupiah harfiah di komponen.** Sebelum ini Rp67.000
+ditulis di tiga tempat dan sekali ganti harga bikin ketiganya salah.
+
+Angkanya saling ngunci, dan ini rantainya:
+
+```
+Kopi Susu Gula Aren 24.000 + Matcha Latte 25.000 = subtotal 49.000
++ ongkir Kemang Raya 18.000                      = total   67.000
+dashboard 12 order / 540.000  ->  13 order / 607.000
+```
+
+Harga menu dari klien: 24.000 / 19.000 / 25.000. Total order contoh dan
+kenaikan omzet dua-duanya harus 67.000. Dengan harga itu **nggak ada**
+kombinasi yang bisa ninggalin ongkir Rp9.000 yang lama, jadi ongkir Kemang
+dinaikin ke Rp18.000 dan isi ordernya jadi satu kopi plus satu matcha. Kalau
+harga menu diubah lagi, cek ulang bahwa `CONTOH_ORDER.total` masih bulat dan
+masih cocok sama cerita di halaman.
+
+Tiga order lama di `DASHBOARD_BASE.rows` juga beneran keluar dari harga menu
+plus ongkir Kemang, bukan angka karangan.
 
 #### `OrderSim.jsx` — empat tahap
 
-Katalog, Keranjang, Bayar, Dashboard. Indikator tahap di atas, panel di
-tengah, keranjang di kepala jendela, dan bar ringkasan di bawah. Semua lewat
-ketukan, nggak ada yang butuh hover.
+Katalog, Ringkasan, Bayar, Dashboard. Penunjuk tahap di atas **cuma penunjuk,
+bukan tombol**; yang majuin alur itu satu tombol di bar bawah.
+
+**Nggak ada autoplay.** Yang bikin kartunya kebaca bisa diketuk itu bentuknya:
+tiap kartu produk punya tombol `+ Tambah` yang kelihatan, `cursor: pointer`,
+badge jumlah di pojok gambar, dan bayangan yang naik selama jari nempel.
+Jangan balik ke cara lama yang cuma ngandelin kalimat "ketuk produknya".
 
 Urutan kejadiannya, dan tiap langkah sengaja nunggu langkah sebelumnya:
 
 1. Ketuk produk, kartunya terbang ke ikon keranjang.
 2. **Keranjangnya baru nambah waktu kartunya mendarat**, bukan waktu diketuk.
    Yang mindahin itu `flight.commit`, dipanggil di `onAnimationComplete`.
-   Jadi badge 0 ke 1 dan totalnya berubah di ujung gerak, bukan di awal.
-3. Tombol `Lanjutkan` baru muncul setelah keranjangnya keisi. Sebelum itu
-   tempatnya diisi kalimat petunjuk, bukan tombol mati.
-4. Di layar Bayar, nominal QR-nya sama persis sama total. Ganti pin alamat,
-   nominalnya ikut.
-5. `Kirim order` menerbangkan kartu ordernya ke dashboard.
-6. Di dashboard, badge "Order baru masuk" berdenyut sekali, lalu status jalan
-   sendiri Baru, Diproses, Selesai.
+   Jadi badge, jumlah item, dan totalnya berubah di ujung gerak.
+3. Muncul umpan balik kecil "<produk> ditambahkan", hilang sendiri 1,4 detik.
+4. Tombol `Lanjutkan order` muncul dengan fade plus geser pendek. Sebelum ada
+   isi, tempatnya diisi kalimat petunjuk, bukan tombol mati.
+5. Ringkasan: item, pin alamat, subtotal, ongkir. Ganti alamat, totalnya ikut.
+6. Bayar: label "Nominal pembayaran", nominal ikut total, plus catatan jujur
+   bahwa verifikasi bukti pembayaran tetap manual.
+7. `Kirim pesanan` mindahin kartu order **84px ke bawah**, ke arah panel
+   dashboard. Sengaja pendek; terbang jauh melintasi kotak kebaca murahan.
+8. Dashboard: badge "Order baru masuk" berdenyut sekali, order barunya masuk
+   di paling atas dengan status Baru, angkanya naik 12 ke 13 dan 540.000 ke
+   607.000, lalu statusnya jalan sendiri Baru, Diproses, Selesai.
+9. Tombol terakhir `Ulangi simulasi` balikin semuanya ke keadaan awal.
+
+**Panel dashboard nggak boleh pernah nampilin 0 order atau Rp0.** Dia selalu
+mulai dari `DASHBOARD_BASE`; order baru cuma nambah di atas daftar. Bar bawah
+boleh Rp0, itu keranjang yang memang masih kosong.
 
 Cuma boleh ada satu benda terbang dalam satu waktu. `add()` dan `kirim()`
 dua-duanya mulai dengan `if (flight) return;`. Tanpa itu dua ketukan cepat
 bisa menghapus satu `commit`.
 
-Jarak terbangnya diukur dari `getBoundingClientRect()` asli, bukan dari angka
-tetap, jadi tetap benar di lebar layar apa pun.
+Jarak terbang kartu produk diukur dari `getBoundingClientRect()` asli, jadi
+tetap benar di lebar layar apa pun.
+
+#### Angka bergulir
+
+`useRollingNumber` dan `useCountUp` di `src/lib/useCountUp.js` punya parameter
+`step`. **Angka rupiah selalu pakai step 500 atau 1000.** Tanpa itu nominalnya
+sempat lewat angka seperti Rp606.020, dan angka uang yang begitu kebaca
+ngawur walaupun hasil akhirnya benar.
 
 #### Gerak waktu discroll
 
-- `BeforeOrder`: tiga chat tercecer merapat, meredup ke opacity 0.72, lalu
-  kartu order `#0232` muncul di sebelahnya. **Jangan turunin opacity-nya lagi**
-  di bawah 0.72; teksnya jatuh di bawah AA (di 0.4 ratio-nya 1,9:1).
-- `WhenOrder`: status kartu ordernya jalan sekali Baru, Diproses, Selesai.
-- `AfterOrder`: angka 12 dan Rp540.000 naik dari nol sekali, `useCountUp`.
+Cuma tiga, dan masing-masing sekali jalan (`useInView` dengan `once: true`):
 
-Semua pakai `useInView(..., { once: true })`. Sekali jalan, nggak diulang tiap
-kali discroll balik.
+- `BeforeOrder`: tiga chat bubble masuk dengan jeda 90ms, berhenti sebentar,
+  lalu tiap barisnya crossfade jadi tiga kartu order rapi. Barisnya
+  tinggi tetap, jadi pergantiannya nggak nggeser layout.
+- `WhenOrder`: status kartu ordernya jalan sekali Baru, Diproses, Selesai.
+- `AfterOrder`: angka 12 dan Rp540.000 naik dari nol sekali.
+
+Jangan bikin tiap heading, kartu, dan bullet terbang dari arah beda-beda.
 
 #### Microinteraction
 
@@ -304,15 +343,20 @@ nyangkut sampai ketukan berikutnya, dan itu kebaca sebagai bug.
 `.lift` sengaja pakai properti `translate`, bukan `transform`, supaya nggak
 tabrakan sama `scale` punya `.press` di elemen yang sama.
 
+Tailwind v4 **nggak lagi** maksa `cursor: pointer` di tombol, jadi ada aturan
+sendiri di `index.css` buat `button:not(:disabled)` dan `summary`. Jangan
+dihapus; tanpa itu kartu produk nggak kebaca bisa diklik di desktop.
+
 #### `prefers-reduced-motion`
 
 Dihormati lewat `useReducedMotion()` di komponen dan satu blok di
-`index.css`. Yang berubah:
+`index.css`. Keadaannya **langsung diganti**, nggak ada animasi panjang:
 
-- Simulasi nggak autoplay sama sekali, tapi **keempat tahapnya tetap bisa
-  diketuk**, dan keranjangnya nambah langsung tanpa kartu terbang.
+- Ketuk produk langsung nambah keranjang, tanpa kartu terbang.
+- `Kirim pesanan` langsung mendarat di dashboard dengan angka akhirnya.
 - Angka rekap langsung di nilainya (`useCountUp` dengan `ms = 0` mulai dari
   target, jadi nggak ada kedip nol).
+- Chat di `BeforeOrder` langsung berbentuk kartu order.
 - Status kartu di `WhenOrder` diam di "Baru".
 - Hover cuma ganti warna dan bayangan, nggak naik.
 
@@ -367,23 +411,32 @@ Nggak ada em dash di string yang dirender.
 
 ### Terverifikasi
 
-`npm run lint` dan `npm run build` bersih. Nol horizontal overflow di
-320/360/375/390/414/768/1024/1280/1920 sesudah discroll habis. Nol galat
-halaman asli (yang muncul di sandbox cuma kegagalan jaringan buat font dan
-analytics, itu diblokir policy). Nol kegagalan kontras WCAG AA, diukur dengan
-melukis warna computed di kanvas. Semua tombol dan tautan lewat 44px. 6 tautan
-WhatsApp, semuanya ke nomor yang sama, nol tautan mati. Harga masih utuh.
+66 pemeriksaan browser lolos semua. `npm run lint` dan `npm run build` bersih.
 
-Simulasi diuji ujung ke ujung: ketuk tiga kartu, badge 0 ke 1 ke 3, subtotal
-Rp58.000, pilih Kemang Raya, nominal QR Rp67.000, kirim, kartunya mendarat di
-dashboard bawa isi order dan alamatnya, status jalan Baru ke Diproses ke
-Selesai, reset balik ke keranjang kosong. Autoplay tanpa disentuh sampai ke
-dashboard dengan order contoh yang sama. Reduced motion: nggak autoplay,
-keempat tahap tetap bisa diketuk, angka rekap langsung di nilainya. Di 375px
-tap produk nambah keranjang tanpa hover.
-
-Copy turun dari 574 ke 453 kata (21%) di pass sebelumnya, dan pass gerak ini
-nggak nambah paragraf baru, cuma label di dalam mockup.
+- Keadaan awal: 0 item, Rp0, hint "Ketuk produknya dulu", panel dashboard
+  belum dirender. Harga ketiga produk benar, tiap kartu punya label "Tambah",
+  `cursor: pointer` kebaca.
+- Alur kanonik: ketuk Kopi dan Matcha, subtotal Rp49.000, ongkir Rp18.000,
+  total Rp67.000, nominal pembayaran Rp67.000, kirim, order `#0232` masuk
+  dengan status Baru, angka 12 ke 13 dan Rp540.000 ke Rp607.000, status jalan
+  sampai Selesai, `Ulangi simulasi` balik ke keadaan awal. Nggak pernah ada
+  Rp0 di panel dashboard.
+- Ketiga produk diketuk satu-satu, keranjang naik 1, 2, 3 dan totalnya
+  Rp86.000.
+- Reduced motion: semuanya langsung, dashboard langsung di 13 / Rp607.000.
+- Keyboard: kartu produk jalan lewat Enter, cincin fokus kelihatan.
+- Scroll: chat bubble masuk duluan lalu jadi tiga kartu order; status kartu
+  jalan Baru ke Selesai; rekap berhenti di 12 / Rp540.000.
+- 320/360/375/390/414/768/1024/1280/1920: nol horizontal overflow. CLS 0,0000
+  di 375px. Semua tombol dan tautan lewat 44px. Di 390px seluruh alur jalan
+  lewat tap, dan kartu simulasinya nggak keluar layar.
+- Nol kegagalan kontras WCAG AA di dua belas keadaan (tiap tahap simulasi,
+  tiap section, FAQ terbuka). Ukur pas animasinya sudah diam; elemen yang
+  masih di tengah transisi ngasih rasio palsu.
+- 6 tautan WhatsApp, nomor sama semua, nol tautan mati, harga utuh, FAQ
+  tertutup saat load, anchor `#paket` dan `#saat` mendarat di 80px.
+- Nol galat halaman asli. Yang muncul di sandbox cuma kegagalan jaringan buat
+  font dan analytics, dan itu diblokir policy.
 
 **Project ini nggak punya script `typecheck` maupun `test`** (`package.json`
 cuma punya dev, build, lint, preview; nggak ada TypeScript). Lint plus build
