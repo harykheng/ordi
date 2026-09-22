@@ -51,18 +51,24 @@ export const AFTER = {
   lead: "Tercatat sendiri tiap hari. Pas tutup, rekapnya tinggal dibuka.",
 };
 
-export const START_STEPS = [
+// Section "Cara kerja". Em dash di draft aslinya diganti koma dan titik dua,
+// sesuai aturan copy repo ini. Istilahnya sengaja nyambung sama tiga section
+// di atasnya: alur, nama toko, akun toko.
+export const HOW_STEPS = [
   {
-    title: "Cerita alur tokomu",
-    body: "Lewat WhatsApp. Ceritain gimana tokomu terima pesanan sekarang.",
+    n: "01",
+    title: "Cerita alur order tokomu lewat WA",
+    body: "Ceritain gimana tokomu terima pesanan sekarang, manual di buku atau berantakan di WA doang. Ordi dibangun ngikutin cara kerja tokomu, bukan template.",
   },
   {
-    title: "Kami bangun sistemnya",
-    body: "Ngikutin alur yang tadi kamu ceritain.",
+    n: "02",
+    title: "Ordi dibangun, bukan disetel",
+    body: "Sistemnya di-custom pakai nama toko, produk, dan alur order tokomu sendiri. Bukan isi form terus jadi otomatis.",
   },
   {
-    title: "Toko onlinemu jalan",
-    body: "Link-nya kamu sebar, order mulai masuk.",
+    n: "03",
+    title: "Terima kunci, bukan akses sewa",
+    body: "Begitu live, semuanya milik tokomu: repo, database, dan domain di akun tokomu sendiri. Ordi cuma bantu setup awal.",
   },
 ];
 

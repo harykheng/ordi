@@ -194,6 +194,16 @@ dd {
     var(--shadow-border);
 }
 
+/* Goresan doodle, diambil balik dari landing-second. Dipakai komponen di
+   `Doodles.jsx`; tanpa ini path-nya kerender jadi gumpalan hitam. */
+.doodle {
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ===== Order Storm =====
    Latar hero: potongan order berdatangan dari luar lalu terserap ke arah
    mockup. Semuanya `transform` dan `opacity`, nggak ada canvas, nggak ada
