@@ -1,109 +1,87 @@
 // Konten versi alternatif (branch landing-alternatif).
-// Alur halaman: MASALAH → SOLUSI → BUKTI VISUAL → HARGA → CTA.
-// Angka harga & link di sini identik dengan versi landing-second,
-// yang berubah cuma urutan, framing, dan panjang copy.
+// Konsepnya: dari chat yang berantakan jadi order yang masuk sendiri.
+// Harga dan link diambil dari content.js biar satu sumber.
 import { DEMO_URL, WHATSAPP_CTA_LINK } from "./content";
 
 export { DEMO_URL, WHATSAPP_CTA_LINK };
 
-const WA_NUMBER = "6281292567788";
+export const HERO = {
+  eyebrow: "Sistem order untuk bisnis makanan",
+  headline: "Biar pelanggan pesan sendiri. Kamu fokus bikin produknya.",
+  sub: "Katalog, pesanan, ongkir, dan rekap dalam satu sistem yang dibangun mengikuti cara kerja bisnis kamu.",
+  primary: "Coba demo interaktif",
+  secondary: "Tanya paket yang cocok",
+  micro: "Data contoh, bukan toko asli. Tidak perlu daftar.",
+};
 
-// Tiap CTA bawa konteks sendiri ke WhatsApp, jadi chat masuk udah
-// ketahuan datang dari section mana tanpa perlu nanya ulang.
-export function waLink(message) {
-  return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
-}
+export const TRUST_CHIPS = [
+  "Dibangun sesuai alur bisnis kamu",
+  "Sistem dan data bisa di akun kamu",
+  "Mulai dari kebutuhan yang paling penting",
+];
 
-export const POSITIONING =
-  "Katalog online buat kedai kopi, bakery, dan katering. Pelanggan pesan lewat web, ordernya masuk ke dashboard kamu.";
-
-export const TRUST_POINTS = [
+export const PROBLEMS = [
   {
-    title: "Sistemnya punya kamu",
-    body: "Dibangun atas nama bisnis kamu. Setelah lunas, nggak ada langganan yang bisa matiin.",
+    title: "Chat menumpuk",
+    body: "Pesanan gampang tenggelam di antara chat lain.",
+    art: "chat",
   },
   {
-    title: "Semua order kecatat",
-    body: "Order, alamat, sama totalnya ada di satu tempat yang gampang dibuka lagi besok.",
+    title: "Pertanyaan berulang",
+    body: "Menu, harga, stok, dan alamat ditanya lagi dan lagi.",
+    art: "tanya",
   },
   {
-    title: "Mulainya bisa kecil",
-    body: "Ambil yang paling bikin repot sekarang. Sisanya nyusul kalau memang perlu.",
+    title: "Rekap malam",
+    body: "Total order masih dihitung dari nota dan riwayat chat.",
+    art: "rekap",
   },
 ];
 
-// Cara kerja dan fitur digabung: tiap langkah bawa manfaatnya sendiri,
-// jadi nggak ada dua section yang ngomongin hal sama dua kali.
 export const FLOW = [
   {
-    n: "01",
-    title: "Pelanggan buka katalog kamu",
-    body: "Dia lihat menu, harga, sama stok yang kamu update tadi pagi.",
-    fitur: "Katalog online",
+    id: "katalog",
+    tab: "Buka katalog",
+    title: "Pelanggan buka katalog",
+    body: "Menu, harga, dan stok kelihatan tanpa kamu ketik ulang.",
   },
   {
-    n: "02",
-    title: "Dia isi alamatnya sendiri",
+    id: "alamat",
+    tab: "Isi alamat",
+    title: "Pelanggan isi alamat sendiri",
     body: "Ongkirnya kehitung dari alamat itu, muncul sebelum dia checkout.",
-    fitur: "Ongkir otomatis",
   },
   {
-    n: "03",
-    title: "Bayar pakai QR",
-    body: "Nominalnya udah pas sama total pesanan. Bukti bayarnya masih kamu yang cek satu-satu.",
-    fitur: "QRIS sesuai nominal",
+    id: "bayar",
+    tab: "Bayar QR",
+    title: "Bayar dengan QR sesuai nominal",
+    body: "Nominal QR ngikutin total order.",
+    note: "Nominal QR otomatis. Verifikasi bukti pembayaran tetap manual oleh admin.",
   },
   {
-    n: "04",
-    title: "Ordernya masuk ke kamu",
-    body: "Nongol di dashboard, dan WhatsApp kamu bunyi.",
-    fitur: "Dashboard dan notifikasi",
+    id: "masuk",
+    tab: "Order masuk",
+    title: "Order masuk ke dashboard",
+    body: "Tercatat rapi, dan WhatsApp kamu bunyi.",
   },
 ];
 
-export const BEFORE_AFTER = {
-  before: [
-    "Order ketimbun chat baru",
-    "Ngetik ulang menu tiap ditanya",
-    "Ngira-ngira ongkir sambil masak",
-    "Nyari bukti transfer di scroll-an",
-    "Rekap malam dari tumpukan nota",
-  ],
-  after: [
-    "Order berderet rapi di dashboard",
-    "Pelanggan baca sendiri di katalog",
-    "Ongkir kehitung dari alamatnya",
-    "Nominal QR-nya udah pas",
-    "Rekapnya udah jadi pas tutup",
+export const OWNERSHIP = {
+  title: "Bukan numpang di platform orang lain.",
+  body: "Ordi dibangun untuk bisnis kamu. Sistem, data, dan domain bisa berada di akunmu sendiri.",
+  points: [
+    "Alur mengikuti bisnis kamu",
+    "Bisa mulai kecil dan upgrade belakangan",
+    "Tetap jalan kalau berhenti pakai jasa kami",
   ],
 };
 
-export const OWNERSHIP_POINTS = [
-  {
-    title: "Atas nama bisnis kamu",
-    body: "Sistem sama datanya ada di akun kamu sendiri.",
-  },
-  {
-    title: "Domain sendiri",
-    body: "Bisa pakai nama tokomu, misalnya kopisenja.com.",
-  },
-  {
-    title: "Alurnya ngikut kamu",
-    body: "Kalau kamu cuma terima pesanan H-1, sistemnya dibikin begitu.",
-  },
-  {
-    title: "Bisa nambah belakangan",
-    body: "Fitur baru dipasang waktu kamu udah butuh, tanpa pindah sistem.",
-  },
-];
-
 export const ALT_PRICING_TIERS = [
   {
+    id: "dasar",
     name: "Ordi Dasar",
-    tagline: "Buat mulai berhenti nyatet manual di WhatsApp.",
+    tagline: "Untuk mulai berhenti mencatat manual di WhatsApp.",
     price: "Rp2.500.000",
-    priceNote: "sekali bayar",
-    retainer: "Rp100.000/bulan opsional, hosting dan maintenance",
     featuresLabel: "Yang kamu dapat:",
     features: [
       "Katalog produk online",
@@ -112,71 +90,72 @@ export const ALT_PRICING_TIERS = [
       "Rekap harian",
       "Notifikasi WhatsApp",
     ],
-    cta: "Tanya Ordi Dasar",
+    cta: "Mulai dari Dasar",
     highlight: false,
   },
   {
+    id: "antar",
     name: "Ordi + Antar",
-    tagline: "Buat bisnis yang sudah melayani delivery.",
+    tagline: "Untuk bisnis yang sudah melayani delivery.",
     price: "Rp4.000.000",
-    priceNote: "sekali bayar",
-    retainer: "Rp125.000/bulan opsional, hosting dan maintenance",
     featuresLabel: "Semua di Ordi Dasar, plus:",
     features: [
       "Alamat pelanggan diisi sendiri",
       "Perhitungan ongkir",
       "Pilihan layanan antar",
     ],
-    cta: "Tanya Ordi + Antar",
+    cta: "Pilih + Antar",
     highlight: true,
   },
   {
+    id: "bayar",
     name: "Ordi + Bayar",
-    tagline: "Buat volume pesanan yang sudah lebih tinggi.",
+    tagline: "Untuk bisnis dengan volume order lebih tinggi.",
     price: "Rp5.000.000",
-    priceNote: "sekali bayar",
-    retainer: "Rp125.000/bulan opsional, hosting dan maintenance",
     featuresLabel: "Semua di Ordi + Antar, plus:",
     features: [
-      "QR pembayaran custom nominal",
+      "QR pembayaran sesuai nominal",
       "Nominal mengikuti total order",
       "Verifikasi pembayaran tetap manual",
     ],
-    cta: "Tanya Ordi + Bayar",
+    cta: "Pilih + Bayar",
     highlight: false,
   },
 ];
 
+export const PRICING_NOTE =
+  "Hosting, domain, dan maintenance opsional mulai Rp100.000/bulan. Ini biaya pengelolaan, bukan sewa sistem.";
+
 export const ALT_COMPARISON = {
   columns: [
     { key: "manual", label: "Manual via WhatsApp" },
-    { key: "sewa", label: "Sewa platform" },
-    { key: "ordi", label: "Sistem sendiri (Ordi)" },
+    { key: "sewa", label: "Platform sewaan" },
+    { key: "ordi", label: "Sistem sendiri dengan Ordi" },
   ],
   rows: [
     {
       label: "Biaya",
-      manual: "Nggak keluar biaya tool. Yang kebayar waktunya kamu.",
-      sewa: "Biaya bulanan jalan terus selama sistem dipakai.",
-      ordi: "Bayar sekali di awal. Hosting dan maintenance opsional.",
+      manual: "Nggak ada biaya tool. Yang kebayar waktunya.",
+      sewa: "Bulanan, jalan terus selama dipakai.",
+      ordi: "Sekali di awal. Pengelolaan opsional.",
     },
     {
       label: "Kepemilikan",
-      manual: "Data pesanan nyangkut di riwayat chat.",
-      sewa: "Sistem dan data nempel di platform penyedia.",
-      ordi: "Sistem dan data ada di bawah bisnis kamu.",
+      manual: "Nyangkut di riwayat chat.",
+      sewa: "Nempel di platform penyedia.",
+      ordi: "Bisa di akun bisnis kamu.",
     },
     {
       label: "Kustomisasi",
-      manual: "Bebas, tapi semuanya dikerjakan manual.",
-      sewa: "Ikut template dan fitur yang sudah disediakan.",
-      ordi: "Dibangun ngikutin alur kamu sekarang.",
+      manual: "Bebas, tapi manual semua.",
+      sewa: "Ikut template yang disediakan.",
+      ordi: "Ngikutin alur kamu sekarang.",
     },
     {
       label: "Waktu mulai",
-      manual: "Langsung, karena memang belum ada sistem.",
-      sewa: "Cepat, tinggal daftar dan pakai template.",
-      ordi: "Butuh waktu, karena kita ngobrol dulu sebelum bangun.",
+      manual: "Langsung, memang belum ada sistem.",
+      sewa: "Cepat, tinggal daftar.",
+      ordi: "Butuh waktu, kita ngobrol dulu.",
     },
   ],
 };
@@ -184,30 +163,25 @@ export const ALT_COMPARISON = {
 export const ALT_FAQ = [
   {
     q: "Apa bedanya Ordi dengan platform sewaan?",
-    a: "Platform sewaan itu satu sistem yang dipakai bareng banyak toko, dan kamu bayar bulanan buat numpang di sana. Ordi dibangun khusus buat bisnis kamu, ngikutin alur yang kamu pakai sehari-hari, dan setelah lunas sistemnya jadi milik bisnismu. Konsekuensinya, Ordi nggak bisa langsung jadi dalam hitungan menit seperti daftar akun.",
+    a: "Platform sewaan dipakai bareng banyak toko dan kamu bayar bulanan buat numpang. Ordi dibangun khusus mengikuti alur bisnis kamu, jadi nggak bisa langsung jadi dalam hitungan menit.",
   },
   {
     q: "Apakah sistem dan data benar-benar menjadi milik saya?",
-    a: "Iya. Sistem dibangun atas nama bisnis kamu, dan domain, hosting, serta datanya bisa berada di akun kamu sendiri. Kalau suatu saat kamu mau pindah pengelola atau ngurus sendiri, sistemnya tetap jalan karena nggak nyantol ke langganan kami.",
+    a: "Iya. Sistem, domain, hosting, dan datanya bisa berada di akun kamu sendiri. Kalau nanti pindah pengelola, sistemnya tetap jalan.",
   },
   {
     q: "Kenapa masih ada biaya bulanan?",
-    a: "Biaya bulanan itu opsional dan bukan biaya sewa sistem. Itu buat hosting, domain, dan perawatan: server tetap jalan, ada yang benerin kalau ada error, dan ada yang ngingetin sebelum masa aktif domain habis. Kalau kamu mau urus sendiri, silakan, sistemnya tetap milik kamu. Yang jelas, biaya hosting dan domain memang nggak nol setelah pembelian, dan kami lebih baik bilang di depan.",
+    a: "Itu opsional, buat hosting, domain, dan perawatan server. Kamu boleh urus sendiri. Yang pasti, biaya hosting dan domain memang nggak nol setelah pembelian.",
   },
   {
-    q: "Apakah verifikasi QRIS otomatis?",
-    a: "Nggak. Yang otomatis itu nominal QR-nya, jadi selalu pas sesuai total pesanan dan pelanggan nggak perlu nanya harus transfer berapa. Pengecekan bukti bayarnya masih dilakukan manual oleh admin, karena verifikasi otomatis butuh payment gateway berbayar yang bikin biaya naik cukup jauh.",
-  },
-  {
-    q: "Berapa lama sampai sistem bisa digunakan?",
-    a: "Nggak instan. Kita ngobrol dulu soal cara kerja bisnis kamu, baru sistemnya dibangun. Estimasi waktunya baru bisa dikasih setelah kebutuhanmu jelas, karena beda kebutuhan beda pengerjaan. Kalau kamu butuh yang bisa langsung online hari ini juga, jujur aja Ordi bukan pilihan yang tepat.",
-  },
-  {
-    q: "Bisa upgrade paket nanti?",
-    a: "Bisa. Dari Ordi Dasar ke + Antar atau + Bayar tinggal bayar selisihnya. Sistemnya memang dibangun supaya fitur bisa ditambah belakangan tanpa pindah platform atau bangun ulang dari nol.",
-  },
-  {
-    q: "Apakah harus langsung membeli paket lengkap?",
-    a: "Nggak harus. Banyak yang lebih masuk akal mulai dari yang paling bikin repot sekarang, misalnya katalog dan pencatatan pesanan dulu, baru nambah ongkir atau pembayaran kalau volume pesanannya sudah nambah.",
+    q: "Bisa mulai dari paket kecil lalu upgrade?",
+    a: "Bisa. Dari Ordi Dasar ke + Antar atau + Bayar tinggal bayar selisihnya, tanpa bangun ulang dari nol.",
   },
 ];
+
+export const FINAL = {
+  title: "Berhenti jadi admin order sepanjang hari.",
+  body: "Ceritakan cara kerja bisnismu. Kita mulai dari bagian yang paling bikin repot sekarang.",
+  cta: "Ceritakan bisnis saya",
+  micro: "Tidak perlu langsung membeli. Kita cari tahu dulu apakah Ordi memang cocok.",
+};

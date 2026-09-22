@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
 import AltHeader from "./components/alt/AltHeader";
 import AltHero from "./components/alt/AltHero";
-import BeforeAfter from "./components/alt/BeforeAfter";
-import FlowStrip from "./components/alt/FlowStrip";
+import TrustChips from "./components/alt/TrustChips";
+import Problems from "./components/alt/Problems";
+import FlowTabs from "./components/alt/FlowTabs";
 import OwnershipNote from "./components/alt/OwnershipNote";
 import PriceSheet from "./components/alt/PriceSheet";
 import AltComparison from "./components/alt/AltComparison";
@@ -24,8 +25,9 @@ export default function App() {
       <AltHeader />
       <main>
         <AltHero />
-        <BeforeAfter />
-        <FlowStrip />
+        <TrustChips />
+        <Problems />
+        <FlowTabs />
         <OwnershipNote />
         <PriceSheet />
         <AltComparison />

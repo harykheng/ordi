@@ -7,6 +7,7 @@ import {
 } from "framer-motion";
 import { ArtKopi, ArtCroissant, ArtGeprek } from "./FoodArt";
 import { DEMO_URL } from "../../data/altContent";
+import { trackDemo } from "../../lib/track";
 
 // Demonstrasi produk yang bisa diklik: pilih produk, keranjang nambah,
 // alamat dipilih, ongkir kehitung, total gerak, pesanan terbang ke
@@ -218,9 +219,9 @@ export default function OrderSim() {
 
   return (
     <div ref={wrapRef} className="relative">
-      <div className="md:grid md:grid-cols-12 md:items-start md:gap-6">
+      <div className="space-y-4">
         {/* ── KATALOG: layar yang dilihat pelanggan ─────────────── */}
-        <div className="relative z-10 md:col-span-7">
+        <div className="relative z-10">
           <div className="surface overflow-hidden rounded-[20px]">
             <div className="flex items-center gap-2 border-b border-espresso/12 bg-sand/60 px-3 py-2">
               <span className="flex gap-1" aria-hidden="true">
@@ -282,7 +283,7 @@ export default function OrderSim() {
                       aktif ? "bg-sand" : "hover:bg-sand/50"
                     }`}
                   >
-                    <span className="block aspect-square">
+                    <span className="block aspect-[4/3]">
                       <Art />
                     </span>
                     <span className="block px-2 py-1.5">
@@ -419,14 +420,30 @@ export default function OrderSim() {
         </div>
 
         {/* ── DASHBOARD: layar yang kamu lihat ──────────────────── */}
-        <div className="relative md:col-span-5 md:mt-10">
+        <div className="relative">
           <div className="surface overflow-hidden rounded-[20px]">
             <div className="flex items-baseline justify-between gap-2 border-b border-espresso/12 px-4 py-3">
-              <p className="display text-[1.05rem]">Pesanan masuk</p>
+              <p className="display flex items-center gap-2 text-[1.05rem]">
+                Pesanan masuk
+                <AnimatePresence initial={false}>
+                  {phase === "done" && (
+                    <motion.span
+                      key={orders[0]?.id}
+                      initial={reduce ? false : { opacity: 0, y: 6, scale: 0.9 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={reduce ? undefined : { opacity: 0, y: -4 }}
+                      transition={{ type: "spring", duration: 0.35, bounce: 0 }}
+                      className="rounded-md bg-coral px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-cream"
+                    >
+                      +1 order baru
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </p>
               <p className="text-[12px] text-espresso/80">hari ini</p>
             </div>
 
-            <div className="relative min-h-[170px] px-4 py-1">
+            <div className="relative min-h-[110px] px-4 py-1">
               <div ref={targetRef}>
                 <AnimatePresence initial={false}>
                   {orders.map((o, i) => (
@@ -525,7 +542,7 @@ export default function OrderSim() {
                 href={DEMO_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => window.gtag?.("event", "klik_demo", { lokasi: "hero-sim" })}
+                onClick={() => trackDemo("hero-sim")}
                 className="press inline-flex min-h-12 items-center gap-2 rounded-xl bg-coral pl-6 pr-5 text-[15px] font-bold text-cream hover:bg-coral-deep"
               >
                 Coba demo Ordi yang sebenarnya

@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
 import { IconWhatsApp } from "./Icons";
-import { waLink } from "../../data/altContent";
+import { trackWa, waHref } from "../../lib/track";
 
-const WA_STICKY = waLink(
-  "Halo Studio Harel, saya mau cerita soal bisnis saya buat Ordi."
-);
+const WA_STICKY = waHref("sticky");
 
 // Mobile-only. Muncul setelah user lewat hero, dan otomatis ngumpet lagi
 // pas footer CTA keliatan (biar nggak numpuk dua tombol yang sama) atau
@@ -21,13 +19,23 @@ export default function StickyMobileCTA({ hidden = false }) {
   }, []);
 
   useEffect(() => {
-    const footer = document.getElementById("kontak");
-    if (!footer) return;
+    // Jangan nutupin CTA penutup, dan jangan nutupin simulasi yang lagi
+    // dimainkan di hero.
+    const targets = ["kontak", "top"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    if (!targets.length) return;
+    const visible = new Set();
     const io = new IntersectionObserver(
-      ([entry]) => setAtFooter(entry.isIntersecting),
+      (entries) => {
+        entries.forEach((e) =>
+          e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)
+        );
+        setAtFooter(visible.size > 0);
+      },
       { rootMargin: "-20% 0px 0px 0px" }
     );
-    io.observe(footer);
+    targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, []);
 
@@ -46,9 +54,7 @@ export default function StickyMobileCTA({ hidden = false }) {
         target="_blank"
         rel="noopener noreferrer"
         tabIndex={show ? 0 : -1}
-        onClick={() =>
-          window.gtag?.("event", "klik_wa", { lokasi: "sticky-mobile" })
-        }
+        onClick={() => trackWa("sticky")}
         className="press flex min-h-12 items-center justify-center gap-2 rounded-xl bg-coral px-4 py-3 text-sm font-bold text-cream min-[380px]:text-[15px]"
       >
         <IconWhatsApp className="h-5 w-5" />

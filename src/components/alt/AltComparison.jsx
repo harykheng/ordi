@@ -10,8 +10,7 @@ export default function AltComparison() {
       <div className="mx-auto max-w-5xl">
         <SectionHead
           label="Bandingin"
-          title="Tiga cara ngatur pesanan."
-          lead="Masing-masing ada enaknya dan ada tukarannya, termasuk Ordi."
+          title="Tiga cara mengatur pesanan. Pilih trade-off yang paling masuk akal."
         />
 
         {/* Mobile: satu blok per pilihan. Tabel empat kolom selalu
