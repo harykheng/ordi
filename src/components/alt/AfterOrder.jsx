@@ -7,12 +7,17 @@ import { AFTER } from "../../data/altContent";
 
 // Satu visual: rekap harian di dashboard, keadaan sebelum order baru masuk.
 // Dua angkanya naik dari nol sekali saja waktu masuk layar. Angkanya contoh.
-function Rekap({ jalan, reduce }) {
-  const order = useCountUp(DASHBOARD_BASE.orders, jalan, reduce ? 0 : 800);
-  const omzet = useCountUp(DASHBOARD_BASE.omzet, jalan, reduce ? 0 : 1000, 1000);
+// Hitungannya mulai dari sore hari, bukan dari nol, jadi panelnya nggak
+// pernah kebaca kosong walaupun ketahan sebentar sebelum masuk viewport.
+const AWAL_ORDER = 9;
+const AWAL_OMZET = 408000;
+
+function Rekap({ jalan, reduce, innerRef }) {
+  const order = useCountUp(DASHBOARD_BASE.orders, jalan, reduce ? 0 : 800, 1, AWAL_ORDER);
+  const omzet = useCountUp(DASHBOARD_BASE.omzet, jalan, reduce ? 0 : 1000, 1000, AWAL_OMZET);
 
   return (
-    <div className="surface rounded-2xl p-4">
+    <div ref={innerRef} className="surface rounded-2xl p-4">
       <div className="flex items-baseline justify-between gap-2">
         <p className="text-[13px] font-bold">Rekap hari ini</p>
         <p className="text-[11px] text-espresso/80">Senin, 21:04</p>
@@ -57,19 +62,16 @@ function Rekap({ jalan, reduce }) {
 export default function AfterOrder() {
   const reduce = useReducedMotion();
   const ref = useRef(null);
-  const seen = useInView(ref, { once: true, amount: 0.4 });
+  const seen = useInView(ref, { once: true, amount: 0.25 });
 
   return (
     <section id="setelah" className="px-5 py-16 sm:py-20">
-      <div
-        ref={ref}
-        className="mx-auto max-w-5xl lg:grid lg:grid-cols-12 lg:items-center lg:gap-12"
-      >
+      <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-12 lg:items-center lg:gap-12">
         <div className="lg:col-span-6">
           <SectionHead label={AFTER.title} title={AFTER.body} />
         </div>
         <div className="mt-8 lg:col-span-5 lg:col-start-8 lg:mt-0">
-          <Rekap jalan={seen || reduce} reduce={reduce} />
+          <Rekap innerRef={ref} jalan={seen || reduce} reduce={reduce} />
         </div>
       </div>
     </section>

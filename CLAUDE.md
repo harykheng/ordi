@@ -315,6 +315,66 @@ tetap benar di lebar layar apa pun.
 sempat lewat angka seperti Rp606.020, dan angka uang yang begitu kebaca
 ngawur walaupun hasil akhirnya benar.
 
+`useCountUp` juga punya parameter `from`, dan **buat panel rekap itu wajib
+bukan nol** (`AWAL_ORDER` dan `AWAL_OMZET` di `AfterOrder.jsx`). Hitungan yang
+mulai dari nol bikin panelnya sempat kebaca "Order 0, Masuk Rp0" selama dia
+kelihatan tapi pemicunya belum jalan, dan itu keluhan yang sudah dua kali
+masuk. Pemicunya juga nempel di kartunya sendiri dengan `amount: 0.25`, bukan
+di baris dua kolomnya dengan `amount: 0.4`.
+
+#### `OrderStorm.jsx` — latar hero
+
+Konsepnya "order chaos, lalu Ordi merapikan". Potongan order berangkat dari
+luar, bergerak ke arah mockup, melambat, mengecil, lalu terserap di baliknya.
+**Nggak ada satu elemen pun yang gerakannya tanpa arti**: semuanya chat,
+kartu order, harga, pin alamat, bukti bayar, notifikasi, status, nama produk,
+atau nomor order. Jangan diganti jadi partikel, blob, atau garis.
+
+Dikerjain pakai CSS keyframes (`storm-in`, `storm-wobble`, `storm-pull` di
+`index.css`). Nggak ada canvas, nggak ada video, nggak ada library animasi
+baru. Tiap elemen bawa variabelnya sendiri lewat style inline.
+
+Yang gampang salah kalau nanti posisinya diutak-atik:
+
+- **`left` itu tepi kiri chip, bukan tengahnya.** Titik di 90% ke atas bikin
+  ujung kanannya kepotong. Semua titik kumpul kanan ditahan di 86% ke bawah.
+- **Titik kumpulnya di pinggiran mockup, bukan di tengahnya.** Kalau
+  ditaruh di tengah, elemennya ketutup mockup sepanjang jalan dan yang kelihatan
+  cuma potongan di pinggir. Itu kebaca sebagai bug, bukan desain.
+- **Kolom kiri harus tetap tenang.** Di layar lebar nggak ada yang berangkat
+  dari kiri; datangnya dari atas, kanan, dan bawah.
+- Layernya punya masker gradien di tepi. Tanpa itu ada elemen yang kepotong
+  mentah waktu baru masuk frame.
+- Opacity puncaknya 0.18 sampai 0.35. Ini teks dekoratif: `aria-hidden`, dan
+  tiap katanya diulang sebagai teks sungguhan di tempat lain, jadi masuk
+  pengecualian teks insidental WCAG 1.4.3. **Jangan taruh informasi yang cuma
+  ada di situ.**
+
+Area tenang di belakang judul dikerjain di `AltHero.jsx`: gradien cream
+radial dari kiri buat layar lebar, linear dari atas buat layar kecil. Diuji
+dengan menyembunyikan judulnya lalu ngukur piksel tergelap di kotaknya, di
+delapan saat berbeda: rasio terburuk 10,66:1.
+
+Di layar kecil cuma enam elemen, semuanya naik dari bawah ke arah simulasi,
+nggak ada yang lewat kotak judul, dan nggak ada mouse tracking.
+
+**Parallax** cuma nyala di `(hover: hover) and (pointer: fine)`. Dua lapis
+kedalaman: yang jauh geser 0,35x, yang dekat 1x.
+
+#### Latar bereaksi waktu demo dipakai
+
+`OrderSim` manggil `onAdd` **di awal `add()`, bukan di `commit`**. Urutannya
+sengaja begini:
+
+```
+klik produk -> badai reda 620ms -> dua potongan ketarik ke mockup
+            -> kartu mendarat, badge dan total berubah
+            -> label "Order siap diproses" muncul (760ms), hilang di 2,5 detik
+```
+
+Kalau `onAdd` dipindah ke `commit`, latarnya baru bereaksi sesudah kartunya
+mendarat dan momennya hilang.
+
 #### Gerak waktu discroll
 
 Cuma tiga, dan masing-masing sekali jalan (`useInView` dengan `once: true`):
@@ -356,6 +416,11 @@ Dihormati lewat `useReducedMotion()` di komponen dan satu blok di
 - `Kirim pesanan` langsung mendarat di dashboard dengan angka akhirnya.
 - Angka rekap langsung di nilainya (`useCountUp` dengan `ms = 0` mulai dari
   target, jadi nggak ada kedip nol).
+- Badai latarnya berhenti, tapi elemennya diam di posisi yang sudah
+  ditentuin satu-satu lewat `--sx`/`--sy`, bukan di tengah jalurnya. Tengah
+  jalur kebanyakan jatuh di belakang mockup dan hasilnya kosong.
+- Satu transisi pendek tetap ada: label "Order siap diproses" waktu produk
+  diklik.
 - Chat di `BeforeOrder` langsung berbentuk kartu order.
 - Status kartu di `WhenOrder` diam di "Baru".
 - Hover cuma ganti warna dan bayangan, nggak naik.
@@ -411,32 +476,43 @@ Nggak ada em dash di string yang dirender.
 
 ### Terverifikasi
 
-66 pemeriksaan browser lolos semua. `npm run lint` dan `npm run build` bersih.
+Lint dan build bersih. Pengujian browser lolos semua.
 
-- Keadaan awal: 0 item, Rp0, hint "Ketuk produknya dulu", panel dashboard
-  belum dirender. Harga ketiga produk benar, tiap kartu punya label "Tambah",
-  `cursor: pointer` kebaca.
-- Alur kanonik: ketuk Kopi dan Matcha, subtotal Rp49.000, ongkir Rp18.000,
-  total Rp67.000, nominal pembayaran Rp67.000, kirim, order `#0232` masuk
-  dengan status Baru, angka 12 ke 13 dan Rp540.000 ke Rp607.000, status jalan
-  sampai Selesai, `Ulangi simulasi` balik ke keadaan awal. Nggak pernah ada
-  Rp0 di panel dashboard.
-- Ketiga produk diketuk satu-satu, keranjang naik 1, 2, 3 dan totalnya
-  Rp86.000.
-- Reduced motion: semuanya langsung, dashboard langsung di 13 / Rp607.000.
-- Keyboard: kartu produk jalan lewat Enter, cincin fokus kelihatan.
-- Scroll: chat bubble masuk duluan lalu jadi tiga kartu order; status kartu
-  jalan Baru ke Selesai; rekap berhenti di 12 / Rp540.000.
-- 320/360/375/390/414/768/1024/1280/1920: nol horizontal overflow. CLS 0,0000
-  di 375px. Semua tombol dan tautan lewat 44px. Di 390px seluruh alur jalan
-  lewat tap, dan kartu simulasinya nggak keluar layar.
-- Nol kegagalan kontras WCAG AA di dua belas keadaan (tiap tahap simulasi,
-  tiap section, FAQ terbuka). Ukur pas animasinya sudah diam; elemen yang
-  masih di tengah transisi ngasih rasio palsu.
-- 6 tautan WhatsApp, nomor sama semua, nol tautan mati, harga utuh, FAQ
-  tertutup saat load, anchor `#paket` dan `#saat` mendarat di 80px.
-- Nol galat halaman asli. Yang muncul di sandbox cuma kegagalan jaringan buat
-  font dan analytics, dan itu diblokir policy.
+**Latar hero.** 14 elemen di layar lebar, 6 di layar kecil, semuanya pakai
+keyframe yang sama menuju titik kumpul, durasi 10 sampai 16 detik, jeda mulai
+beda-beda, opacity puncak 0,18 sampai 0,35, lapis jauh dikasih blur. Nol
+canvas, nol video. Parallax kebaca ngikut kursor dan dua lapisnya geser beda
+jauh. Di layar kecil nol mouse tracking dan nol elemen yang nabrak kotak
+judul. Nol elemen kelihatan yang nyentuh tepi layar, di semua lebar, waktu
+jalan maupun waktu diam.
+
+**Latar bereaksi.** Klik produk: badai reda seketika, dua potongan ketarik ke
+mockup, labelnya masih diam selagi kartunya terbang, badai balik jalan di
+620ms, badge keranjang berubah duluan, baru labelnya muncul, lalu hilang
+sendiri.
+
+**Reduced motion.** Loop berhenti, elemennya tetap tersebar dan kelihatan,
+nggak ada tarikan panjang, satu transisi pendek tetap ada.
+
+**Rekap.** 58 frame disampel sambil kartunya naik masuk viewport di 1280px dan
+390px: nggak pernah sekali pun kebaca "Order 0" atau "Masuk Rp0", dan
+berhentinya di 12 / Rp540.000.
+
+**Alur demo.** Ketuk Kopi dan Matcha, subtotal Rp49.000, ongkir Rp18.000,
+total Rp67.000, nominal pembayaran Rp67.000, kirim, dashboard jadi 13 /
+Rp607.000 dengan `#0232` di paling atas. Nggak ada Rp0 di panel dashboard.
+
+**Layout.** 320/360/375/390/414/768/1024/1280/1920: nol horizontal overflow,
+storm terklip rapi di dalam hero. CLS 0,0000 di 375px. Semua tombol lewat
+44px. Di 390px tap produk tetap jalan dengan badai di belakangnya.
+
+**Kontras.** Nol kegagalan AA di sebelas keadaan, elemen dekoratif
+`aria-hidden` dikecualikan. Latar di belakang judul diukur dari piksel
+sungguhan, judulnya disembunyiin dulu, delapan saat berbeda: rasio terburuk
+10,66:1 di 1280px dan 10,68:1 di 390px.
+
+**Sisanya.** 6 tautan WhatsApp nomor sama, nol tautan mati, harga utuh, FAQ
+tertutup saat load, anchor mendarat di 80px, nol galat halaman asli.
 
 **Project ini nggak punya script `typecheck` maupun `test`** (`package.json`
 cuma punya dev, build, lint, preview; nggak ada TypeScript). Lint plus build

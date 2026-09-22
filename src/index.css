@@ -194,6 +194,117 @@ dd {
     var(--shadow-border);
 }
 
+/* ===== Order Storm =====
+   Latar hero: potongan order berdatangan dari luar lalu terserap ke arah
+   mockup. Semuanya `transform` dan `opacity`, nggak ada canvas, nggak ada
+   library baru. Tiap elemen bawa variabelnya sendiri lewat style inline:
+   --dx/--dy titik berangkat, --op opacity puncak. */
+
+.storm {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition:
+    opacity 320ms ease-out,
+    filter 320ms ease-out;
+  /* Tepinya dilembutin. Tanpa ini elemen yang baru masuk kepotong mentah di
+     pinggir hero, dan potongan huruf setengah kebaca sebagai bug. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 4%, #000 96%, transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 5%, #000 95%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Waktu pengunjung nambah produk, badainya reda sebentar. */
+.storm[data-calm="true"] {
+  opacity: 0.32;
+  filter: blur(1.5px);
+}
+
+/* Dua lapis kedalaman. Yang jauh geser lebih sedikit waktu kursor pindah,
+   persis kayak benda jauh di dunia nyata. */
+.storm-depth {
+  position: absolute;
+  inset: 0;
+  transform: translate3d(
+    calc(var(--px, 0) * var(--pd) * 1px),
+    calc(var(--py, 0) * var(--pd) * 1px),
+    0
+  );
+  transition: transform 500ms cubic-bezier(0.2, 0, 0, 1);
+}
+.storm-far {
+  --pd: 0.35;
+  filter: blur(1px);
+}
+.storm-near {
+  --pd: 1;
+}
+
+.storm-item {
+  position: absolute;
+  animation-name: storm-in;
+  animation-timing-function: cubic-bezier(0.3, 0.55, 0.15, 1);
+  animation-iteration-count: infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes storm-in {
+  0% {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1);
+    opacity: 0;
+  }
+  18% {
+    opacity: var(--op);
+  }
+  72% {
+    opacity: var(--op);
+  }
+  88% {
+    transform: translate3d(0, 0, 0) scale(0.62);
+    opacity: 0.03;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.62);
+    opacity: 0;
+  }
+}
+
+/* Goyangan kecil supaya jalurnya nggak kebaca sebagai rel lurus. */
+.storm-wobble {
+  animation: storm-wobble 7.5s ease-in-out infinite alternate;
+}
+@keyframes storm-wobble {
+  from {
+    transform: translate3d(-4px, 3px, 0) rotate(-0.9deg);
+  }
+  to {
+    transform: translate3d(4px, -3px, 0) rotate(1deg);
+  }
+}
+
+/* Satu tarikan pendek waktu produk ditambahkan. Sekali jalan, lalu hilang. */
+.storm-pull {
+  position: absolute;
+  animation: storm-pull 760ms cubic-bezier(0.3, 0, 0.15, 1) forwards;
+}
+@keyframes storm-pull {
+  0% {
+    transform: translate3d(var(--dx), var(--dy), 0) scale(1);
+    opacity: 0.42;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.5);
+    opacity: 0;
+  }
+}
+
 /* Masuk bertahap: turun sedikit, buram sedikit, lalu jernih. */
 @keyframes rise {
   to {
@@ -240,6 +351,21 @@ dd {
   .lift-card:hover,
   .cta:hover {
     translate: none;
+  }
+  /* Badainya berhenti, tapi susunannya tetap enak dilihat: tiap elemen diam
+     di tengah jalurnya, bukan numpuk di titik kumpul. */
+  .storm-item {
+    animation: none;
+    transform: translate3d(var(--sx), var(--sy), 0) scale(0.94);
+    opacity: var(--op);
+  }
+  .storm-wobble,
+  .storm-pull {
+    animation: none;
+  }
+  .storm-depth {
+    transition: none;
+    transform: none;
   }
   .press:active,
   .tapcard:active {

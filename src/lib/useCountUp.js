@@ -50,10 +50,12 @@ export function useRollingNumber(target, animate = true, ms = 420, step = 1) {
   return shown;
 }
 
-// Naik dari nol ke target, sekali saja, waktu masuk viewport. Dipakai buat
-// rekap harian.
-export function useCountUp(target, run, ms = 900, step = 1) {
-  const [shown, setShown] = useState(ms > 0 ? 0 : target);
+// Naik ke target sekali saja waktu masuk viewport. `from` sengaja bukan nol:
+// panel rekap yang sempat kebaca "0 order, Rp0" kelihatan seperti aplikasi
+// rusak, dan itu keluhan yang sudah dua kali muncul. Jadi hitungannya mulai
+// dari angka yang sudah masuk akal, lalu naik ke angka akhirnya.
+export function useCountUp(target, run, ms = 900, step = 1, from = 0) {
+  const [shown, setShown] = useState(ms > 0 ? from : target);
   const done = useRef(false);
 
   useEffect(() => {
@@ -63,8 +65,8 @@ export function useCountUp(target, run, ms = 900, step = 1) {
       setShown(target);
       return;
     }
-    return animateTo(0, target, ms, setShown, undefined, step);
-  }, [run, target, ms, step]);
+    return animateTo(from, target, ms, setShown, undefined, step);
+  }, [run, target, ms, step, from]);
 
   return shown;
 }

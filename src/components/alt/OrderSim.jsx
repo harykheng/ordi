@@ -129,7 +129,7 @@ function BarisOrder({ id, status, nominal, baru, reduce }) {
   );
 }
 
-export default function OrderSim() {
+export default function OrderSim({ onAdd }) {
   const reduce = useReducedMotion();
   const frameRef = useRef(null);
   const cartRef = useRef(null);
@@ -173,6 +173,7 @@ export default function OrderSim() {
   const add = useCallback(
     (p, el) => {
       if (flight) return;
+      onAdd?.(); // latar hero reda duluan, sebelum kartunya jalan
       const commit = () => {
         setCart((c) => ({ ...c, [p.id]: Math.min((c[p.id] ?? 0) + 1, 5) }));
         setToast(`${p.name} ditambahkan`);
@@ -199,7 +200,7 @@ export default function OrderSim() {
         commit,
       });
     },
-    [flight, reduce]
+    [flight, reduce, onAdd]
   );
 
   // Gerak dua: kartu order pindah sedikit ke bawah, ke arah panel dashboard.
