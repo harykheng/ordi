@@ -3,7 +3,7 @@ import { DEMO_URL } from "../../data/altContent";
 import { trackDemo } from "../../lib/track";
 
 const NAV = [
-  { label: "Cara kerja", href: "#saat" },
+  { label: "Cara kerja", href: "#alur-tokomu" },
   { label: "Harga", href: "#paket" },
 ];
 

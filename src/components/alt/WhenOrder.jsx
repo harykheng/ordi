@@ -105,7 +105,7 @@ export default function WhenOrder() {
 
   return (
     <section
-      id="saat"
+      id="nama-tokomu"
       className="border-y border-espresso/12 bg-sand px-5 py-16 sm:py-20"
     >
       <div
@@ -113,10 +113,7 @@ export default function WhenOrder() {
         className="mx-auto max-w-5xl lg:grid lg:grid-cols-12 lg:items-start lg:gap-12"
       >
         <div className="lg:col-span-6">
-          <SectionHead
-            label={WHEN.title}
-            title="Ordernya sampai dalam bentuk yang bisa langsung dikerjakan."
-          />
+          <SectionHead label={WHEN.title} title={WHEN.heading} />
           <dl className="mt-8">
             {WHEN.points.map((p) => (
               <div key={p.title} className="border-t border-espresso/12 py-4">

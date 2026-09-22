@@ -65,10 +65,10 @@ export default function AfterOrder() {
   const seen = useInView(ref, { once: true, amount: 0.25 });
 
   return (
-    <section id="setelah" className="px-5 py-16 sm:py-20">
+    <section id="akun-tokomu" className="px-5 py-16 sm:py-20">
       <div className="mx-auto max-w-5xl lg:grid lg:grid-cols-12 lg:items-center lg:gap-12">
         <div className="lg:col-span-6">
-          <SectionHead label={AFTER.title} title={AFTER.body} />
+          <SectionHead label={AFTER.title} title={AFTER.body} lead={AFTER.lead} />
         </div>
         <div className="mt-8 lg:col-span-5 lg:col-start-8 lg:mt-0">
           <Rekap innerRef={ref} jalan={seen || reduce} reduce={reduce} />

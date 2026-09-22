@@ -8,43 +8,47 @@ export { DEMO_URL, WHATSAPP_CTA_LINK };
 export const HERO = {
   eyebrow: "Sistem order untuk bisnis makanan",
   headline: "Udah punya bisnis sendiri. Harusnya punya sistem sendiri juga.",
-  sub: "Pelanggan melihat katalog dan memesan sendiri. Kamu menerima order yang sudah jelas, tanpa mencari-cari lagi di chat.",
+  sub: "Dibangun ngikutin cara tokomu kerja, lalu jadi milik tokomu sepenuhnya. Sistem, domain, dan datanya atas nama kamu sendiri.",
   primary: "Coba alurnya",
   secondary: "Lihat paket",
   micro: "Simulasi dengan data contoh.",
 };
 
 export const BEFORE = {
-  title: "Sebelum order masuk",
+  title: "Alur tokomu",
   items: [
     "Order masuk dari tiga chat berbeda?",
     "Pelanggan masih tanya menu yang sama?",
     "Rekap malam masih dari screenshot dan nota?",
   ],
-  payoff: "Masukkan sekali, dipakai terus.",
+  payoff: "Yang kamu ceritain itu yang dibangun, khusus buat tokomu.",
 };
 
 export const WHEN = {
-  title: "Saat order masuk",
+  title: "Nama tokomu",
+  heading: "Order masuk ke alamat tokomu sendiri, sudah lengkap.",
   points: [
     {
-      title: "Ordernya sudah lengkap",
-      body: "Produk, jumlah, alamat, dan total ikut semua.",
+      title: "Alamatnya atas nama tokomu",
+      body: "Domain dan hostingnya bisa ada di akun tokomu sendiri.",
     },
     {
-      title: "Ongkirnya sudah kehitung",
-      body: "Dihitung dari alamat yang pelanggan isi sendiri.",
+      title: "Ordernya sampai utuh",
+      body: "Produk, jumlah, alamat, dan ongkirnya ikut semua.",
     },
     {
-      title: "Nominal QR-nya sudah pas",
-      body: "Ikut total order. Bukti bayarnya kamu yang cek.",
+      // Batas jujur QRIS. Nominalnya otomatis, verifikasinya nggak.
+      // Kalimat kedua wajib ada di sini, jangan dipindah atau dihapus.
+      title: "Nominal QR-nya ikut total order",
+      body: "Nominalnya otomatis sesuai total. Verifikasi bukti transfernya tetap manual, kamu sendiri yang cek.",
     },
   ],
 };
 
 export const AFTER = {
-  title: "Setelah order selesai",
-  body: "Semua order hari ini tercatat sendiri. Pas tutup, rekapnya tinggal dibuka.",
+  title: "Akun tokomu",
+  body: "Order, pelanggan, dan rekapnya ada di akunmu.",
+  lead: "Tercatat sendiri tiap hari. Pas tutup, rekapnya tinggal dibuka.",
 };
 
 export const START_STEPS = [

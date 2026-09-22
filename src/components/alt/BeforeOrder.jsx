@@ -78,7 +78,7 @@ export default function BeforeOrder() {
   const seen = useInView(ref, { once: true, amount: 0.3 });
 
   return (
-    <section id="sebelum" className="px-5 py-16 sm:py-20">
+    <section id="alur-tokomu" className="px-5 py-16 sm:py-20">
       <div ref={ref} className="mx-auto max-w-5xl">
         <p className="label text-coral-deep">{BEFORE.title}</p>
         <ul className="mt-6 max-w-3xl">
