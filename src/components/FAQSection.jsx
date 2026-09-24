@@ -7,7 +7,7 @@ export default function FAQSection() {
       <div className="mx-auto max-w-3xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Tanya jawab</p>
-          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.08] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.14] text-balance">
             Pertanyaan yang biasanya muncul
           </h2>
           <p className="mt-4 mb-10 text-ink-2">Kalau masih ada yang mengganjal di luar ini, langsung aja tanya di WhatsApp.</p>

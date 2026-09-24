@@ -165,7 +165,7 @@ export default function OwnerDay() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Yang kamu pegang</p>
-          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.08] text-balance">
+          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.14] text-balance">
             Sehari di balik layar, <mark className="mark-hl">semua kecatat.</mark>
           </h2>
           <p className="mt-4 max-w-[56ch] text-ink-2 sm:text-lg">

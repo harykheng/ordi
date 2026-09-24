@@ -86,7 +86,7 @@ export default function Hero() {
             <span className="size-2 rounded-[3px] bg-pen" aria-hidden="true" />
             Kayak punya ruko sendiri, versi online
           </span>
-          <h1 className="font-headline mt-5 mb-5 text-[clamp(2.3rem,5.4vw,4rem)] leading-[1.04] text-balance">
+          <h1 className="font-headline mt-5 mb-5 text-[clamp(2.3rem,5.4vw,4rem)] leading-[1.12] text-balance">
             Website pesanan toko kamu, <mark className={`mark-hl ${reduce ? "" : "swipe"}`}>lunas jadi milikmu.</mark>
           </h1>
           <p className="max-w-[46ch] text-[17px] leading-relaxed text-ink-2 sm:text-lg">

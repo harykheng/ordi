@@ -145,6 +145,14 @@ Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 max-content of nested `1fr` grids (the date chips) and caused a 29px
 horizontal overflow on 375px screens.
 
+Underline gotcha: Rammetto One's inline box is ~1.7em tall (ascent ~1.19em,
+descent ~0.49em), far taller than its line-height. `.mark-hl` therefore
+places the scallop from the top (`background-position: 0 1.21em`, just under
+the baseline). Anchoring it to the bottom put it ~0.5em low, so when an
+emphasised phrase wrapped, the scallop struck through the next line. Keep
+headings that use `.mark-hl` at `leading-[1.12]` or looser so the scallop
+clears the next line's ascenders, and check wrapped phrases at 375px.
+
 ## Content data (`src/data/content.js`)
 
 `DEMO_URL`, `WHATSAPP_NUMBER`, `WHATSAPP_CTA_LINK` — real values, don't reset.

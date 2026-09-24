@@ -55,7 +55,7 @@ export default function PricingTiers() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Harga</p>
-          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.08] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.14] text-balance">
             Nggak harus beli <mark className="mark-hl">lengkap dari awal</mark>
           </h2>
           <p className="mt-4 max-w-xl text-ink-2 sm:text-lg">

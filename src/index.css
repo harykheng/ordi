@@ -61,15 +61,20 @@ body {
     color: var(--color-pen);
   }
 
-  /* short emphasised phrase: orange with a scalloped awning underline */
+  /* short emphasised phrase: orange with a scalloped awning underline.
+     An inline box's background covers the font's whole ascent+descent
+     (~1.19em + 0.49em for both Rammetto One and Plus Jakarta Sans), so the
+     scallop is placed from the top, just under the baseline. Anchored to the
+     bottom it lands ~0.5em low and cuts through the next line when the phrase
+     wraps. Headings using it need line-height >= ~1.12 to clear the ascenders
+     of the following line. */
   .mark-hl {
     color: var(--color-ember-deep);
     background-color: transparent;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Cpath d='M0 2 A6 6 0 0 0 12 2 A6 6 0 0 0 24 2' fill='none' stroke='%23B04A12' stroke-width='2.4'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='10' viewBox='0 0 24 10'%3E%3Cpath d='M0 2 A6 6 0 0 0 12 2 A6 6 0 0 0 24 2' fill='none' stroke='%23B04A12' stroke-width='3'/%3E%3C/svg%3E");
     background-repeat: repeat-x;
-    background-size: 0.5em 0.22em;
-    background-position: 0 100%;
-    padding-bottom: 0.14em;
+    background-size: 0.336em 0.14em;
+    background-position: 0 1.21em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
@@ -332,10 +337,10 @@ body {
 
 @keyframes scallop-in {
   from {
-    background-size: 0.5em 0;
+    background-size: 0.336em 0;
   }
   to {
-    background-size: 0.5em 0.22em;
+    background-size: 0.336em 0.14em;
   }
 }
 
