@@ -1,4 +1,5 @@
 const DAY_NAMES = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
+const MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"];
 
 const keyOf = (d) =>
   `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
@@ -22,6 +23,7 @@ export function buildDays(count = 9, from = new Date()) {
       index: i,
       day: DAY_NAMES[d.getDay()],
       date: d.getDate(),
+      month: MONTH_NAMES[d.getMonth()],
       label: i === 0 ? "Hari ini" : i === 1 ? "Besok" : "",
       slots: SLOTS[i % SLOTS.length],
       closed: false,

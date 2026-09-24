@@ -302,38 +302,3 @@ export const LEAD_OPTIONS = {
     { value: "Nanti aja", label: "Nanti aja" },
   ],
 };
-
-// ---- Dipakai versi lama (landing-second). Dihapus begitu section baru
-// menggantikan komponen yang masih mengimpornya.
-export const TOKO_KAMU_VARIANTS = STORE_EXAMPLES.map((s) => s.name);
-
-export const TIMELINE = [
-  {
-    time: "07:00",
-    label: "Sebelum Buka",
-    pain: "Nulis ulang stok tiap pagi. Tetap aja ada yang chat \"masih ada, kak?\"",
-    solution: "Update di grup WA, papan tulis, draft caption, tiga tempat, tiga kali kerja. Ordi: update sekali dari dashboard, langsung tayang di mana aja. Pelanggan liat stok & harga real-time, kamu nggak perlu ketik ulang.",
-    mockupSlot: "SS_CATALOG",
-  },
-  {
-    time: "12:00",
-    label: "Jam Rame",
-    pain: "Itung ongkir sambil masak? Gampang salah.",
-    solution: "Kira-kira jarak, kira-kira tarif, kadang kemurahan kamu rugi, kadang kemahalan pelanggan kabur. Ordi hitung otomatis dari alamat yang diketik pelanggan sendiri, langsung muncul sebelum checkout.",
-    mockupSlot: "SS_SHIPPING_CALC",
-  },
-  {
-    time: "15:00",
-    label: "Resi & Pembayaran",
-    pain: "Nunggu bukti transfer, sambil layanin chat lain.",
-    solution: "QR pembayaran generate otomatis sesuai nominal pesanan, pelanggan tinggal scan. Verifikasi bukti transfer tetap manual by kamu, tapi nggak ada lagi bolak-balik nanya \"nominalnya berapa ya kak\".",
-    mockupSlot: "SS_QRIS",
-  },
-  {
-    time: "21:00",
-    label: "Tutup, Rekap",
-    pain: "Rekap manual di buku, atau mulai lupa dicatat.",
-    solution: "Semua pesanan hari ini udah tercatat otomatis dari jam 07:00 tadi. Buka dashboard, langsung keliatan total penjualan, produk terlaris, dan pesanan yang masih pending, tanpa hitung ulang dari nota.",
-    mockupSlot: "SS_ADMIN_DASHBOARD",
-  },
-];

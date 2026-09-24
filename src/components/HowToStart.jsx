@@ -1,0 +1,56 @@
+import Reveal from "./Reveal";
+import { HONEST_NOTES, PROCESS_STEPS } from "../data/content";
+
+export default function HowToStart() {
+  return (
+    <section className="tear-top px-5 pt-24 pb-20 sm:pb-28" style={{ "--tear-from": "var(--color-meja)" }}>
+      <div className="mx-auto max-w-6xl">
+        <Reveal>
+          <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Cara mulai</p>
+          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.08] text-balance">
+            Ngobrol dulu, <mark className="mark-hl">baru dibangun.</mark>
+          </h2>
+        </Reveal>
+
+        <div className="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-14">
+          <ol className="grid grid-cols-1 gap-8">
+            {PROCESS_STEPS.map((step, i) => (
+              <li key={step.title}>
+                <Reveal delay={i * 0.08} className="ticket-wrap hang mt-7">
+                  <div className="ticket grid grid-cols-[48px_minmax(0,1fr)] gap-4 px-7 py-5">
+                    <span className="grid size-11 place-items-center rounded-full border-[2.5px] border-ink bg-highlight font-headline text-lg">{i + 1}</span>
+                    <div>
+                      <h3 className="font-headline text-xl leading-tight">{step.title}</h3>
+                      <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{step.body}</p>
+                    </div>
+                  </div>
+                </Reveal>
+              </li>
+            ))}
+          </ol>
+
+          <Reveal delay={0.1}>
+            <div
+              className="card-ink relative px-6 pt-7 pb-7"
+            >
+              <span className="absolute left-5 top-4 size-3.5 rounded-full border-2 border-ink bg-ember" aria-hidden="true" />
+              <span className="absolute right-5 top-4 size-3.5 rounded-full border-2 border-ink bg-ember" aria-hidden="true" />
+              <h3 className="pl-8 font-headline text-xl leading-tight">Biar nggak salah harap</h3>
+              <p className="mt-1.5 pl-8 text-sm text-ink-2">Papan pengumuman: yang memang belum ada di Ordi, ditulis dari awal.</p>
+              <ul className="mt-5 grid grid-cols-1 gap-3.5 pl-8">
+                {HONEST_NOTES.map((n) => (
+                  <li key={n} className="relative text-[15px] leading-relaxed">
+                    <span className="absolute -left-7 top-0 text-lg font-extrabold leading-none text-ember-deep" aria-hidden="true">
+                      ✗
+                    </span>
+                    {n}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -1,57 +1,32 @@
 import Reveal from "./Reveal";
-import { Sparkle } from "./Doodles";
-
-const FAQ_ITEMS = [
-  {
-    q: "Kok masih ada biaya bulanan, padahal katanya beli putus?",
-    a: "Setelah bayar, sistemnya 100% jadi milik kamu selamanya. Biaya bulanan itu opsional, buat yang mau saya bantu jagain: pastikan server jalan, ada yang benerin kalau ada bug, dan reminder sebelum domain/hosting habis masa aktif. Mirip beli motor, motornya punya kamu, servis rutin itu pilihan terpisah.",
-  },
-  {
-    q: "QRIS-nya beneran otomatis kecatat lunas?",
-    a: "Nominal QR-nya otomatis sesuai total pesanan, jadi pelanggan tinggal scan tanpa nanya-nanya nominal. Tapi verifikasi bukti transfernya tetap manual by kamu, karena verifikasi otomatis penuh butuh payment gateway berbayar yang bikin harga naik jauh lebih mahal.",
-  },
-  {
-    q: "Kalau bisnis saya berkembang, bisa upgrade paket?",
-    a: "Bisa. Upgrade dari Ordi Dasar ke +Antar atau +Bayar itu tinggal bayar selisihnya aja. Sistemnya dibangun supaya bisa nambah fitur belakangan tanpa ganti platform.",
-  },
-  {
-    q: "Kenapa nggak pakai platform yang udah ada aja, kan lebih murah per bulan?",
-    a: "Platform sewaan itu murah di depan, tapi kalau berhenti bayar, sistem & data kamu ilang, dan tampilannya generik, mirip semua toko lain yang pakai platform sama. Ordi dibangun ngikutin cara bisnis kamu jalan, dan begitu lunas, itu aset kamu selamanya.",
-  },
-  {
-    q: "Prosesnya berapa lama sampai bisa dipakai?",
-    a: "Nggak instan, karena saya perlu ngobrol dulu soal bisnis kamu sebelum mulai bangun, bukan asal pasang template. Chat dulu di WhatsApp buat cerita kebutuhan kamu, dari situ saya kasih estimasi waktu yang realistis.",
-  },
-];
+import { FAQ_ITEMS } from "../data/content";
 
 export default function FAQSection() {
   return (
-    <section className="relative px-5 py-16 sm:py-24 border-t-2 border-ink/10">
-      <Sparkle className="absolute top-10 right-[6%] hidden sm:block" />
+    <section id="tanya" className="tear-top scroll-mt-20 bg-meja px-5 pt-24 pb-20 sm:pb-28">
       <div className="mx-auto max-w-3xl">
         <Reveal>
-          <h2 className="font-display font-bold text-3xl text-ink mb-3">
+          <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Tanya jawab</p>
+          <h2 className="font-headline mt-3 text-[clamp(1.9rem,3.8vw,2.8rem)] leading-[1.08] text-balance">
             Pertanyaan yang biasanya muncul
           </h2>
-          <p className="text-ink/60 mb-10">
-            Kalau masih ada yang mengganjal di luar ini, langsung aja
-            tanya di WhatsApp.
-          </p>
+          <p className="mt-4 mb-10 text-ink-2">Kalau masih ada yang mengganjal di luar ini, langsung aja tanya di WhatsApp.</p>
         </Reveal>
 
-        <div className="space-y-3">
+        <div className="grid grid-cols-1 gap-3">
           {FAQ_ITEMS.map((item, i) => (
-            <Reveal key={item.q} delay={i * 0.05}>
-              <details className="group rounded-2xl border-2 border-ink bg-paper-2 px-5 py-4">
-                <summary className="cursor-pointer list-none flex items-center justify-between gap-4 font-display font-semibold text-ink">
+            <Reveal key={item.q} delay={i * 0.04}>
+              <details className="group rounded-2xl border-2 border-ink bg-card open:shadow-[0_4px_0_0_var(--color-ink)]">
+                <summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-semibold [&::-webkit-details-marker]:hidden">
                   {item.q}
-                  <span className="shrink-0 text-ember-deep transition-transform group-open:rotate-45 text-xl leading-none">
+                  <span
+                    className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-full border-2 border-ink bg-highlight text-lg leading-none transition-transform group-open:rotate-45"
+                    aria-hidden="true"
+                  >
                     +
                   </span>
                 </summary>
-                <p className="text-ink/70 text-sm leading-relaxed mt-3">
-                  {item.a}
-                </p>
+                <p className="px-5 pb-5 text-[15px] leading-relaxed text-ink-2">{item.a}</p>
               </details>
             </Reveal>
           ))}
