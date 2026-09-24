@@ -65,10 +65,13 @@ body {
     color: var(--color-pen);
   }
 
-  /* short emphasised phrase: orange text on a soft peach band */
+  /* short emphasised phrase: orange text on a soft peach band. The inline
+     box is ~1.4em tall (Parkinsans ascent ~1.05em), so the band is placed
+     from the top to straddle the baseline; anchored near the bottom it hung
+     low enough to touch the next line's ascenders when the phrase wrapped. */
   .mark-hl {
     color: var(--color-ember-deep);
-    background: linear-gradient(var(--color-highlight), var(--color-highlight)) no-repeat 0 90% / 100% 0.3em;
+    background: linear-gradient(var(--color-highlight), var(--color-highlight)) no-repeat 0 0.93em / 100% 0.26em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;
   }
@@ -221,10 +224,10 @@ body {
 
 @keyframes band-in {
   from {
-    background-size: 0% 0.3em;
+    background-size: 0% 0.26em;
   }
   to {
-    background-size: 100% 0.3em;
+    background-size: 100% 0.26em;
   }
 }
 

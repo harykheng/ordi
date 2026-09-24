@@ -141,6 +141,12 @@ Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 max-content of nested `1fr` grids (the date chips) and caused a 29px
 horizontal overflow on 375px screens.
 
+Highlight gotcha: an inline box's background covers the font's full
+ascent + descent (~1.4em for Parkinsans), not the line-height. That's why
+`.mark-hl`'s peach band is positioned from the top (`0 0.93em`, straddling
+the baseline). A percentage/bottom position hangs low and touches the next
+line when an emphasised phrase wraps. Check wrapped phrases at 375px.
+
 ## Content data (`src/data/content.js`)
 
 `DEMO_URL`, `WHATSAPP_NUMBER`, `WHATSAPP_CTA_LINK` — real values, don't reset.
