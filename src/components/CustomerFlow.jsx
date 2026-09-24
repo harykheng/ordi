@@ -40,7 +40,7 @@ export default function CustomerFlow() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Yang dilihat pelanggan kamu</p>
-          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Dari buka link sampai <mark className="mark-hl">lacak pesanan.</mark>
           </h2>
           <p className="mt-4 max-w-[58ch] text-ink-2 sm:text-lg">
@@ -60,7 +60,7 @@ export default function CustomerFlow() {
               >
                 <div className={`transition-opacity duration-500 ${i === active ? "lg:opacity-100" : "lg:opacity-35"}`}>
                   <p className="pen text-3xl font-bold leading-none">{i + 1}.</p>
-                  <h3 className="font-headline mt-2 text-[clamp(1.8rem,3.4vw,2.6rem)] leading-none">{step.title}</h3>
+                  <h3 className="font-headline mt-2 text-[clamp(1.5rem,2.8vw,2.1rem)] leading-tight">{step.title}</h3>
                   <p className="mt-3 max-w-[48ch] leading-relaxed text-ink-2 sm:text-[17px]">{step.body}</p>
                   {step.tier && <TierTag>{step.tier}</TierTag>}
                   <div className="mt-7 max-w-[400px] lg:hidden">

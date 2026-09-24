@@ -7,7 +7,7 @@ export default function HowToStart() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Cara mulai</p>
-          <h2 className="font-headline mt-3 text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Ngobrol dulu, <mark className="mark-hl">baru dibangun.</mark>
           </h2>
         </Reveal>

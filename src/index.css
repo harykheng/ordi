@@ -14,7 +14,7 @@
   --color-pen: #2a46c8; /* ballpoint blue: handwritten notes, numbering */
   --color-highlight: #ffe14a; /* stabilo behind 2-4 words */
 
-  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-display: "Parkinsans", "Plus Jakarta Sans", system-ui, sans-serif;
   --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
   --font-hand: "Kalam", "Segoe Print", cursive;
@@ -45,12 +45,11 @@ body {
 }
 
 @layer components {
-  /* condensed "papan harga" headline */
+  /* heavy, friendly headline (same face as direction C) */
   .font-headline {
     font-family: var(--font-display);
-    font-stretch: 72%;
-    font-weight: 850;
-    letter-spacing: -0.005em;
+    font-weight: 800;
+    letter-spacing: -0.035em;
   }
 
   .font-mono-label {
@@ -63,14 +62,19 @@ body {
     color: var(--color-pen);
   }
 
-  /* stabilo swipe behind a short phrase (never a whole sentence) */
+  /* stabilo swipe behind a short phrase (never a whole sentence). An inline
+     box's background covers the font's full ascent + descent (~1.4em for
+     Parkinsans, baseline ~1.05em down), so the band is placed from the top:
+     it covers the lower half of the letters and dips just under the
+     baseline. A percentage position would hang low and, on a wrapped
+     phrase, run into the next line. */
   .mark-hl {
     color: inherit;
     background-color: transparent;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M3 12 Q 40 4 90 8 T 197 7 L 196 31 Q 150 37 100 33 T 5 35 Z' fill='%23FFE14A'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-size: 100% 0.58em;
-    background-position: 0 84%;
+    background-position: 0 0.6em;
     padding: 0 0.05em;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone;

@@ -116,7 +116,7 @@ export default function Hero() {
             <span className="size-2 rounded-full bg-ember" aria-hidden="true" />
             Untuk kafe, resto, bakery, dan toko PO
           </span>
-          <h1 className="font-headline mt-5 mb-5 text-[clamp(3rem,7.2vw,5.4rem)] leading-[0.94] text-balance">
+          <h1 className="font-headline mt-5 mb-5 text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.02] text-balance">
             Website pesanan toko kamu,{" "}
             <mark className={`mark-hl ${reduce ? "" : "swipe"}`}>lunas jadi milikmu.</mark>
           </h1>
@@ -213,7 +213,7 @@ export default function Hero() {
           >
             <div className="card-ink p-3.5 shadow-[4px_4px_0_0_var(--color-ink)]">
               <p className="text-xs font-bold text-ink-2">Harus siap hari ini</p>
-              <p className="mt-1 font-headline text-[40px] leading-none">
+              <p className="mt-1 font-headline text-[34px] leading-none">
                 <CountUp to={READY_TODAY[idx]} run={cycle} />
                 <small className="ml-1.5 font-body text-xs font-semibold tracking-normal text-ink-2">pesanan</small>
               </p>

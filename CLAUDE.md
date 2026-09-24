@@ -88,11 +88,16 @@ Paper objects on a paper page. Tokens in `@theme`:
 - `--color-pen` `#2a46c8` ballpoint blue: handwritten notes, step numbers
 - `--color-highlight` `#ffe14a` stabilo behind 2-4 words
 
-Fonts (`index.html`): **Archivo** condensed (`.font-headline`, `font-stretch:
-72%`, weight 850) for headlines — Bricolage Grotesque was dropped because it
-reads as AI-template; **Plus Jakarta Sans** body (same face as the Ordi
-catalog); **IBM Plex Mono** (`.font-mono-label`, receipts, prices, times);
-**Kalam** (`.pen`) for pen notes, max ~2 per section.
+Fonts (`index.html`): **Parkinsans** (`.font-headline`, weight 800,
+`letter-spacing: -0.035em`) for headlines and big numbers, the same display
+face as direction C. Hary picked it over the original Archivo condensed
+because it reads friendlier. It's much wider than a condensed face, so
+headline sizes follow direction C's scale (h1 `clamp(2.6rem,6vw,4.4rem)`,
+h2 `clamp(2.1rem,4.4vw,3.2rem)`), and `.mark-hl` is positioned for its
+metrics. Bricolage Grotesque was dropped earlier because it reads as
+AI-template. **Plus Jakarta Sans** body (same face as the Ordi catalog);
+**IBM Plex Mono** (`.font-mono-label`, receipts, prices, times); **Kalam**
+(`.pen`) for pen notes, max ~2 per section.
 
 Component classes: `.card-ink`, `.btn` / `.btn-primary` / `.btn-secondary` /
 `.btn-sm`, `.chip`, `.mark-hl` (+ `.swipe`), `.receipt` (zigzag edge,
@@ -146,8 +151,10 @@ Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 max-content of nested `1fr` grids (the date chips) and caused a 29px
 horizontal overflow on 375px screens. Same family: the tier price in
 `PricingTiers` is an unbreakable string, so its size is clamped
-(`clamp(2rem,4.2vw,2.6rem)`); at a fixed 2.6rem it overflowed the three
-md columns by 22px at 768px.
+(`clamp(1.8rem,3.6vw,2.3rem)`) and "sekali bayar" wraps under it as a unit;
+at a fixed size it overflowed the three md columns by 22px at 768px. And
+the header logo link is `min-w-0` (not `shrink-0`) so its tagline can wrap
+on 320-374px phones instead of pushing "Coba Demo" off-screen.
 
 ## Content data (`src/data/content.js`)
 

@@ -55,7 +55,7 @@ export default function PricingTiers() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Harga</p>
-          <h2 className="font-headline mt-3 text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Nggak harus beli <mark className="mark-hl">lengkap dari awal</mark>
           </h2>
           <p className="mt-4 max-w-xl text-ink-2 sm:text-lg">
@@ -80,7 +80,7 @@ export default function PricingTiers() {
                 <h3 className="font-headline text-3xl leading-none">{tier.name}</h3>
                 <p className="mt-1.5 text-sm text-ink-2">{tier.tagline}</p>
                 <p className="mt-5">
-                  <span className="font-headline text-[clamp(2rem,4.2vw,2.6rem)] leading-none text-ember-deep">{tier.price}</span>{" "}
+                  <span className="font-headline text-[clamp(1.8rem,3.6vw,2.3rem)] leading-none text-ember-deep">{tier.price}</span>{" "}
                   <span className="whitespace-nowrap text-sm text-ink-2">{tier.priceNote}</span>
                 </p>
                 <ul className="mt-6 mb-8 grid grid-cols-1 flex-1 content-start gap-3">
@@ -127,7 +127,7 @@ export default function PricingTiers() {
 
         <div className="mt-16 grid grid-cols-1 items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)]">
           <Reveal>
-            <h3 className="font-headline text-[clamp(1.9rem,3.6vw,2.6rem)] leading-none">Bandingin sama sewa platform</h3>
+            <h3 className="font-headline text-[clamp(1.6rem,3vw,2.2rem)] leading-tight">Bandingin sama sewa platform</h3>
             <p className="mt-4 max-w-[48ch] leading-relaxed text-ink-2">
               Sewa platform lain: <strong className="text-ink">Rp300.000/bulan</strong>,{" "}
               <strong className="text-ink">Rp3.600.000/tahun</strong>, terus-menerus, nggak pernah berhenti selama

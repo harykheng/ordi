@@ -38,7 +38,7 @@ export default function ModeSection() {
       <div className="mx-auto grid grid-cols-1 max-w-6xl items-center gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Toko harian atau toko PO</p>
-          <h2 className="font-headline mt-3 text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Mesinnya sama, yang berubah <mark className="mark-hl">cuma kalendernya.</mark>
           </h2>
           <p className="mt-4 max-w-[50ch] text-ink-2 sm:text-lg">

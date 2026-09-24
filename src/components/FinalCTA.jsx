@@ -44,7 +44,7 @@ export default function FinalCTA() {
     <footer id="mulai" className="tear-top px-5 pt-24 pb-10" style={{ "--tear-from": "var(--color-meja)" }}>
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2 className="font-headline text-[clamp(2.6rem,6vw,4.4rem)] leading-[0.95] text-balance">
+          <h2 className="font-headline text-[clamp(2.2rem,5vw,3.6rem)] leading-[1.03] text-balance">
             Bisnis kamu, <mark className="mark-hl">sistem kamu.</mark>
           </h2>
           <p className="mt-4 max-w-[58ch] text-ink-2 sm:text-lg">

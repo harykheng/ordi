@@ -11,7 +11,7 @@ export default function Header() {
   return (
     <header className="fixed top-0 inset-x-0 z-50 border-b-2 border-ink bg-paper/90 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-5 py-3 flex items-center justify-between gap-4">
-        <a href="#top" className="leading-tight shrink-0" aria-label="Ordi, kembali ke atas">
+        <a href="#top" className="min-w-0 leading-tight" aria-label="Ordi, kembali ke atas">
           <img src={ordiLogo} alt="Ordi" className="h-7 sm:h-8 w-auto" />
           <span className="block text-[10px] sm:text-[11px] font-mono-label text-ink-2 mt-1.5">
             Order Disini, dari Studio Harel

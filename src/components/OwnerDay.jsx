@@ -165,7 +165,7 @@ export default function OwnerDay() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Yang kamu pegang</p>
-          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 max-w-[18ch] text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Sehari di balik layar, <mark className="mark-hl">semua kecatat.</mark>
           </h2>
           <p className="mt-4 max-w-[56ch] text-ink-2 sm:text-lg">
@@ -188,7 +188,7 @@ export default function OwnerDay() {
                   />
                   <p className="font-mono-label text-2xl font-bold leading-none">{item.time}</p>
                   <div>
-                    <h3 className="font-headline text-[clamp(1.6rem,3vw,2.2rem)] leading-none">{item.title}</h3>
+                    <h3 className="font-headline text-[clamp(1.35rem,2.4vw,1.8rem)] leading-tight">{item.title}</h3>
                     <p className="mt-2.5 max-w-[48ch] leading-relaxed text-ink-2">{item.body}</p>
                     {item.before && (
                       <p className="pen mt-3 max-w-[40ch] text-[17px] leading-snug">{item.before}</p>

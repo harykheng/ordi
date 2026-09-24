@@ -10,7 +10,7 @@ export default function Comparison() {
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Sebelum kamu putusin</p>
-          <h2 className="font-headline mt-3 text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+          <h2 className="font-headline mt-3 text-[clamp(2.1rem,4.4vw,3.2rem)] leading-[1.05] text-balance">
             Tiga cara, <mark className="mark-hl">tiga trade-off</mark> yang jujur
           </h2>
           <p className="mt-4 mb-10 max-w-xl text-ink-2 sm:text-lg">
