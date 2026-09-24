@@ -105,8 +105,10 @@ export default function LiveStorefront({ store, chips, selectedKey, qty, classNa
           <p className="font-mono-label text-[11.5px] font-semibold text-ink-2">{rp(soldOut.price)}</p>
         </div>
         <div
-          className={`flex items-center justify-between rounded-xl border-2 border-ink px-3.5 py-2.5 text-[12.5px] font-bold text-white transition-[opacity,background-color] duration-500 ${qty === 0 ? "opacity-45" : ""}`}
-          style={{ background: store.brand }}
+          className={`flex items-center justify-between rounded-xl border-2 px-3.5 py-2.5 text-[12.5px] font-bold transition-colors duration-500 ${
+            qty === 0 ? "border-dashed border-ink/40 bg-card text-ink-2" : "border-ink text-white"
+          }`}
+          style={qty === 0 ? undefined : { background: store.brand }}
         >
           <span>{qty === 0 ? "Keranjang masih kosong" : `${qty} item · ${rp(main.price * qty)}`}</span>
           <span>Lanjut →</span>
