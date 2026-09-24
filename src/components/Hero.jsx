@@ -160,6 +160,10 @@ export default function Hero() {
               <div key={idx} className="receipt-print">
                 <ShopCard store={store} chips={chips} selectedKey={phase >= 1 ? selectedKey : firstKey} qty={qty} />
               </div>
+              {/* example stores are never presented as real clients */}
+              <span className="absolute -top-2.5 right-5 z-10 rounded-full border border-line bg-card px-2 py-0.5 font-mono-label text-[10px] text-ink-2 shadow-[var(--shadow-soft)]">
+                contoh
+              </span>
             </div>
 
             <div

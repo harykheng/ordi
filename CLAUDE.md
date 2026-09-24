@@ -139,7 +139,10 @@ with reduced motion.
 Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 `grid-cols-1` (`minmax(0,1fr)`). An implicit `auto` track grows to the
 max-content of nested `1fr` grids (the date chips) and caused a 29px
-horizontal overflow on 375px screens.
+horizontal overflow on 375px screens. Same family: the tier price in
+`PricingTiers` is an unbreakable string, so its size is clamped and
+"sekali bayar" wraps as a unit; at a fixed size it overflowed the three md
+columns (42px page overflow at 768px).
 
 Highlight gotcha: an inline box's background covers the font's full
 ascent + descent (~1.4em for Parkinsans), not the line-height. That's why
