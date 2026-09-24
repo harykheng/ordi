@@ -47,10 +47,15 @@ function useDemoDate() {
   }, []);
 }
 
-function Shell({ title, sub, children }) {
+/**
+ * One page of the store's order site; `PhoneFrame` supplies the phone around
+ * it. `cta` sits in a bottom bar like on a real phone; in a fixed-height
+ * phone the body clips under it, which reads as a page you can scroll.
+ */
+function Shell({ title, sub, cta, children }) {
   return (
-    <div className="card-ink overflow-hidden text-left" aria-hidden="true">
-      <div className="flex items-center gap-2.5 border-b-2 border-ink bg-paper px-4 py-3">
+    <div className="flex h-full flex-col text-left">
+      <div className="flex items-center gap-2.5 border-b-[1.5px] border-ink/15 px-4 py-3">
         <span
           className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-full border-2 border-ink font-headline text-white"
           style={{ background: STORE.brand }}
@@ -62,7 +67,8 @@ function Shell({ title, sub, children }) {
           <p className="truncate font-mono-label text-[11px] text-ink-2">{sub}</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-3 p-4">{children}</div>
+      <div className="grid min-h-0 flex-1 grid-cols-1 content-start gap-3 overflow-hidden p-4">{children}</div>
+      {cta && <div className="shrink-0 border-t-[1.5px] border-ink/15 px-4 pt-3 pb-1">{cta}</div>}
     </div>
   );
 }
@@ -70,7 +76,11 @@ function Shell({ title, sub, children }) {
 function DateScreen() {
   const { days, picked } = useDemoDate();
   return (
-    <Shell title={STORE.name} sub={STORE.domain}>
+    <Shell
+      title={STORE.name}
+      sub={STORE.tag}
+      cta={<span className="block rounded-full border-2 border-ink bg-ink py-3 text-center text-sm font-bold text-white">Lihat Menu →</span>}
+    >
       <p className="text-sm font-bold">Mau diambil atau diantar?</p>
       <div className="grid grid-cols-2 gap-2">
         <span className="rounded-xl border-2 border-ink bg-ink px-3 py-3 text-center text-sm font-bold text-white">Ambil sendiri</span>
@@ -100,7 +110,6 @@ function DateScreen() {
           );
         })}
       </div>
-      <span className="mt-1 rounded-full border-2 border-ink bg-ink py-3 text-center text-sm font-bold text-white">Lihat Menu →</span>
     </Shell>
   );
 }
@@ -115,7 +124,16 @@ const MENU = [
 function MenuScreen() {
   const { picked } = useDemoDate();
   return (
-    <Shell title="Menu" sub={`Ambil sendiri · ${picked.day}, ${picked.date} ${picked.month}`}>
+    <Shell
+      title="Menu"
+      sub={`Ambil sendiri · ${picked.day}, ${picked.date} ${picked.month}`}
+      cta={
+        <span className="flex justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-sm font-bold text-white">
+          <span>2 item · {rp(56000)}</span>
+          <span>Lanjut →</span>
+        </span>
+      }
+    >
       <div className="grid grid-cols-2 gap-2.5">
         {MENU.map((m) => (
           <div key={m.name} className={`rounded-xl border-[1.5px] border-ink/30 p-2.5 ${m.tone === "out" ? "text-ink-2" : ""}`}>
@@ -144,10 +162,6 @@ function MenuScreen() {
           </div>
         ))}
       </div>
-      <span className="flex justify-between rounded-xl border-2 border-ink bg-ink px-4 py-3 text-sm font-bold text-white">
-        <span>2 item · {rp(56000)}</span>
-        <span>Lanjut →</span>
-      </span>
     </Shell>
   );
 }
@@ -207,7 +221,11 @@ function AddressScreen() {
 
 function PayScreen() {
   return (
-    <Shell title="Bayar QRIS" sub="Scan dari bank atau e-wallet apa aja">
+    <Shell
+      title="Bayar QRIS"
+      sub="Scan dari bank atau e-wallet apa aja"
+      cta={<span className="block rounded-full border-2 border-ink bg-ember py-3 text-center text-sm font-bold">Kirim bukti transfer via WhatsApp</span>}
+    >
       <div className="mx-auto w-40 rounded-xl border-2 border-ink bg-card p-2.5">
         <FakeQR className="block w-full" />
       </div>
@@ -216,7 +234,6 @@ function PayScreen() {
         <p className="font-mono-label text-2xl font-bold">{rp(73000)}</p>
         <p className="mt-1 font-mono-label text-[11px] text-ink-2">Nominal udah terisi. QR bisa dibuka lagi kapan aja.</p>
       </div>
-      <span className="rounded-full border-2 border-ink bg-ember py-3 text-center text-sm font-bold">Kirim bukti transfer via WhatsApp</span>
     </Shell>
   );
 }
@@ -230,7 +247,7 @@ const STATUS = [
 function TrackScreen() {
   const { picked } = useDemoDate();
   return (
-    <Shell title="Lacak pesanan" sub={`${STORE.domain}/tracking`}>
+    <Shell title="Lacak pesanan" sub="Pakai kode pesanan + nomor WhatsApp">
       <div className="grid grid-cols-2 gap-2 text-[12px]">
         <p className="rounded-lg border-[1.5px] border-ink/30 px-2.5 py-2">
           <span className="block text-[10.5px] text-ink-2">Kode pesanan</span>

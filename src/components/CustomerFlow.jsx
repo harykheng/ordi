@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import Reveal from "./Reveal";
 import FlowScreen from "./flow/FlowScreens";
+import { flowUrl } from "./flow/flowUrl";
+import PhoneFrame from "./flow/PhoneFrame";
 import { CUSTOMER_FLOW } from "../data/content";
 
 function TierTag({ children }) {
@@ -15,8 +17,8 @@ function TierTag({ children }) {
 
 /**
  * Five customer steps. Desktop: the steps scroll on the left while one
- * sticky "screen" on the right swaps to the active step. Mobile: every step
- * carries its own screen inline, no sticky trickery.
+ * sticky phone on the right swaps its page to the active step. Mobile: every
+ * step carries its own phone inline, no sticky trickery.
  */
 export default function CustomerFlow() {
   const [active, setActive] = useState(0);
@@ -64,7 +66,9 @@ export default function CustomerFlow() {
                   <p className="mt-3 max-w-[48ch] leading-relaxed text-ink-2 sm:text-[17px]">{step.body}</p>
                   {step.tier && <TierTag>{step.tier}</TierTag>}
                   <div className="mt-7 max-w-[400px] lg:hidden">
-                    <FlowScreen id={step.id} />
+                    <PhoneFrame url={flowUrl(step.id)}>
+                      <FlowScreen id={step.id} />
+                    </PhoneFrame>
                   </div>
                 </div>
               </li>
@@ -73,17 +77,20 @@ export default function CustomerFlow() {
 
           <div className="hidden lg:block">
             <div className="sticky top-28 py-10">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.div
-                  key={CUSTOMER_FLOW[active].id}
-                  initial={{ opacity: 0, y: 18, rotate: -1 }}
-                  animate={{ opacity: 1, y: 0, rotate: 0 }}
-                  exit={{ opacity: 0, y: -12 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <FlowScreen id={CUSTOMER_FLOW[active].id} />
-                </motion.div>
-              </AnimatePresence>
+              <PhoneFrame url={flowUrl(CUSTOMER_FLOW[active].id)} screenClassName="h-[620px] [@media(max-height:820px)]:h-[540px]">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={CUSTOMER_FLOW[active].id}
+                    className="h-full"
+                    initial={{ opacity: 0, x: 28 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -28 }}
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <FlowScreen id={CUSTOMER_FLOW[active].id} />
+                  </motion.div>
+                </AnimatePresence>
+              </PhoneFrame>
               <div className="mt-6 flex items-center justify-center gap-2" aria-hidden="true">
                 {CUSTOMER_FLOW.map((s, i) => (
                   <span

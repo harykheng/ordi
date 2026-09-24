@@ -53,9 +53,14 @@ task unless explicitly asked.
 - **Comparison stays a table** (`Comparison.jsx`): 4-column grid on md+,
   stacked cards on mobile. Never a numbered-step/arrow format.
 - **Mockups are stylized cards and paper objects**, never realistic app
-  screenshots in a phone frame. Screens (catalog, QRIS, tracking) are ink
-  cards; things that are paper in real life (receipts, labels, the
-  production recap) are drawn as paper.
+  screenshots or realistic device renders. Screens (catalog, QRIS, tracking)
+  are ink cards; things that are paper in real life (receipts, labels, the
+  production recap) are drawn as paper. The one phone on the page is the
+  customer-flow `PhoneFrame` (Hary's call, so visitors picture the order
+  page on their own phone). It is drawn in the same ink style: flat outline,
+  hard offset shadow, sketched notch and status bar, stylized UI inside.
+  Never swap it for a realistic iPhone mockup or a real screenshot, which is
+  Tokokit's look.
 - **No "instant" or "gratis coba" claims anywhere.** The Comparison "waktu
   mulai" row, the FAQ, and `HowToStart` all say setup takes a real
   conversation first — deliberate honesty, not a gap to smooth over.
@@ -118,8 +123,13 @@ Hero          ownership headline + a cluster of ink cards: LiveStorefront
               "Pesanan baru masuk" toast, Bayar QRIS, "Harus siap hari ini"
               count + bars, and an order-status card. Click/tap anywhere in
               the hero drops a stamp (the Camemo-garden equivalent)
-CustomerFlow  5 steps (#pelanggan). lg: sticky screen swaps per step via
-              IntersectionObserver; mobile: screen inline under each step
+CustomerFlow  5 steps (#pelanggan). lg: one sticky PhoneFrame whose page
+              slides to the active step (IntersectionObserver); mobile: a
+              phone inline under each step. Screens live in
+              flow/FlowScreens.jsx: `Shell` pins the main action (`cta`) in a
+              bottom bar like a real phone; in the fixed-height desktop phone
+              (620px, 540px on screens under 820px tall) a long page such as
+              the menu clips under that bar, which reads as scrollable
 ModeSection   interactive harian vs PO calendar + daily quota stepper
 OwnerDay      07:00-21:00 owner timeline (#dashboard), scroll-filled rail
 Comparison    table (md+) / stacked cards (mobile)
