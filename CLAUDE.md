@@ -143,7 +143,10 @@ working on phones while a horizontal drag lights the shops.
 Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 `grid-cols-1` (`minmax(0,1fr)`). An implicit `auto` track grows to the
 max-content of nested `1fr` grids (the date chips) and caused a 29px
-horizontal overflow on 375px screens.
+horizontal overflow on 375px screens. Same family: Rammetto One is wide, so
+a tier price ("Rp5.000.000" is ~254px) can't fit three columns below lg.
+The tiers stack until `lg:grid-cols-3`, and "sekali bayar" wraps as a unit
+(it overflowed the page by 75px at 768px before).
 
 Underline gotcha: Rammetto One's inline box is ~1.7em tall (ascent ~1.19em,
 descent ~0.49em), far taller than its line-height. `.mark-hl` therefore

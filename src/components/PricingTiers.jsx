@@ -64,7 +64,7 @@ export default function PricingTiers() {
           </p>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-7 md:grid-cols-3 md:gap-5">
+        <div className="mt-12 grid grid-cols-1 gap-7 lg:grid-cols-3 lg:gap-5">
           {PRICING_TIERS.map((tier, i) => (
             <Reveal key={tier.name} delay={i * 0.08} className="flex min-w-0 flex-col">
               {tier.highlight && (
@@ -83,8 +83,8 @@ export default function PricingTiers() {
                 <h3 className="font-headline text-2xl leading-tight">{tier.name}</h3>
                 <p className="mt-1.5 text-sm text-ink-2">{tier.tagline}</p>
                 <p className="mt-5">
-                  <span className="font-headline text-[1.9rem] leading-none text-ember-deep">{tier.price}</span>
-                  <span className="ml-1.5 text-sm text-ink-2">{tier.priceNote}</span>
+                  <span className="font-headline text-[1.9rem] leading-none text-ember-deep">{tier.price}</span>{" "}
+                  <span className="whitespace-nowrap text-sm text-ink-2">{tier.priceNote}</span>
                 </p>
                 <ul className="mt-6 mb-8 grid grid-cols-1 flex-1 content-start gap-3">
                   {tier.features.map((f) => (
