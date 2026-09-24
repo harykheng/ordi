@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 @theme {
-  /* base surfaces */
-  --color-paper: #fff9f2;
-  --color-paper-2: #ffffff;
-  --color-ink: #1a1a1a;
+  /* surfaces: paper objects on a paper page */
+  --color-paper: #faf6ee; /* kertas, page background */
+  --color-meja: #f1e9d8; /* darker paper for alternate sections */
+  --color-card: #ffffff; /* struk, cards, labels */
+  --color-ink: #1b1a17; /* text, borders, offset shadows */
+  --color-ink-2: #5a554c; /* secondary text, 6.9:1 on paper */
 
-  /* brand accents */
-  --color-ember: #ff8a3d; /* primary accent — CTA, price, fills */
-  --color-ember-deep: #b8541a; /* contrast-safe orange for text on light bg */
-  --color-teal: #0f4c4c; /* secondary accent — live/badge/status */
-  --color-yellow: #ffd23f; /* highlight — promo/discount badges */
+  /* accents: brand orange + the stationery around it */
+  --color-ember: #ff8a3d; /* fills only (CTA, price tags) */
+  --color-ember-deep: #b8541a; /* orange text + LUNAS stamp, 4.5:1 on paper */
+  --color-pen: #2a46c8; /* ballpoint blue: handwritten notes, numbering */
+  --color-highlight: #ffe14a; /* stabilo behind 2-4 words */
 
-  --font-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
-  --font-body: "Public Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-hand: "Kalam", "Segoe Print", cursive;
 }
 
 html {
@@ -23,6 +26,8 @@ html {
 
 body {
   background-color: var(--color-paper);
+  /* faint paper grain */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .1 0 0 0 0 .09 0 0 0 0 .07 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: 16px;
@@ -30,48 +35,284 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-ember);
+  background-color: var(--color-highlight);
   color: var(--color-ink);
 }
 
-.font-display {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+:focus-visible {
+  outline: 3px solid var(--color-pen);
+  outline-offset: 3px;
 }
 
-.font-mono-label {
-  font-family: var(--font-mono);
-  letter-spacing: 0.01em;
+@layer components {
+  /* condensed "papan harga" headline */
+  .font-headline {
+    font-family: var(--font-display);
+    font-stretch: 72%;
+    font-weight: 850;
+    letter-spacing: -0.005em;
+  }
+
+  .font-mono-label {
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+  }
+
+  .pen {
+    font-family: var(--font-hand);
+    color: var(--color-pen);
+  }
+
+  /* stabilo swipe behind a short phrase (never a whole sentence) */
+  .mark-hl {
+    color: inherit;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 40' preserveAspectRatio='none'%3E%3Cpath d='M3 12 Q 40 4 90 8 T 197 7 L 196 31 Q 150 37 100 33 T 5 35 Z' fill='%23FFE14A'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-size: 100% 0.58em;
+    background-position: 0 84%;
+    padding: 0 0.05em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .mark-hl.swipe {
+    animation: hl-swipe 0.9s 0.25s cubic-bezier(0.6, 0.1, 0.2, 1) backwards;
+  }
+
+  /* ink card: border + hard offset shadow, the page's base object */
+  .card-ink {
+    background: var(--color-card);
+    border: 2px solid var(--color-ink);
+    border-radius: 1rem;
+    box-shadow: 5px 5px 0 0 var(--color-ink);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--color-ink);
+    background: var(--color-card);
+    transition: transform 0.15s, box-shadow 0.15s, background-color 0.15s, color 0.15s;
+  }
+  .btn-sm {
+    min-height: 44px;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+  }
+  .btn-primary {
+    background: var(--color-ember);
+    box-shadow: 4px 4px 0 0 var(--color-ink);
+  }
+  .btn-primary:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 0 var(--color-ink);
+  }
+  .btn-secondary:hover {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 2px solid var(--color-ink);
+    border-radius: 999px;
+    background: var(--color-card);
+    padding: 0.35rem 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.2;
+  }
+
+  /* thermal receipt: outlined via drop-shadows so the zigzag edge is outlined too */
+  .receipt {
+    position: relative;
+    background: var(--color-card);
+    font-family: var(--font-mono);
+    filter: drop-shadow(1.5px 0 0 var(--color-ink)) drop-shadow(-1.5px 0 0 var(--color-ink))
+      drop-shadow(0 1.5px 0 var(--color-ink)) drop-shadow(0 -1.5px 0 var(--color-ink))
+      drop-shadow(5px 5px 0 var(--color-ink));
+  }
+  .receipt::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -13px;
+    height: 14px;
+    background:
+      linear-gradient(to bottom right, var(--color-card) 50%, transparent 50%) 0 0 / 14px 14px repeat-x,
+      linear-gradient(to bottom left, var(--color-card) 50%, transparent 50%) 0 0 / 14px 14px repeat-x;
+  }
+  .receipt-print {
+    animation: receipt-print 1.25s steps(13, end) both;
+  }
+  .receipt-rule {
+    border-top: 1.5px dashed rgb(27 26 23 / 0.3);
+  }
+  .leader {
+    flex: 1;
+    min-width: 8px;
+    border-bottom: 1.5px dotted rgb(27 26 23 / 0.3);
+    transform: translateY(-4px);
+  }
+
+  /* rubber stamp */
+  .stamp {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-ember-deep);
+    border: 3px solid currentColor;
+    border-radius: 8px;
+    padding: 0.35em 0.4em 0.3em 0.55em;
+    box-shadow: inset 0 0 0 2px var(--color-card), inset 0 0 0 4px currentColor;
+    filter: url(#grunge);
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    transform: rotate(var(--r, -13deg));
+  }
+  .stamp-blue {
+    color: var(--color-pen);
+  }
+  .stamp-thump {
+    animation: stamp-thump 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+  }
+
+  /* kitchen ticket with punched sides */
+  .ticket-wrap {
+    filter: drop-shadow(1.5px 0 0 var(--color-ink)) drop-shadow(-1.5px 0 0 var(--color-ink))
+      drop-shadow(0 1.5px 0 var(--color-ink)) drop-shadow(0 -1.5px 0 var(--color-ink))
+      drop-shadow(4px 4px 0 var(--color-ink));
+  }
+  .ticket {
+    background: var(--color-card);
+    -webkit-mask:
+      radial-gradient(circle 8px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 8px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 8px at 0 50%, #0000 97%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 8px at 100% 50%, #0000 97%, #000) right / 51% 100% no-repeat;
+  }
+
+  /* torn-paper edge at the top of a section, drawn in the colour above it */
+  .tear-top {
+    position: relative;
+  }
+  .tear-top::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 14px;
+    background:
+      linear-gradient(to bottom right, var(--tear-from, var(--color-paper)) 50%, transparent 50%) 0 0 / 14px 14px repeat-x,
+      linear-gradient(to bottom left, var(--tear-from, var(--color-paper)) 50%, transparent 50%) 0 0 / 14px 14px repeat-x;
+  }
+
+  .striped-closed {
+    background: repeating-linear-gradient(-45deg, transparent 0 5px, rgb(27 26 23 / 0.07) 5px 6px), var(--color-card);
+  }
 }
 
-/* faint dot-grid texture instead of flat cream */
-.grain-bg {
-  background-image: radial-gradient(
-    circle,
-    rgba(26, 26, 26, 0.08) 1px,
-    transparent 1px
-  );
-  background-size: 22px 22px;
+/* rubber-stamp cursor over the hero (mouse only) */
+@media (pointer: fine) {
+  .cursor-stamp {
+    cursor:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 34 34'%3E%3Ccircle cx='17' cy='7' r='5.5' fill='%23FF8A3D' stroke='%231B1A17' stroke-width='2'/%3E%3Cpath d='M14 12h6v7h-6z' fill='%231B1A17'/%3E%3Crect x='6' y='19' width='22' height='8' rx='2' fill='%23fff' stroke='%231B1A17' stroke-width='2'/%3E%3Cpath d='M8 31h18' stroke='%23B8541A' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E")
+        17 31,
+      crosshair;
+  }
 }
 
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-none {
-  scrollbar-width: none;
-}
-
-/* hand-drawn doodle strokes */
-.doodle {
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+@keyframes hl-swipe {
+  from {
+    background-size: 0% 0.58em;
+  }
+  to {
+    background-size: 100% 0.58em;
+  }
 }
 
-/* traveling-light border — an ember segment orbiting the pill edge,
-   layered on top of the static border-2 border-ink underneath */
+@keyframes receipt-print {
+  from {
+    clip-path: inset(0 -14px 100% -14px);
+  }
+  to {
+    clip-path: inset(0 -14px -30px -14px);
+  }
+}
+
+@keyframes stamp-thump {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--r, -13deg)) scale(1.9);
+  }
+  60% {
+    opacity: 1;
+    transform: rotate(var(--r, -13deg)) scale(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(var(--r, -13deg)) scale(1);
+  }
+}
+
+@keyframes pen-write {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 -10% 0 0);
+  }
+}
+
+@keyframes bell-ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes bump {
+  40% {
+    transform: scale(1.12);
+  }
+}
+
+.pen-write {
+  animation: pen-write 0.7s 0.9s ease-out both;
+}
+
+.bell-ring {
+  animation: bell-ring 0.7s 0.15s ease-in-out 2;
+}
+
+.bump {
+  animation: bump 0.35s ease-out;
+}
+
+/* traveling-light border on the header's demo CTA */
 @property --border-angle {
   syntax: "<angle>";
   initial-value: 0deg;
@@ -88,12 +329,7 @@ body {
   inset: -2px;
   border-radius: inherit;
   padding: 2px;
-  background: conic-gradient(
-    from var(--border-angle),
-    transparent 0%,
-    var(--color-ember) 8%,
-    transparent 22%
-  );
+  background: conic-gradient(from var(--border-angle), transparent 0%, var(--color-ember) 8%, transparent 22%);
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
@@ -109,5 +345,19 @@ body {
 @keyframes border-orbit {
   to {
     --border-angle: 360deg;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

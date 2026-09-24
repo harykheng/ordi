@@ -1,22 +1,39 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const KEY = "ordi-cookie-consent";
+
+function readChoice() {
+  try {
+    return localStorage.getItem(KEY);
+  } catch {
+    return "unavailable";
+  }
+}
+
+function saveChoice(value) {
+  try {
+    localStorage.setItem(KEY, value);
+  } catch {
+    /* storage blocked: the banner just closes for this visit */
+  }
+}
 
 export default function ConsentBanner() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const choice = localStorage.getItem("ordi-cookie-consent");
-    if (!choice) setVisible(true);
+    if (!readChoice()) setVisible(true);
   }, []);
 
   const handleAccept = () => {
-    localStorage.setItem("ordi-cookie-consent", "granted");
+    saveChoice("granted");
     window.gtag?.("consent", "update", { analytics_storage: "granted" });
     window.gtag?.("event", "consent_choice", { choice: "granted" });
     setVisible(false);
   };
 
   const handleDecline = () => {
-    localStorage.setItem("ordi-cookie-consent", "denied");
+    saveChoice("denied");
     // storage stays denied, so Consent Mode drops this hit client-side —
     // decline count isn't observable in GA4, only accept volume is
     window.gtag?.("event", "consent_choice", { choice: "denied" });
@@ -26,22 +43,19 @@ export default function ConsentBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 border-t-2 border-ink bg-paper px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p className="text-ink/70 text-xs sm:text-sm max-w-lg">
-        Situs ini pakai cookie analytics buat ngerti gimana pengunjung
-        pakai halaman ini. Lanjut pakai = kamu setuju.
+    <div
+      role="region"
+      aria-label="Persetujuan cookie"
+      className="card-ink fixed inset-x-3 bottom-3 z-50 mx-auto flex max-w-2xl flex-col items-center gap-3 p-4 sm:flex-row sm:justify-between"
+    >
+      <p className="text-xs text-ink-2 sm:text-sm">
+        Situs ini pakai cookie analytics buat ngerti gimana pengunjung pakai halaman ini. Lanjut pakai = kamu setuju.
       </p>
-      <div className="flex gap-2 shrink-0">
-        <button
-          onClick={handleDecline}
-          className="rounded-full border-2 border-ink px-4 py-2 text-xs sm:text-sm font-semibold text-ink hover:bg-ink hover:text-paper transition-colors"
-        >
+      <div className="flex shrink-0 gap-2">
+        <button type="button" onClick={handleDecline} className="btn btn-secondary btn-sm">
           Nolak
         </button>
-        <button
-          onClick={handleAccept}
-          className="rounded-full bg-ink px-4 py-2 text-xs sm:text-sm font-semibold text-paper hover:bg-ink/85 transition-colors"
-        >
+        <button type="button" onClick={handleAccept} className="btn btn-sm bg-ink text-paper hover:bg-ink/85">
           Oke, Lanjut
         </button>
       </div>

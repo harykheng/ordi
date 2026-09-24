@@ -1,31 +1,29 @@
+import GrungeFilter from "./components/GrungeFilter";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
-import TimelineIntro from "./components/TimelineIntro";
-import TimeSection from "./components/TimeSection";
+import CustomerFlow from "./components/CustomerFlow";
+import ModeSection from "./components/ModeSection";
+import OwnerDay from "./components/OwnerDay";
 import Comparison from "./components/Comparison";
 import PricingTiers from "./components/PricingTiers";
+import HowToStart from "./components/HowToStart";
 import FAQSection from "./components/FAQSection";
 import FinalCTA from "./components/FinalCTA";
 import ConsentBanner from "./components/ConsentBanner";
-import { TIMELINE } from "./data/content";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-paper text-ink">
+    <div className="min-h-screen text-ink">
+      <GrungeFilter />
       <Header />
       <main>
         <Hero />
-        <TimelineIntro />
-        {TIMELINE.map((item, i) => (
-          <TimeSection
-            key={item.time}
-            item={item}
-            index={i}
-            reverse={i % 2 === 1}
-          />
-        ))}
+        <CustomerFlow />
+        <ModeSection />
+        <OwnerDay />
         <Comparison />
         <PricingTiers />
+        <HowToStart />
         <FAQSection />
       </main>
       <FinalCTA />

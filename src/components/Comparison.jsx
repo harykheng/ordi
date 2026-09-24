@@ -1,63 +1,39 @@
 import { Fragment } from "react";
 import Reveal from "./Reveal";
 import { COMPARISON } from "../data/content";
-import { Sparkle } from "./Doodles";
 
 const COLUMN_KEYS = ["manual", "sewa", "ordi"];
 
 export default function Comparison() {
   return (
-    <section className="relative px-5 py-16 sm:py-24 border-t-2 border-ink/10 bg-teal/8">
-      <Sparkle className="absolute top-10 right-[10%] hidden sm:block" />
+    <section className="tear-top px-5 pt-24 pb-20 sm:pb-28" style={{ "--tear-from": "var(--color-meja)" }}>
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <span className="inline-block rounded-full bg-yellow border-2 border-ink px-3 py-1 mb-4 font-mono-label text-xs text-ink">
-            Sebelum kamu putusin
-          </span>
-          <h2 className="font-display font-bold text-3xl text-ink mb-3">
-            Tiga cara, tiga trade-off yang jujur
+          <p className="font-mono-label text-xs uppercase tracking-[0.08em] text-ink-2">Sebelum kamu putusin</p>
+          <h2 className="font-headline mt-3 text-[clamp(2.4rem,5vw,3.6rem)] leading-[0.98] text-balance">
+            Tiga cara, <mark className="mark-hl">tiga trade-off</mark> yang jujur
           </h2>
-          <p className="text-ink/60 max-w-xl mb-10">
-            Nggak ada yang sempurna. Ini biar kamu tahu apa yang kamu tukar
-            di masing-masing pilihan, termasuk punya kita.
+          <p className="mt-4 mb-10 max-w-xl text-ink-2 sm:text-lg">
+            Nggak ada yang sempurna. Ini biar kamu tahu apa yang kamu tukar di masing-masing pilihan,
+            termasuk punya kita.
           </p>
         </Reveal>
 
-        {/* Mobile: stacked cards, one per option — a 4-col table just gets
-            crammed & requires horizontal scroll on narrow screens. */}
-        <div className="md:hidden space-y-4">
+        {/* Mobile: one card per option. A 4-column table only fits from md up. */}
+        <div className="grid grid-cols-1 gap-4 md:hidden">
           {COLUMN_KEYS.map((key, i) => {
-            const highlight = key === "ordi";
+            const ordi = key === "ordi";
             return (
               <Reveal key={key} delay={i * 0.08}>
-                <div
-                  className={`rounded-2xl border-2 border-ink p-5 ${
-                    highlight
-                      ? "bg-ember/[0.08] shadow-[4px_4px_0_0_var(--color-ink)]"
-                      : "bg-paper-2"
-                  }`}
-                >
-                  <h3
-                    className={`font-display font-bold text-lg mb-4 ${
-                      highlight ? "text-ember-deep" : "text-ink"
-                    }`}
-                  >
-                    {COMPARISON.headers[i]}
+                <div className={`rounded-2xl border-2 border-ink p-5 ${ordi ? "bg-card shadow-[5px_5px_0_0_var(--color-ink)]" : "bg-card/60"}`}>
+                  <h3 className="font-headline text-2xl leading-none">
+                    {ordi ? <mark className="mark-hl">{COMPARISON.headers[i]}</mark> : COMPARISON.headers[i]}
                   </h3>
-                  <dl className="space-y-3">
-                    {COMPARISON.rows.map((row, rIdx) => (
-                      <div
-                        key={row.label}
-                        className={
-                          rIdx > 0 ? "border-t border-ink/10 pt-3" : ""
-                        }
-                      >
-                        <dt className="font-mono-label text-[11px] text-ink/60 mb-1">
-                          {row.label}
-                        </dt>
-                        <dd className="text-sm text-ink/80 leading-relaxed">
-                          {row[key]}
-                        </dd>
+                  <dl className="mt-4 grid grid-cols-1 gap-3">
+                    {COMPARISON.rows.map((row, r) => (
+                      <div key={row.label} className={r > 0 ? "border-t-[1.5px] border-dashed border-ink/25 pt-3" : ""}>
+                        <dt className="font-mono-label text-[11px] uppercase text-ink-2">{row.label}</dt>
+                        <dd className={`mt-1 text-sm leading-relaxed ${ordi ? "text-ink" : "text-ink-2"}`}>{row[key]}</dd>
                       </div>
                     ))}
                   </dl>
@@ -67,46 +43,41 @@ export default function Comparison() {
           })}
         </div>
 
-        {/* Desktop/tablet: full 4-column table */}
-        <div className="hidden md:block overflow-x-auto scrollbar-none">
-          <div className="min-w-[720px] grid grid-cols-4 gap-3">
-            <div />
-            {COMPARISON.headers.map((h, i) => (
-              <Reveal key={h} delay={i * 0.08}>
+        {/* md+: the 3-option table, ruled like a nota, Ordi column highlighted */}
+        <Reveal className="hidden md:block">
+          <div className="card-ink overflow-hidden">
+            <div className="grid grid-cols-[140px_repeat(3,minmax(0,1fr))]">
+              <div className="border-b-2 border-ink" />
+              {COMPARISON.headers.map((h, i) => (
                 <div
-                  className={`rounded-t-xl px-4 py-3 font-display font-semibold text-sm border-2 border-ink ${
-                    i === 2 ? "bg-ember text-ink" : "bg-paper-2 text-ink/80"
-                  }`}
+                  key={h}
+                  className={`border-b-2 border-l-2 border-ink px-5 py-4 font-headline text-xl leading-tight ${i === 2 ? "bg-highlight" : ""}`}
                 >
                   {h}
                 </div>
-              </Reveal>
-            ))}
-
-            {COMPARISON.rows.map((row, rIdx) => (
-              <Fragment key={row.label}>
-                <div className="flex items-center px-2 text-xs font-mono-label text-ink/60">
-                  {row.label}
-                </div>
-                {[row.manual, row.sewa, row.ordi].map((val, cIdx) => (
-                  <Reveal key={`${row.label}-${cIdx}`} delay={rIdx * 0.05}>
+              ))}
+              {COMPARISON.rows.map((row, r) => (
+                <Fragment key={row.label}>
+                  <div
+                    className={`px-5 py-4 font-mono-label text-xs uppercase text-ink-2 ${r < COMPARISON.rows.length - 1 ? "border-b-[1.5px] border-dashed border-ink/25" : ""}`}
+                  >
+                    {row.label}
+                  </div>
+                  {COLUMN_KEYS.map((key) => (
                     <div
-                      className={`px-4 py-3 text-sm leading-relaxed border-x-2 border-b-2 border-ink ${
-                        cIdx === 2
-                          ? "bg-ember/[0.08] text-ink/90"
-                          : "bg-paper-2 text-ink/60"
-                      } ${
-                        rIdx === COMPARISON.rows.length - 1 ? "rounded-b-xl" : ""
-                      }`}
+                      key={key}
+                      className={`border-l-2 border-ink px-5 py-4 text-[15px] leading-relaxed ${
+                        key === "ordi" ? "bg-highlight/35 text-ink" : "text-ink-2"
+                      } ${r < COMPARISON.rows.length - 1 ? "border-b-[1.5px] border-b-ink/25 [border-bottom-style:dashed]" : ""}`}
                     >
-                      {val}
+                      {row[key]}
                     </div>
-                  </Reveal>
-                ))}
-              </Fragment>
-            ))}
+                  ))}
+                </Fragment>
+              ))}
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
