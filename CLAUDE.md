@@ -108,9 +108,11 @@ whole sentence.
 
 ```
 Header        logo, anchors Fitur/Harga/Tanya, demo button
-Hero          ownership headline; LiveStorefront re-brands per STORE_EXAMPLES,
-              OwnershipReceipt prints + gets stamped LUNAS; click/tap anywhere
-              in the hero drops a stamp (the Camemo-garden equivalent)
+Hero          ownership headline + a cluster of ink cards: LiveStorefront
+              (re-brands per STORE_EXAMPLES, "contoh" chip in its domain bar),
+              "Pesanan baru masuk" toast, Bayar QRIS, "Harus siap hari ini"
+              count + bars, and an order-status card. Click/tap anywhere in
+              the hero drops a stamp (the Camemo-garden equivalent)
 CustomerFlow  5 steps (#pelanggan). lg: sticky screen swaps per step via
               IntersectionObserver; mobile: screen inline under each step
 ModeSection   interactive harian vs PO calendar + daily quota stepper
@@ -130,10 +132,22 @@ changing a React `key`. Scroll-reveals use `Reveal.jsx` or framer
 `clip-path` hides it** — Chrome reports it as never intersecting (see
 `PrintIn` in `OwnerDay.jsx`).
 
+Hero cluster: one loop per example store (dashboard count-up, date picked,
+two items added, QR scan, toast, status "Menunggu Konfirmasi" then
+"Diproses"). The status card waits for confirmation first because payment is
+checked by hand (`HONEST_NOTES`), so never make it jump straight to done. The
+card positions are tuned so no card covers catalog content (cart, prices) at
+any width: on sm+ the catalog sits at `left-[104px]` in a fixed 540px box
+(the hero grid's right column is `540px` on lg); below sm the cards stack
+under the catalog. Re-check overlaps at 320/375/1024/1440 after touching it.
+
 Layout gotcha: any `grid` without an explicit base `grid-cols-*` gets
 `grid-cols-1` (`minmax(0,1fr)`). An implicit `auto` track grows to the
 max-content of nested `1fr` grids (the date chips) and caused a 29px
-horizontal overflow on 375px screens.
+horizontal overflow on 375px screens. Same family: the tier price in
+`PricingTiers` is an unbreakable string, so its size is clamped
+(`clamp(2rem,4.2vw,2.6rem)`); at a fixed 2.6rem it overflowed the three
+md columns by 22px at 768px.
 
 ## Content data (`src/data/content.js`)
 
@@ -166,8 +180,10 @@ header / hero / final-cta), `klik_tier` (`tier`), `consent_choice`.
 - `.node-version` pins Node for Cloudflare (Vite 8 needs `^20.19.0 ||
   >=22.12.0`); Cloudflare ignores `package.json` `engines`.
 - `public/_redirects` holds the /wa, /threads, /instagram UTM short links.
-- `public/og-image.png` is rendered from an HTML mock of the hero (1200×630);
-  regenerate it when the hero headline changes.
+- `public/og-image.png` (1200×630) is the headline plus a capture of the
+  real hero card cluster, with the example store swapped for placeholders
+  ("Toko Kamu", `namatokokamu.id`) so no example store appears in link
+  previews. Regenerate it when the hero headline or cluster changes.
 - This sandbox's network policy blocks most external domains, and Chromium
   here doesn't trust the proxy CA, so Google Fonts don't load in local
   screenshots. For verification, download the font CSS/woff2 with `curl`

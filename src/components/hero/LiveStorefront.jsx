@@ -38,6 +38,8 @@ export default function LiveStorefront({ store, chips, selectedKey, qty, classNa
       <div className="flex items-center gap-2 px-3 py-2 border-b-2 border-ink bg-paper font-mono-label text-xs">
         <span className="size-2.5 rounded-full transition-colors duration-500" style={{ background: store.brand }} />
         {store.domain}
+        {/* example stores are never presented as real clients */}
+        <span className="ml-auto rounded-[5px] border-[1.5px] border-ink/30 px-1.5 py-px text-[10px] text-ink-2">contoh</span>
       </div>
       <div
         className="flex items-center gap-2.5 px-3.5 py-3 text-white transition-colors duration-500"
@@ -55,10 +57,6 @@ export default function LiveStorefront({ store, chips, selectedKey, qty, classNa
         </div>
       </div>
       <div className="p-3.5 grid grid-cols-1 gap-3">
-        <div className="grid grid-cols-2 border-2 border-ink rounded-xl overflow-hidden text-[12.5px] font-bold">
-          <span className="py-2 text-center bg-ink text-white">Ambil sendiri</span>
-          <span className="py-2 text-center">Diantar</span>
-        </div>
         <div className="grid grid-cols-4 gap-1.5">
           {chips.map((d) => (
             <DateChip key={d.key} day={d} selected={d.key === selectedKey} />

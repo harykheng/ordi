@@ -80,8 +80,8 @@ export default function PricingTiers() {
                 <h3 className="font-headline text-3xl leading-none">{tier.name}</h3>
                 <p className="mt-1.5 text-sm text-ink-2">{tier.tagline}</p>
                 <p className="mt-5">
-                  <span className="font-headline text-[2.6rem] leading-none text-ember-deep">{tier.price}</span>
-                  <span className="ml-1.5 text-sm text-ink-2">{tier.priceNote}</span>
+                  <span className="font-headline text-[clamp(2rem,4.2vw,2.6rem)] leading-none text-ember-deep">{tier.price}</span>{" "}
+                  <span className="whitespace-nowrap text-sm text-ink-2">{tier.priceNote}</span>
                 </p>
                 <ul className="mt-6 mb-8 grid grid-cols-1 flex-1 content-start gap-3">
                   {tier.features.map((f) => (

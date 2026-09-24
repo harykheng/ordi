@@ -272,15 +272,6 @@ body {
   }
 }
 
-@keyframes pen-write {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
-  to {
-    clip-path: inset(0 -10% 0 0);
-  }
-}
-
 @keyframes bell-ring {
   0%,
   100% {
@@ -300,16 +291,77 @@ body {
   }
 }
 
-.pen-write {
-  animation: pen-write 0.7s 0.9s ease-out both;
-}
-
 .bell-ring {
   animation: bell-ring 0.7s 0.15s ease-in-out 2;
 }
 
 .bump {
   animation: bump 0.35s ease-out;
+}
+
+/* hero dashboard cards, dropped onto the desk one after another */
+.card-drop {
+  animation: card-drop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.15) backwards;
+}
+
+@keyframes card-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) scale(1.05);
+  }
+}
+
+/* "harus siap hari ini" bars grow from the baseline */
+.grow-bar {
+  transform-origin: bottom;
+  animation: grow-bar 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+@keyframes grow-bar {
+  from {
+    transform: scaleY(0.06);
+  }
+}
+
+/* scan line sweeping the QRIS code twice, then gone */
+.qr-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--color-ember);
+  box-shadow: 0 0 6px 1px rgb(255 138 61 / 0.7);
+  animation: qr-scan 0.9s ease-in-out 2 both;
+}
+
+@keyframes qr-scan {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  12%,
+  88% {
+    opacity: 1;
+  }
+  100% {
+    top: calc(100% - 3px);
+    opacity: 0;
+  }
+}
+
+/* current step on the order-status card */
+.dot-ping {
+  animation: dot-ping 1.4s ease-out infinite;
+}
+
+@keyframes dot-ping {
+  from {
+    box-shadow: 0 0 0 0 rgb(255 138 61 / 0.6);
+  }
+  to {
+    box-shadow: 0 0 0 7px rgb(255 138 61 / 0);
+  }
 }
 
 /* traveling-light border on the header's demo CTA */
