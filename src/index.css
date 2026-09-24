@@ -1,20 +1,28 @@
 @import "tailwindcss";
 
 @theme {
-  /* base surfaces */
-  --color-paper: #fff9f2;
-  --color-paper-2: #ffffff;
-  --color-ink: #1a1a1a;
+  /* a bright, clean kitchen: soft cards floating on warm white */
+  --color-paper: #fffbf6; /* terang, page background */
+  --color-meja: #fff4ea; /* soft peach wash for alternate sections */
+  --color-card: #ffffff;
+  --color-line: #ece2d4; /* hairlines and card borders */
+  --color-ink: #1c1917; /* text, dark buttons */
+  --color-ink-2: #57534e; /* secondary text, >=6.9:1 on paper and meja */
 
-  /* brand accents */
-  --color-ember: #ff8a3d; /* primary accent — CTA, price, fills */
-  --color-ember-deep: #b8541a; /* contrast-safe orange for text on light bg */
-  --color-teal: #0f4c4c; /* secondary accent — live/badge/status */
-  --color-yellow: #ffd23f; /* highlight — promo/discount badges */
+  --color-ember: #ff7a2f; /* brand fill: dots, bars, active marks */
+  --color-ember-deep: #b34d12; /* orange text, >=4.6:1 on paper, meja, white */
+  --color-pen: #1f7a57; /* mint green: numbers, checks, "Buka", LUNAS */
+  --color-highlight: #ffe3d0; /* peach: selected chips, emphasis band */
+  --color-mint: #ddf3e9;
+  --color-butter: #fff1bf;
+  --color-lilac: #ece5ff;
 
-  --font-display: "Bricolage Grotesque", "Public Sans", system-ui, sans-serif;
-  --font-body: "Public Sans", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", monospace;
+  --font-display: "Parkinsans", "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --shadow-soft: 0 1px 2px rgb(28 25 23 / 0.06), 0 14px 34px -14px rgb(28 25 23 / 0.28);
+  --shadow-lift: 0 2px 4px rgb(28 25 23 / 0.06), 0 24px 48px -18px rgb(28 25 23 / 0.32);
 }
 
 html {
@@ -30,84 +38,300 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-ember);
+  background-color: var(--color-highlight);
   color: var(--color-ink);
 }
 
-.font-display {
-  font-family: var(--font-display);
-  letter-spacing: -0.02em;
+:focus-visible {
+  outline: 3px solid var(--color-ember);
+  outline-offset: 3px;
 }
 
-.font-mono-label {
-  font-family: var(--font-mono);
-  letter-spacing: 0.01em;
+@layer components {
+  .font-headline {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+  }
+
+  .font-mono-label {
+    font-family: var(--font-mono);
+    letter-spacing: 0.01em;
+  }
+
+  .pen {
+    font-family: var(--font-body);
+    font-weight: 800;
+    color: var(--color-pen);
+  }
+
+  /* short emphasised phrase: orange text on a soft peach band */
+  .mark-hl {
+    color: var(--color-ember-deep);
+    background: linear-gradient(var(--color-highlight), var(--color-highlight)) no-repeat 0 90% / 100% 0.3em;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+  .mark-hl.swipe {
+    animation: band-in 0.9s 0.25s cubic-bezier(0.6, 0.1, 0.2, 1) backwards;
+  }
+
+  .card-ink {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    min-height: 48px;
+    padding: 0 1.4rem;
+    border: 1.5px solid var(--color-line);
+    border-radius: 999px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+    color: var(--color-ink);
+    background: var(--color-card);
+    box-shadow: 0 1px 2px rgb(28 25 23 / 0.06);
+    transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-soft);
+  }
+  .btn-sm {
+    min-height: 44px;
+    padding: 0 1rem;
+    font-size: 0.875rem;
+  }
+  .btn-primary {
+    background: var(--color-ink);
+    border-color: var(--color-ink);
+    color: #fff;
+  }
+  .btn-primary::after {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: var(--color-ember);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-card);
+    padding: 0.4rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    box-shadow: 0 1px 2px rgb(28 25 23 / 0.06);
+  }
+
+  /* the "nota" cards of the other directions become soft cards here */
+  .receipt {
+    position: relative;
+    background: var(--color-card);
+    font-family: var(--font-mono);
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+  .receipt-print {
+    animation: soft-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  }
+  .receipt-rule {
+    border-top: 1px dashed var(--color-line);
+  }
+  .leader {
+    flex: 1;
+    min-width: 8px;
+    border-bottom: 1px dotted #d9ccba;
+    transform: translateY(-4px);
+  }
+
+  /* LUNAS / status pill */
+  .stamp {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--color-pen);
+    background: var(--color-mint);
+    border-radius: 999px;
+    padding: 0.45em 0.8em;
+    pointer-events: none;
+  }
+  .stamp::before {
+    content: "";
+    width: 0.5em;
+    height: 0.5em;
+    border-radius: 999px;
+    background: var(--color-pen);
+  }
+  .stamp-thump {
+    animation: soft-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.3) both;
+  }
+
+  .ticket-wrap {
+    position: relative;
+  }
+  .ticket {
+    background: var(--color-card);
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  /* no torn/scalloped edges in this direction: sections just change tone */
+  .tear-top {
+    position: relative;
+  }
+
+  .striped-closed {
+    background: repeating-linear-gradient(-45deg, transparent 0 5px, rgb(28 25 23 / 0.05) 5px 6px), #f7f1e8;
+  }
+
+  .float-bob {
+    animation: float-bob 5.5s ease-in-out infinite alternate;
+  }
+  .drift {
+    animation: drift 14s ease-in-out infinite alternate;
+  }
+  .ping::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    animation: ping 1.6s ease-out infinite;
+  }
 }
 
-/* faint dot-grid texture instead of flat cream */
-.grain-bg {
-  background-image: radial-gradient(
-    circle,
-    rgba(26, 26, 26, 0.08) 1px,
-    transparent 1px
-  );
-  background-size: 22px 22px;
-}
-
-.scrollbar-none::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-none {
-  scrollbar-width: none;
-}
-
-/* hand-drawn doodle strokes */
-.doodle {
-  stroke: currentColor;
-  fill: none;
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-/* traveling-light border — an ember segment orbiting the pill edge,
-   layered on top of the static border-2 border-ink underneath */
-@property --border-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
-
-.animated-border-btn {
-  position: relative;
-}
-
-.animated-border-btn::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  border-radius: inherit;
-  padding: 2px;
-  background: conic-gradient(
-    from var(--border-angle),
-    transparent 0%,
-    var(--color-ember) 8%,
-    transparent 22%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-  animation: border-orbit 2.8s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes border-orbit {
+@keyframes band-in {
+  from {
+    background-size: 0% 0.3em;
+  }
   to {
-    --border-angle: 360deg;
+    background-size: 100% 0.3em;
+  }
+}
+
+@keyframes soft-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes soft-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float-bob {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 0 -10px;
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(-60px, 40px);
+  }
+}
+
+@keyframes ping {
+  from {
+    box-shadow: 0 0 0 0 rgb(31 122 87 / 0.45);
+  }
+  to {
+    box-shadow: 0 0 0 10px rgb(31 122 87 / 0);
+  }
+}
+
+@keyframes grow-bar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes bell-ring {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+  25% {
+    transform: rotate(-14deg);
+  }
+  75% {
+    transform: rotate(14deg);
+  }
+}
+
+@keyframes bump {
+  40% {
+    transform: scale(1.12);
+  }
+}
+
+.grow-bar {
+  transform-origin: bottom;
+  animation: grow-bar 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.bell-ring {
+  animation: bell-ring 0.7s 0.15s ease-in-out 2;
+}
+
+.bump {
+  animation: bump 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
   }
 }

@@ -23,8 +23,17 @@ project.
   tanpa instruksi eksplisit.
 - `landing-first` — snapshot beku versi lama (framing "chat chaos"). Jangan
   diubah lagi, cuma buat pembanding.
-- `landing-second` — branch aktif tempat rebuild & semua kerjaan terbaru
-  berjalan. Belum di-merge ke `main` sampai ada instruksi eksplisit.
+- `landing-second` — rebuild dengan framing kepemilikan & custom-build.
+- `landing-alternatif-2` — arah A, "Nota & Stempel": struk, cap LUNAS,
+  stiker label, catatan pulpen.
+- `landing-alternatif-3` — arah B, "Deretan Ruko": kanopi, papan nama, jalan
+  yang tokonya menyala.
+- `landing-alternatif-4` — arah C, "Dapur Terang": kartu melayang, cahaya
+  lembut, ikut gerak kursor. **Branch ini.**
+
+Ketiga branch alternatif berangkat dari commit dasar yang sama (konten +
+helper) dan cuma beda di lapisan tampilan. Fiturnya mengikuti
+`harykheng/ordi-master`.
 
 Detail konvensi desain, struktur section, dan aturan positioning ada di
 `CLAUDE.md`.
