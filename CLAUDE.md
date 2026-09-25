@@ -197,10 +197,17 @@ header / hero / final-cta), `klik_tier` (`tier`), `consent_choice`.
 - `.node-version` pins Node for Cloudflare (Vite 8 needs `^20.19.0 ||
   >=22.12.0`); Cloudflare ignores `package.json` `engines`.
 - `public/_redirects` holds the /wa, /threads, /instagram UTM short links.
-- `public/og-image.png` (1200×630) is the headline plus a capture of the
-  real hero card cluster, with the example store swapped for placeholders
-  ("Toko Kamu", `namatokokamu.id`) so no example store appears in link
-  previews. Regenerate it when the hero headline or cluster changes.
+- `public/og-image.png` (1200×630, ~85 KB) is the link preview for WhatsApp
+  and Threads blasts (`/wa`, `/threads` short links in `_redirects`). It's
+  **center-safe**: logo, audience chip and the headline sit in the middle
+  630×630, because WhatsApp crops a center square for small thumbnails (the
+  compose box, WhatsApp Web). The four hero dashboard cards (captured from
+  the real hero, codes swapped to `TK-`) sit in the side strips only, for
+  the wide preview. Keep it under ~300 KB. When it changes, bump the `?v=`
+  on `og:image`/`twitter:image` in `index.html`, since WhatsApp and Threads
+  cache by URL. `og:image` is absolute to ordi.studioharel.id, so a branch
+  preview link shows whatever image production serves until this version
+  is live.
 - This sandbox's network policy blocks most external domains, and Chromium
   here doesn't trust the proxy CA, so Google Fonts don't load in local
   screenshots. For verification, download the font CSS/woff2 with `curl`
