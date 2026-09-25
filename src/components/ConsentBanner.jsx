@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+// index.html reads the same key to restore consent before gtag's first hit
 const KEY = "ordi-cookie-consent";
 
 function readChoice() {
@@ -28,6 +29,9 @@ export default function ConsentBanner() {
   const handleAccept = () => {
     saveChoice("granted");
     window.gtag?.("consent", "update", { analytics_storage: "granted" });
+    // the load-time page_view went out while consent was still denied, so it
+    // never reaches GA4 reports: count this page now that it can be counted
+    window.gtag?.("event", "page_view");
     window.gtag?.("event", "consent_choice", { choice: "granted" });
     setVisible(false);
   };

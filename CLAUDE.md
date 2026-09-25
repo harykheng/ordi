@@ -97,8 +97,8 @@ Fonts (`index.html`): **Parkinsans** (`.font-headline`, weight 800,
 `letter-spacing: -0.035em`) for headlines and big numbers, the same display
 face as direction C. Hary picked it over the original Archivo condensed
 because it reads friendlier. It's much wider than a condensed face, so
-headline sizes follow direction C's scale (h1 `clamp(2.6rem,6vw,4.4rem)`,
-h2 `clamp(2.1rem,4.4vw,3.2rem)`), and `.mark-hl` is positioned for its
+headline sizes follow direction C's scale (h2 `clamp(2.1rem,4.4vw,3.2rem)`;
+the hero h1 is sized to its column, see below), and `.mark-hl` is positioned for its
 metrics. Bricolage Grotesque was dropped earlier because it reads as
 AI-template. **Plus Jakarta Sans** body (same face as the Ordi catalog);
 **IBM Plex Mono** (`.font-mono-label`, receipts, prices, times); **Kalam**
@@ -147,6 +147,14 @@ changing a React `key`. Scroll-reveals use `Reveal.jsx` or framer
 `clip-path` hides it** — Chrome reports it as never intersecting (see
 `PrintIn` in `OwnerDay.jsx`).
 
+Hero headline: "Punya toko, / punya sistem / pesanan sendiri." in three
+fixed lines (`<br>`), stabilo on "sistem pesanan sendiri.". Its font-size
+tracks the text column so the longest line (~8.1em) always fits:
+`(100vw - 40px) / 8.4` below lg, `(100vw - 612px) / 8.4` on lg (the column
+left of the 540px cluster), capped at 4.4rem. With a plain vw size it broke
+into five one-word lines at 320px and 1024px. If the copy changes, re-measure
+the longest line and adjust the divisor.
+
 Hero cluster: one loop per example store (dashboard count-up, date picked,
 two items added, QR scan, toast, status "Menunggu Konfirmasi" then
 "Diproses"). The status card waits for confirmation first because payment is
@@ -184,8 +192,17 @@ Copy convention: no em dashes in rendered strings (code comments are fine).
 
 ## Analytics
 
-GA4 (`gtag.js`, `G-GSPM07JL7N`) in `index.html` with Consent Mode default
-denied; `ConsentBanner.jsx` stores the choice in `localStorage`. Events:
+GA4 (`gtag.js`, `G-GSPM07JL7N`) in `index.html` with Consent Mode.
+`ConsentBanner.jsx` stores the choice in `localStorage` (`ordi-cookie-consent`).
+The inline script in `index.html` reads that key **before** `gtag('config')`,
+so a returning visitor who accepted is `granted` from the first page_view.
+Before this, every return visit stayed denied, since nothing re-applied the
+stored choice. On "Oke, Lanjut" the banner re-sends `page_view`, because the
+load-time one went out while still denied. Expected gaps: visitors who never
+click accept stay denied, and GA4 keeps their cookieless pings out of
+reports (modeling needs far more traffic). Brave and ad blockers block GA
+entirely, so test in Chrome or Safari. Standard reports lag 24-48h, so use
+Realtime or DebugView for checks. Events:
 `klik_wa` (`lokasi`: hero / final-cta, plus the lead form's jualan/mode/
 antar/qris answers — **never the store name**), `klik_demo` (`lokasi`:
 header / hero / final-cta), `klik_tier` (`tier`), `consent_choice`.
@@ -196,7 +213,8 @@ header / hero / final-cta), `klik_tier` (`tier`), `consent_choice`.
   (`assets.directory: ./dist`) — don't remove it.
 - `.node-version` pins Node for Cloudflare (Vite 8 needs `^20.19.0 ||
   >=22.12.0`); Cloudflare ignores `package.json` `engines`.
-- `public/_redirects` holds the /wa, /threads, /instagram UTM short links.
+- `public/_redirects` holds the /wa, /threads, /instagram UTM short links
+  for blasts (`utm_campaign=blast-october` now; rename per campaign).
 - `public/og-image.png` (1200×630, ~85 KB) is the link preview for WhatsApp
   and Threads blasts (`/wa`, `/threads` short links in `_redirects`). It's
   **center-safe**: logo, audience chip and the headline sit in the middle

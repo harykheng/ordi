@@ -116,9 +116,19 @@ export default function Hero() {
             <span className="size-2 rounded-full bg-ember" aria-hidden="true" />
             Untuk kafe, resto, bakery, dan toko PO
           </span>
-          <h1 className="font-headline mt-5 mb-5 text-[clamp(2.6rem,6vw,4.4rem)] leading-[1.02] text-balance">
-            Website pesanan toko kamu,{" "}
-            <mark className={`mark-hl ${reduce ? "" : "swipe"}`}>lunas jadi milikmu.</mark>
+          {/* Three fixed lines; the size tracks the text column so the longest
+              one ("pesanan sendiri.", ~8.1em) always fits: full width minus
+              the page gutter below lg, the column left of the 540px cluster
+              on lg. */}
+          <h1 className="font-headline mt-5 mb-5 text-[length:clamp(2rem,calc((100vw_-_40px)/8.4),4.4rem)] leading-[1.02] lg:text-[length:clamp(2.6rem,calc((100vw_-_612px)/8.4),4.4rem)]">
+            Punya toko,
+            <br />
+            punya{" "}
+            <mark className={`mark-hl ${reduce ? "" : "swipe"}`}>
+              sistem
+              <br />
+              pesanan sendiri.
+            </mark>
           </h1>
           <p className="max-w-[46ch] text-[17px] leading-relaxed text-ink-2 sm:text-lg">
             Pelanggan pilih tanggal, pesan, bayar QRIS, lalu lacak pesanannya sendiri. Kamu pegang
