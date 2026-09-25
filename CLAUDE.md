@@ -192,17 +192,19 @@ Copy convention: no em dashes in rendered strings (code comments are fine).
 
 ## Analytics
 
-GA4 (`gtag.js`, `G-GSPM07JL7N`) in `index.html` with Consent Mode.
-`ConsentBanner.jsx` stores the choice in `localStorage` (`ordi-cookie-consent`).
-The inline script in `index.html` reads that key **before** `gtag('config')`,
-so a returning visitor who accepted is `granted` from the first page_view.
-Before this, every return visit stayed denied, since nothing re-applied the
-stored choice. On "Oke, Lanjut" the banner re-sends `page_view`, because the
-load-time one went out while still denied. Expected gaps: visitors who never
-click accept stay denied, and GA4 keeps their cookieless pings out of
-reports (modeling needs far more traffic). Brave and ad blockers block GA
-entirely, so test in Chrome or Safari. Standard reports lag 24-48h, so use
-Realtime or DebugView for checks. Events:
+GA4 (`gtag.js`, `G-GSPM07JL7N`) in `index.html` with Consent Mode, **opt-out
+model** (Hary's call, Sept 2026). Analytics is `granted` from the first
+page_view unless the visitor clicked "Nolak" before. The inline script in
+`index.html` reads `localStorage` `ordi-cookie-consent` before
+`gtag('config')`, and `ConsentBanner.jsx` writes it. The banner is a
+non-blocking notice ("Nggak mau dicatat? Klik Nolak.") shown until the
+visitor picks "Oke" or "Nolak". "Nolak" updates consent to denied and deletes
+the `_ga` cookies. This replaced an opt-in banner that kept every visitor who
+ignored it out of GA4 reports, and it relies on a notice plus easy opt-out,
+not explicit consent. Don't remove the notice. If it ever goes back to
+opt-in, expect tracked visits to drop and annotate the date in GA4. Brave
+and ad blockers block GA entirely, so test in Chrome or Safari. Standard
+reports lag 24-48h, so use Realtime or DebugView for checks. Events:
 `klik_wa` (`lokasi`: hero / final-cta, plus the lead form's jualan/mode/
 antar/qris answers — **never the store name**), `klik_demo` (`lokasi`:
 header / hero / final-cta), `klik_tier` (`tier`), `consent_choice`.

@@ -40,13 +40,12 @@
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      // Visitors who already clicked "Oke, Lanjut" (ConsentBanner saves it
-      // under this key) are tracked from the first page_view; everyone else
-      // stays denied until they accept.
+      // Opt-out: analytics is on from the first page_view unless this visitor
+      // clicked "Nolak" before (ConsentBanner saves it under this key).
       var ordiConsent = null;
       try { ordiConsent = localStorage.getItem('ordi-cookie-consent'); } catch (e) {}
       gtag('consent', 'default', {
-        'analytics_storage': ordiConsent === 'granted' ? 'granted' : 'denied'
+        'analytics_storage': ordiConsent === 'denied' ? 'denied' : 'granted'
       });
       gtag('js', new Date());
 
